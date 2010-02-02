@@ -21,6 +21,10 @@ public enum MsgType {
 	 * @return
 	 */
 	public static boolean contains(String msgType){
+		if(msgTypeTable.size() <= 0){
+			initMsgTypeTable();
+		}
+		
 		if(msgTypeTable.get(msgType) != null){
 			return true;
 		}

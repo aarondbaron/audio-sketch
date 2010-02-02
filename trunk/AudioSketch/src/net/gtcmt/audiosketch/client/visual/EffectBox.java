@@ -8,6 +8,8 @@ import net.gtcmt.audiosketch.client.sound.effect.Delay;
 import net.gtcmt.audiosketch.client.sound.effect.Distort;
 import net.gtcmt.audiosketch.client.sound.effect.Reverb;
 import net.gtcmt.audiosketch.client.sound.util.SndConstants.EffectType;
+import net.gtcmt.audiosketch.client.util.P5Points2D;
+import net.gtcmt.audiosketch.client.util.P5Size2D;
 import net.gtcmt.audiosketch.client.util.SoundObject;
 import processing.core.PConstants;
 import processing.core.PFont;
@@ -21,8 +23,8 @@ import processing.core.PFont;
  */
 public class EffectBox {
 
-	private int xPos, yPos;
-	private int width, height;
+	private P5Points2D objPos;
+	private P5Size2D objSize;
 	private MusicalWindow m;
 	private EffectType effType;
 	private String effName;
@@ -38,13 +40,11 @@ public class EffectBox {
 	 * @param effName
 	 * @param m
 	 */
-	public EffectBox(int xPos, int yPos, int width, int height, EffectType effType, String effName, MusicalWindow m){
-		this.xPos = xPos;
-		this.yPos = yPos;
-		this.width = width;
-		this.height = height;
+	public EffectBox(P5Points2D objPos, P5Size2D objSize, EffectType effType, MusicalWindow m){
+		this.objPos = objPos;
+		this.objSize = objSize;
 		this.effType = effType;
-		this.effName = effName;
+		this.effName = effType.toString();
 		this.m = m;
 		font = m.createFont("skia", 14);
 	}
@@ -57,7 +57,7 @@ public class EffectBox {
 		m.strokeWeight(2);
 		m.rectMode(PConstants.CORNER);
 		m.stroke(255, 0, 255, 200);
-		m.rect(xPos, yPos, width, height);
+		m.rect(objPos.getPosX(), objPos.getPosY(), objSize.getWidth(), objSize.getHeight());
 		drawText();
 	}
 	
@@ -67,7 +67,7 @@ public class EffectBox {
 	private void drawText(){
 		m.textFont(font);
 		m.fill(255, 255, 255, 200);
-		m.text(effName, xPos+5, yPos + height - 5);
+		m.text(effName, objPos.getPosX()+5, objPos.getPosY()+ objSize.getHeight() - 5);
 	}
 	
 	/**
@@ -76,7 +76,7 @@ public class EffectBox {
 	 * @return
 	 */
 	public boolean bound(SoundObject soundObject){
-		if(soundObject.getPosX() > this.xPos && soundObject.getPosX() < this.xPos+this.width && soundObject.getPosY() > this.yPos && soundObject.getPosY() < this.yPos+this.height)
+		if(soundObject.getPosX() > objPos.getPosX() && soundObject.getPosX() < objPos.getPosX() + objSize.getWidth() && soundObject.getPosY() > objPos.getPosY() && soundObject.getPosY() < objPos.getPosY() + objSize.getHeight())
 			return true;
 		else
 			return false;
@@ -99,36 +99,36 @@ public class EffectBox {
 	}
 
 	/*------------- Getter/Setter -----------------*/
-	public int getxPos() {
-		return xPos;
+	public int getPosX() {
+		return objPos.getPosX();
 	}
 
-	public void setxPos(int xPos) {
-		this.xPos = xPos;
+	public void setPoxX(int posX) {
+		this.objPos.setPosX(posX);
 	}
 
-	public int getyPos() {
-		return yPos;
+	public int getPosY() {
+		return objPos.getPosY();
 	}
 
-	public void setyPos(int yPos) {
-		this.yPos = yPos;
+	public void setPosY(int posY) {
+		this.objPos.setPosY(posY);
 	}
 
 	public int getWidth() {
-		return width;
+		return objSize.getWidth();
 	}
 
 	public void setWidth(int width) {
-		this.width = width;
+		this.objSize.setWidth(width);
 	}
 
 	public int getHeight() {
-		return height;
+		return objSize.getHeight();
 	}
 
 	public void setHeight(int height) {
-		this.height = height;
+		this.objSize.setHeight(height);
 	}
 
 	public EffectType getEffType() {
@@ -146,6 +146,4 @@ public class EffectBox {
 	public void setEffName(String effName) {
 		this.effName = effName;
 	}
-	
-	
 }

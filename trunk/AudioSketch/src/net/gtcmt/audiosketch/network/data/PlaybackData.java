@@ -10,7 +10,6 @@ public final class PlaybackData implements MessageData {
 	private float playbackSpeed;
 	private float angle;
 	private PlayBackType playbackType;
-	private int size;
 	
 	/**
 	 * Constructor creates playback data that will be passed between client and server
@@ -20,12 +19,11 @@ public final class PlaybackData implements MessageData {
 	 * @param angle
 	 * @param size
 	 */
-	public PlaybackData(PlayBackType pbType, P5Points2D mouse, float speed, float angle, int size){
+	public PlaybackData(PlayBackType pbType, P5Points2D mouse, float speed, float angle){
 		this.playbackType = pbType;
 		this.mousePoints = mouse;
 		this.playbackSpeed = speed;
 		this.angle = angle;
-		this.size = size;
 	}
 	
 	/*--------------------- Getter/Setter --------------------*/
@@ -65,11 +63,4 @@ public final class PlaybackData implements MessageData {
 	public void setPlaybackType(PlayBackType playbackType) {
 		this.playbackType = playbackType;
 	}
-	public int getSize() {
-		return size;
-	}
-	public void setSize(int size) {
-		this.size = size;
-	}
-	
 }

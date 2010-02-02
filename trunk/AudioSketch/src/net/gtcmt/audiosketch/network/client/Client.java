@@ -1,5 +1,6 @@
 package net.gtcmt.audiosketch.network.client;
 
+import net.gtcmt.audiosketch.client.gui.AudioSketchMainFrame;
 import net.gtcmt.audiosketch.network.util.AudioSketchProtocol;
 import net.gtcmt.audiosketch.util.LogMessage;
 
@@ -64,6 +65,15 @@ public class Client extends ClientNetwork {
 		eventReader.shutdown();
 		super.shutdown();
 	}
+	
+	/**
+	 * pass reference to musical window for protocol
+	 * @param musicalWindow
+	 */
+	public void setMainFrame(AudioSketchMainFrame mainFrame){
+		asProtocol.setMainFrame(mainFrame);
+	}
+	
 	/**
 	 * Test network connection.
 	 * @param args
@@ -74,5 +84,4 @@ public class Client extends ClientNetwork {
 		Client client = new Client(addr, port);
 		client.start();
 	}
-	
 }

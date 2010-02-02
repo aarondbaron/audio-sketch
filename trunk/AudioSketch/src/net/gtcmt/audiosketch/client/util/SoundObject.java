@@ -24,8 +24,8 @@ import ddf.minim.Minim;
  */
 public class SoundObject {
 	
-	private float posX, posY;
-	private int width, height;
+	private P5Points2D objPos;
+	private P5Size2D objSize;
 	private float[] color;
 	private String shape;
 	private int midiNote;
@@ -48,11 +48,9 @@ public class SoundObject {
 	 * @param colorSet Color of the object
 	 * @param p
 	 */
-	public SoundObject(float x, float y, int width, int height, ObjectColorType color, ObjectShapeType shape, int midiNote, SndType sndType, Minim minim, PApplet p){
-		this.posX = x;
-		this.posY = y;
-		this.width = width;
-		this.height = height;
+	public SoundObject(P5Points2D objPos, P5Size2D objSize, ObjectColorType color, ObjectShapeType shape, int midiNote, SndType sndType, Minim minim, PApplet p){
+		this.objPos = objPos;
+		this.objSize = objSize;
 		this.color = chooseColor(color);
 		this.shape = VisualConstants.SHAPE_NAME[shape.ordinal()];
 		this.midiNote = midiNote;
@@ -103,7 +101,7 @@ public class SoundObject {
 	 */
 	public void draw(MusicalWindow m){
 		m.pushMatrix();
-		m.translate(posX, posY);
+		m.translate(objPos.getPosX(), objPos.getPosY());
 		if(collide){
 			if(getFrame){
 				frame = m.frameCount;
@@ -119,7 +117,7 @@ public class SoundObject {
 		m.fill(0, 0, 0, 0);
 		m.stroke(color[0], color[1], color[2], 200);
 		m.shapeMode(PConstants.CENTER);
-		m.shape(image, 0, 0, width, height);
+		m.shape(image, 0, 0, objSize.getWidth(), objSize.getHeight());
 		m.popMatrix();
 	}
 	
@@ -134,35 +132,35 @@ public class SoundObject {
 
 	/*------------------ Getter/Setter ----------------*/
 	public float getPosX() {
-		return posX;
+		return objPos.getPosX();
 	}
 
-	public void setPosX(float posX) {
-		this.posX = posX;
+	public void setPosX(int posX) {
+		this.objPos.setPosX(posX);
 	}
 
 	public float getPosY() {
-		return posY;
+		return objPos.getPosY();
 	}
 
-	public void setPosY(float posY) {
-		this.posY = posY;
+	public void setPosY(int posY) {
+		this.objPos.setPosY(posY);
 	}
 
 	public int getWidth() {
-		return width;
+		return objSize.getWidth();
 	}
 
 	public void setWidth(int width) {
-		this.width = width;
+		this.objSize.setWidth(width);
 	}
 
 	public int getHeight() {
-		return height;
+		return objSize.getHeight();
 	}
 
 	public void setHeight(int height) {
-		this.height = height;
+		this.objSize.setHeight(height);
 	}
 
 	public boolean isCollide() {

@@ -1,16 +1,12 @@
 package net.gtcmt.audiosketch.client.visual;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
 import net.gtcmt.audiosketch.client.gui.EditSoundObjectPanel;
 import net.gtcmt.audiosketch.client.gui.util.GUIConstants;
 import net.gtcmt.audiosketch.client.visual.util.VisualConstants;
-import net.gtcmt.audiosketch.network.util.AudioSketchProtocol;
-import net.gtcmt.audiosketch.network.util.MsgType;
 import net.gtcmt.audiosketch.util.Constants;
-import net.gtcmt.audiosketch.util.LogMessage;
 import processing.core.PApplet;
 import processing.core.PShape;
 import ddf.minim.AudioOutput;
@@ -20,8 +16,6 @@ public class ObjectWindow  extends PApplet {
 
 	private static final long serialVersionUID = 2957684291479793914L;
 	private EditSoundObjectPanel editPanel;
-	private String input;
-	public String[] data;
 	public int objectWidth=100;
 	public int objectHeight=100;
 	public Minim minim;
@@ -57,7 +51,6 @@ public class ObjectWindow  extends PApplet {
 
 	public void draw(){
 		this.background(0);
-		read();
 		colorPick();
 		reSizeObject();
 		
@@ -68,47 +61,6 @@ public class ObjectWindow  extends PApplet {
 	public void stop() {
 		minim.stop();
 		super.stop();
-	}
-
-	private void read() {
-		if (editPanel.getClient() != null && editPanel.getClient().available() > 0) {
-			input = editPanel.getClient().readStringUntil(AudioSketchProtocol.TERMINATOR_BYTE);
-			data = AudioSketchProtocol.createTokens(input);
-		
-			if(MsgType.contains(data[0])){
-				switch(MsgType.valueOf(data[0])){
-				case CHAT:
-					// display a message
-					editPanel.getMainFrame().getChatWindow().append(Color.BLUE, data[1]+" ");
-					for(int i=2;i<data.length;i++){
-						editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, data[i]+" ");
-					}
-					//add new line
-					editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, "\n");
-					break;
-				case LOGIN:
-					//Display message on chat window
-					editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, "Welcome "+data[1]+" ");
-					for(int i=2;i<data.length;i++){
-						editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, data[i]+" ");
-					}
-					editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, "\n");
-					break;
-				case QUIT:
-					editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, "GoodBye "+data[1]+" ");
-					for(int i=2;i<data.length;i++){
-						editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, data[i]+" ");
-					}
-					editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, "\n");
-					break;
-				default:
-
-				}
-			}
-			else{
-				LogMessage.err("MsgType does not contain "+data[0]+"!");
-			}
-		}
 	}
 
 	/**

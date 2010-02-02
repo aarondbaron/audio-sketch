@@ -10,6 +10,11 @@ public class P5Size2D {
 		this.height = height;
 	}
 
+	public void setSize(int width, int height){
+		this.width = width;
+		this.height = height;
+	}
+	
 	public int getWidth() {
 		return width;
 	}
@@ -25,6 +30,4 @@ public class P5Size2D {
 	public void setHeight(int height) {
 		this.height = height;
 	}
-	
-	
 }

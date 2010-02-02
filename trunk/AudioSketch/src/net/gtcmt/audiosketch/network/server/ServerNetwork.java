@@ -58,7 +58,7 @@ public final class ServerNetwork extends Thread {
 				clientsByClientID.put(client, new AudioSketchClient(this, client, ++threadNum));
 				
 				//broad cast to all clients that there are new client
-				broadCastEvent(new AudioSketchData(MsgType.LOGIN, new LoginData(), ""));
+				broadCastEvent(new AudioSketchData(MsgType.LOGIN, new LoginData(), "",0));
 			} catch (IOException e) {
 				//XXX throws error on closing socket because of accept method. For now I ignore this.
 			}

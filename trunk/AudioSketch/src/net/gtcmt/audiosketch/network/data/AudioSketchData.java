@@ -15,18 +15,19 @@ public class AudioSketchData implements Serializable {
 	private static final long serialVersionUID = -4898161811400795150L;
 	private MsgType msgType;			//Type of message to send. useful for switch or enumeration.
 	private MessageData msgData;		//Contains the actual data. Varies depending on msgType
-	private String userName;			//Name of user who is sending this data
+	private UserData userData;			//Name of user who is sending this data
 	
 	/**
 	 * Create audio sketch data that will be passed between client and server
-	 * @param msgType
-	 * @param msgData
-	 * @param userName
+	 * @param msgType	type of message sending to server
+	 * @param msgData	actual data
+	 * @param userName	user name who is sending a message to server
+	 * @param userID		set it to 0 if this does not matter
 	 */
-	public AudioSketchData(MsgType msgType, MessageData msgData, String userName){
+	public AudioSketchData(MsgType msgType, MessageData msgData, String userName, int userID){
 		this.msgType = msgType;
 		this.msgData = msgData;
-		this.userName = userName;
+		this.userData = new UserData(userName, userID);
 	}
 
 	/*---------------- Getter/Setter ------------------*/
@@ -46,11 +47,15 @@ public class AudioSketchData implements Serializable {
 		this.msgData = msgData;
 	}
 
-	public String getUserName() {
-		return userName;
+	public UserData getUserData() {
+		return userData;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}	
+	public void setUserData(UserData userData) {
+		this.userData = userData;
+	}
+	
+	public String getUserName(){
+		return userData.getUserName();
+	}
 }

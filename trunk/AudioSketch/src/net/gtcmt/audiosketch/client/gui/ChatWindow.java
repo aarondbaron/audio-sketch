@@ -21,7 +21,9 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
 import net.gtcmt.audiosketch.client.gui.util.GUIConstants;
-import net.gtcmt.audiosketch.network.util.AudioSketchProtocol;
+import net.gtcmt.audiosketch.network.client.Client;
+import net.gtcmt.audiosketch.network.data.AudioSketchData;
+import net.gtcmt.audiosketch.network.data.ChatData;
 import net.gtcmt.audiosketch.network.util.MsgType;
 
 public class ChatWindow extends JPanel {
@@ -105,8 +107,7 @@ public class ChatWindow extends JPanel {
 	 * Action performed when button or enter is pressed
 	 */
 	private void chatAction(){
-		mainFrame.getClient().write(MsgType.CHAT.toString()+AudioSketchProtocol.SPLITTER+
-				userName+":"+AudioSketchProtocol.SPLITTER+textField.getText()+AudioSketchProtocol.TERMINATOR);
+		getClient().getOutQueue().push(new AudioSketchData(MsgType.CHAT, new ChatData(textField.getText()), userName, 0));
 		textField.setText("");
 	}
 	
@@ -119,7 +120,16 @@ public class ChatWindow extends JPanel {
 		textArea.setCharacterAttributes(aset, false);
 		textArea.replaceSelection(s); // there is no selection, so inserts at caret
 	}
-	 
+	
+	
+	public Client getClient(){
+		return mainFrame.getClient();
+	}
+	
+	/**
+	 * Test
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		
 		JFrame frame = new JFrame();
