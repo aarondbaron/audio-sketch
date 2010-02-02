@@ -3,6 +3,8 @@ package net.gtcmt.audiosketch.client.visual;
 import java.util.LinkedList;
 import processing.core.PApplet;
 import processing.core.PConstants;
+import net.gtcmt.audiosketch.client.util.P5Points2D;
+import net.gtcmt.audiosketch.client.util.P5Size2D;
 import net.gtcmt.audiosketch.client.util.SoundObject;
 import net.gtcmt.audiosketch.client.visual.util.VisualConstants;
 import net.gtcmt.audiosketch.client.visual.util.VisualConstants.PlayBackType;
@@ -14,9 +16,9 @@ import net.gtcmt.audiosketch.client.visual.util.VisualConstants.PlayBackType;
  */
 public class PlayBackBar {
 
-	private float posX, posY;
-	private float initX, initY;
-	private float width,height;
+	private P5Points2D objPos;
+	private P5Points2D initPos;
+	private P5Size2D objSize;
 	private float speed;
 	private float angle;
 	private LinkedList<SoundObject> soundObject;
@@ -38,29 +40,28 @@ public class PlayBackBar {
 	 * @param numObject 
 	 * @param p
 	 */
-	public PlayBackBar(float x, float y, float speed, float angle, int barMode, LinkedList<SoundObject> soundObject, PApplet p){
-		this.posX = x;
-		this.posY = y;
-		this.initX = x;
-		this.initY = y;
+	public PlayBackBar(P5Points2D objPos, float speed, float angle, PlayBackType pbType, LinkedList<SoundObject> soundObject, PApplet p){
+		this.initPos = this.objPos = objPos;
 		this.p5 = p;
 		
 		if(speed > VisualConstants.MAX_SPEED)
 			this.speed = VisualConstants.MAX_SPEED;
 		else
 			this.speed = speed;
+		
 		this.angle = angle;
 		this.soundObject = soundObject;
-		if(barMode == 0) {
-			this.playbackType = PlayBackType.BAR;
-			this.width=VisualConstants.BAR_WIDTH;
-			this.height=12;
-		}
-		else{
-			this.playbackType = PlayBackType.RADIAL;
-			this.width=0;
-			this.height=0;
-
+		this.playbackType = pbType;
+		
+		switch(pbType){
+		case BAR:
+			this.objSize.setSize(VisualConstants.BAR_WIDTH,12);
+			break;
+		case RADIAL:
+			this.objSize.setSize(0, 0);
+			break;
+		default:
+			this.objSize.setSize(0, 0);
 		}
 		
 		collisionArea = VisualConstants.COLLISION_AREA;
@@ -72,8 +73,8 @@ public class PlayBackBar {
 		
 		ignoreState = new LinkedList<Boolean>();
 		for(int i=0;i<soundObject.size();i++){
-			float objectX = (float) ((soundObject.get(i).getPosX()+(soundObject.get(i).getWidth()/2)) - (x+(Math.cos(angle+Math.PI)*(VisualConstants.COLLISION_AREA/2))));
-			float objectY = (float) ((soundObject.get(i).getPosY()+(soundObject.get(i).getHeight()/2)) - (y+(Math.sin(angle+Math.PI)*(VisualConstants.COLLISION_AREA/2))));
+			float objectX = (float) ((soundObject.get(i).getPosX()+(soundObject.get(i).getWidth()/2)) - (objPos.getPosX()+(Math.cos(angle+Math.PI)*(VisualConstants.COLLISION_AREA/2))));
+			float objectY = (float) ((soundObject.get(i).getPosY()+(soundObject.get(i).getHeight()/2)) - (objPos.getPosY()+(Math.sin(angle+Math.PI)*(VisualConstants.COLLISION_AREA/2))));
 
 			float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.get(i).getWidth()/2, 2)+Math.pow(soundObject.get(i).getHeight()/2, 2))/4)+((collisionArea)/2));
 
@@ -93,28 +94,28 @@ public class PlayBackBar {
 			p5.strokeWeight(10);
 			p5.stroke(255, 255, 255, 200);
 			p5.fill(0, 0, 0, 0);
-			p5.ellipse(posX, posY, width, width);
-			width += speed;
+			p5.ellipse(objPos.getPosX(), objPos.getPosY(), objSize.getWidth(), objSize.getHeight());
+			objSize.setWidth((int) (objSize.getWidth()+speed));
 			break;
 		case BAR:
 			p5.pushMatrix();	
-			p5.translate(posX, posY);
+			p5.translate(objPos.getPosX(), objPos.getPosY());
 			p5.rotate((float) (angle+VisualConstants.NINETY));
 			p5.rectMode(PConstants.CENTER);
 			p5.noStroke();
 			p5.fill(255, 255, 255, 200);
-			p5.rect(0, 0, width, height);
+			p5.rect(0, 0, objSize.getWidth(), objSize.getHeight());
 			p5.popMatrix();
 			
 			p5.pushMatrix(); //Used for collision detection
-			p5.translate(initX+(float)(Math.cos(angle+Math.PI)*(VisualConstants.COLLISION_AREA/2)), initY+(float) (Math.sin(angle+Math.PI)*(VisualConstants.COLLISION_AREA/2)));	
+			p5.translate(initPos.getPosX()+(float)(Math.cos(angle+Math.PI)*(VisualConstants.COLLISION_AREA/2)), initPos.getPosY()+(float) (Math.sin(angle+Math.PI)*(VisualConstants.COLLISION_AREA/2)));	
 			p5.noStroke();
 			p5.noFill();
 			p5.scale(collisionArea/VisualConstants.COLLISION_AREA, collisionArea/VisualConstants.COLLISION_AREA);
 			p5.ellipse(0, 0, VisualConstants.COLLISION_AREA, VisualConstants.COLLISION_AREA);
 			p5.popMatrix();
-			posX += speed*Math.cos(angle);
-			posY += speed*Math.sin(angle);
+			objPos.setPosX((int) (objPos.getPosX()+speed*Math.cos(angle)));
+			objPos.setPosY((int) (objPos.getPosY()+speed*Math.sin(angle)));
 			collisionArea += speed*2;
 		}
 	}
@@ -125,10 +126,10 @@ public class PlayBackBar {
 	public void collideCircle(){
 		for (int i = numObject - 1; i >= 0; i--) {
 
-			float objectX = (soundObject.get(i).getPosX()+(soundObject.get(i).getWidth()/2)) - posX;
-			float objectY = (soundObject.get(i).getPosY()+(soundObject.get(i).getHeight()/2)) - posY;
+			float objectX = (soundObject.get(i).getPosX()+(soundObject.get(i).getWidth()/2)) - objPos.getPosX();
+			float objectY = (soundObject.get(i).getPosY()+(soundObject.get(i).getHeight()/2)) - objPos.getPosY();
 
-			float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.get(i).getWidth()/2, 2)+Math.pow(soundObject.get(i).getHeight()/2, 2))/4)+(width/2));
+			float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.get(i).getWidth()/2, 2)+Math.pow(soundObject.get(i).getHeight()/2, 2))/4)+(objSize.getWidth()/2));
 
 			if(!trigState.get(i)){
 				if(Math.sqrt(Math.pow(objectX, 2)+Math.pow(objectY, 2)) < minDistance) {
@@ -149,8 +150,8 @@ public class PlayBackBar {
 	public void collideBar(){
 		for (int i = numObject - 1; i >= 0; i--) {
 
-			float objectX = (float) ((soundObject.get(i).getPosX()+(soundObject.get(i).getWidth()/2)) - (posX+(Math.cos(angle+Math.PI)*(VisualConstants.COLLISION_AREA/2))));
-			float objectY = (float) ((soundObject.get(i).getPosY()+(soundObject.get(i).getHeight()/2)) - (posY+(Math.sin(angle+Math.PI)*(VisualConstants.COLLISION_AREA/2))));
+			float objectX = (float) ((soundObject.get(i).getPosX()+(soundObject.get(i).getWidth()/2)) - (objPos.getPosX()+(Math.cos(angle+Math.PI)*(VisualConstants.COLLISION_AREA/2))));
+			float objectY = (float) ((soundObject.get(i).getPosY()+(soundObject.get(i).getHeight()/2)) - (objPos.getPosY()+(Math.sin(angle+Math.PI)*(VisualConstants.COLLISION_AREA/2))));
 
 			float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.get(i).getWidth()/2, 2)+Math.pow(soundObject.get(i).getHeight()/2, 2))/4)+((collisionArea-400)/2));
 
@@ -175,28 +176,28 @@ public class PlayBackBar {
 		this.playbackType = playbackType;
 	}
 	
-	public float getWidth() {
-		return width;
+	public int getWidth() {
+		return objSize.getWidth();
 	}
 
-	public void setWidth(float width) {
-		this.width = width;
+	public void setWidth(int width) {
+		this.objSize.setWidth(width);
 	}
 	
-	public float getPosX() {
-		return posX;
+	public int getPosX() {
+		return objPos.getPosX();
 	}
 
-	public void setPosX(float x) {
-		this.posX = x;
+	public void setPosX(int x) {
+		this.objPos.setPosX(x);
 	}
 	
-	public float getPosY() {
-		return posY;
+	public int getPosY() {
+		return objPos.getPosY();
 	}
 
-	public void setPosY(float posY) {
-		this.posY = posY;
+	public void setPosY(int posY) {
+		this.objPos.setPosY(posY);
 	}
 	
 	public int getNumObject() {
@@ -207,19 +208,11 @@ public class PlayBackBar {
 		this.numObject = numObject;
 	}
 
-	public float getInitY() {
-		return initY;
+	public int getInitY() {
+		return initPos.getPosY();
 	}
 
-	public void setInitY(float initY) {
-		this.initY = initY;
-	}
-
-	public float getInitX() {
-		return initX;
-	}
-
-	public void setInitX(float initX) {
-		this.initX = initX;
+	public int getInitX() {
+		return initPos.getPosX();
 	}
 }

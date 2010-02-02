@@ -24,13 +24,16 @@ import net.gtcmt.audiosketch.client.sound.synth.Ring;
 import net.gtcmt.audiosketch.client.sound.synth.Shir;
 import net.gtcmt.audiosketch.client.sound.util.SndConstants;
 import net.gtcmt.audiosketch.client.sound.util.SndConstants.SndType;
+import net.gtcmt.audiosketch.client.util.P5Points2D;
+import net.gtcmt.audiosketch.client.util.P5Size2D;
 import net.gtcmt.audiosketch.client.visual.ObjectWindow;
 import net.gtcmt.audiosketch.client.visual.util.VisualConstants;
 import net.gtcmt.audiosketch.client.visual.util.VisualConstants.ObjectColorType;
 import net.gtcmt.audiosketch.client.visual.util.VisualConstants.ObjectShapeType;
-import net.gtcmt.audiosketch.network.util.AudioSketchProtocol;
+import net.gtcmt.audiosketch.network.client.Client;
+import net.gtcmt.audiosketch.network.data.AudioSketchData;
+import net.gtcmt.audiosketch.network.data.SoundObjectData;
 import net.gtcmt.audiosketch.network.util.MsgType;
-import processing.net.Client;
 import ddf.minim.Minim;
 
 /**
@@ -202,14 +205,12 @@ public class EditSoundObjectPanel extends JPanel {
 		hBox.setPreferredSize(new Dimension(GUIConstants.EDITPANEL_WIDTH, 30));
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//keyword, X position, Y position, width, height, color, shape, midi, sndType
-				String msg = MsgType.ADD_OBJECT.toString()+AudioSketchProtocol.SPLITTER+((int) (Math.random()*500))+AudioSketchProtocol.SPLITTER+
-				((int) (Math.random()*500))+AudioSketchProtocol.SPLITTER+objectWindow.getObjectWidth()+AudioSketchProtocol.SPLITTER+
-				objectWindow.getObjectHeight()+AudioSketchProtocol.SPLITTER+objectColor.toString()+AudioSketchProtocol.SPLITTER+
-				objectShape.toString()+AudioSketchProtocol.SPLITTER+midiIndex+AudioSketchProtocol.SPLITTER+
-				sndType.toString()+AudioSketchProtocol.TERMINATOR;
-				
-				getClient().write(msg);
+				//Send message to server
+				getClient().getOutQueue().push(new AudioSketchData(MsgType.ADD_OBJECT, 
+						new SoundObjectData(objectShape, objectColor, sndType, 
+						new P5Points2D((int) (Math.random()*500), (int) (Math.random()*500)), 
+						new P5Size2D(objectWindow.getObjectWidth(), objectWindow.getObjectHeight()), midiIndex), 
+						mainFrame.getUserName(), 0));
 			}
 		});
 		hBox.add(addButton);

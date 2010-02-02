@@ -2,8 +2,11 @@ package net.gtcmt.audiosketch.client.visual;
 
 import java.util.LinkedList;
 
+import net.gtcmt.audiosketch.client.util.P5Points2D;
 import net.gtcmt.audiosketch.client.util.SoundObject;
-import net.gtcmt.audiosketch.network.util.AudioSketchProtocol;
+import net.gtcmt.audiosketch.network.client.Client;
+import net.gtcmt.audiosketch.network.data.AudioSketchData;
+import net.gtcmt.audiosketch.network.data.RelocationData;
 import net.gtcmt.audiosketch.network.util.MsgType;
 
 /**
@@ -87,9 +90,9 @@ public class ObjectAction {
 				}
 				
 				//Broad cast action
-				musicalWindow.getClient().write(MsgType.MOVE_OBJECT.toString()+AudioSketchProtocol.SPLITTER+
-						i+AudioSketchProtocol.SPLITTER+moveX.get(i)+AudioSketchProtocol.SPLITTER+moveY.get(i)+
-						AudioSketchProtocol.TERMINATOR);
+				getClient().getOutQueue().push(new AudioSketchData(MsgType.MOVE_OBJECT, 
+						new RelocationData(i,new P5Points2D(moveX.get(i).intValue(),moveY.get(i).intValue())), 
+						musicalWindow.getUserName(), 0));
 			}
 		}
 	}
@@ -150,5 +153,9 @@ public class ObjectAction {
 
 	public void setMoveY(LinkedList<Float> moveY) {
 		this.moveY = moveY;
+	}
+	
+	public Client getClient(){
+		return musicalWindow.getClient();
 	}
 }

@@ -43,6 +43,22 @@ public final class SoundObjectData implements MessageData {
 
 	
 	/*------------------- Getter/Setter ----------------*/
+	public int getPosX(){
+		return objPos.getPosX();
+	}
+	
+	public int getPosY(){
+		return objPos.getPosY();
+	}
+	
+	public int getWidth(){
+		return objSize.getWidth();
+	}
+	
+	public int getHeight(){
+		return objSize.getHeight();
+	}
+	
 	public P5Points2D getObjPos() {
 		return objPos;
 	}
