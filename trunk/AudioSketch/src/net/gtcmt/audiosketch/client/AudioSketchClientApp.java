@@ -4,8 +4,9 @@ import java.io.IOException;
 
 import net.gtcmt.audiosketch.client.gui.AudioSketchMainFrame;
 import net.gtcmt.audiosketch.client.gui.WelcomePanel;
-import net.gtcmt.audiosketch.protocol.AudioSketchProtocol;
-import net.gtcmt.audiosketch.protocol.AudioSketchProtocol.MsgType;
+import net.gtcmt.audiosketch.network.util.AudioSketchProtocol;
+import net.gtcmt.audiosketch.network.util.MsgType;
+import net.gtcmt.audiosketch.util.LogMessage;
 import processing.net.Client;
 
 /**
@@ -42,10 +43,11 @@ public class AudioSketchClientApp {
 
 		mainPanel.setClient(client);
 		
+		//Initialize message type table
+		MsgType.initMsgTypeTable();
+		
 		//send message
-		String msg = MsgType.INIT.toString()+AudioSketchProtocol.SPLITTER+userName+AudioSketchProtocol.TERMINATOR;
-		System.out.println(msg);
-		client.write(msg);
+		client.write(MsgType.LOGIN.toString()+AudioSketchProtocol.SPLITTER+userName+AudioSketchProtocol.TERMINATOR);
 	}
 	
 	public void close() throws IOException{
@@ -74,7 +76,7 @@ public class AudioSketchClientApp {
 			try {
 				Thread.sleep(200);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				LogMessage.javaErr(e);
 			}
 		} 
 		

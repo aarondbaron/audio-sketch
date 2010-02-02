@@ -13,10 +13,11 @@ import net.gtcmt.audiosketch.client.sound.util.SndConstants.EffectType;
 import net.gtcmt.audiosketch.client.sound.util.SndConstants.SndType;
 import net.gtcmt.audiosketch.client.util.SoundObject;
 import net.gtcmt.audiosketch.client.visual.util.VisualConstants;
-import net.gtcmt.audiosketch.client.visual.util.VisualConstants.ObjectColor;
-import net.gtcmt.audiosketch.client.visual.util.VisualConstants.ObjectShape;
-import net.gtcmt.audiosketch.protocol.AudioSketchProtocol;
-import net.gtcmt.audiosketch.protocol.AudioSketchProtocol.MsgType;
+import net.gtcmt.audiosketch.client.visual.util.VisualConstants.ObjectColorType;
+import net.gtcmt.audiosketch.client.visual.util.VisualConstants.ObjectShapeType;
+import net.gtcmt.audiosketch.network.util.AudioSketchProtocol;
+import net.gtcmt.audiosketch.network.util.MsgType;
+import net.gtcmt.audiosketch.util.LogMessage;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PFont;
@@ -37,9 +38,9 @@ public class MusicalWindow extends PApplet {
 	private String input;
 	
 	//Mouse actions
-	private boolean clicked=false;
-	private boolean released=false;
-	private boolean dragged=false;
+	private boolean mouseClicked=false;
+	private boolean mouseReleased=false;
+	private boolean mouseDragged=false;
 
 	private int xPos=0;
 	private int yPos=0;
@@ -147,21 +148,26 @@ public class MusicalWindow extends PApplet {
 			input = getClient().readString();
 			data = AudioSketchProtocol.createTokens(input);
 
-			switch(MsgType.valueOf(data[0])){
-			case MOVE:
-				moveObject(data);
-				break;
-			case BAR:
-				addPlayBackBar(data);
-				break;
-			case NAME:
-				addName(data);
-				break;
-			case BOX:
-				addEffectBox(data);
-				break;
-			case ADD:
-				addSoundObject(data);
+			if(MsgType.contains(data[0])){ //check first if the message is enum MsgType
+				switch(MsgType.valueOf(data[0])){
+				case MOVE_OBJECT:
+					moveObject(data);
+					break;
+				case PLAY_BAR:
+					addPlayBackBar(data);
+					break;
+				case USER_NAME:
+					addName(data);
+					break;
+				case EFFECT_BOX:
+					addEffectBox(data);
+					break;
+				case ADD_OBJECT:
+					addSoundObject(data);
+				}
+			}
+			else{
+				LogMessage.err("MsgType does not contain "+data[0]+"!");
 			}
 		}
 	}
@@ -176,8 +182,8 @@ public class MusicalWindow extends PApplet {
 		//Add new soundObject to Musical Window
 		if(data.length > 7){
 			add(Float.parseFloat(data[1]), Float.parseFloat(data[2]), Integer.parseInt(data[3]), 
-					Integer.parseInt(data[4]), ObjectColor.valueOf(data[5]), 
-					ObjectShape.valueOf(data[6]), Integer.parseInt(data[7]), SndType.valueOf(data[8]));
+					Integer.parseInt(data[4]), ObjectColorType.valueOf(data[5]), 
+					ObjectShapeType.valueOf(data[6]), Integer.parseInt(data[7]), SndType.valueOf(data[8]));
 		}
 	}
 
@@ -188,7 +194,7 @@ public class MusicalWindow extends PApplet {
 	 * @param vertices	Vertices that will be plotted
 	 * @param soundType type of sound this soundObject will play
 	 */
-	private void add(float x, float y, int width, int height, ObjectColor color, ObjectShape shape, int midiNote, SndType sndType){
+	private void add(float x, float y, int width, int height, ObjectColorType color, ObjectShapeType shape, int midiNote, SndType sndType){
 		soundObject.add(new SoundObject(x, y, width, height, color, shape, midiNote, sndType, minim, this));
 		action.addActionObject(soundObject.getLast());
 		addEffects(soundObject, effectBox);
@@ -212,10 +218,13 @@ public class MusicalWindow extends PApplet {
 	 * Removes soundObject and related action listener
 	 */
 	public void remove(){
-		action.removeMouseEvent(soundObject.size()-1);
-		soundObject.removeLast();	
-		for(int i=0;i<playBackBar.size();i++)
-			playBackBar.get(i).setNumObject(playBackBar.get(i).getNumObject()-1);
+		if(soundObject.size() > 0){
+			action.removeMouseEvent(soundObject.size()-1);
+			soundObject.removeLast();	
+			for(int i=0;i<playBackBar.size();i++){
+				playBackBar.get(i).setNumObject(playBackBar.get(i).getNumObject()-1);
+			}
+		}
 	}
 	/*----------------------- SoundObject drawing -----------------------------*/
 	/**
@@ -242,23 +251,23 @@ public class MusicalWindow extends PApplet {
 	 * Sends triggered play back info to server when user clicks and releases mouse.
 	 */
 	private void trigPlayBackBar(){
-		if(clicked){
+		if(mouseClicked){
 			xPos = mouseX;
 			yPos = mouseY;
-			clicked = false;
+			mouseClicked = false;
 		}
-		if(released){
+		if(mouseReleased){
 			if(mouseX - xPos == 0 && mouseY - yPos == 0)
 				xPos -= 1;
 			float speed = (float) Math.sqrt(Math.pow(mouseX-xPos, 2)+Math.pow(mouseY-yPos, 2));
 			float angle = (float) Math.atan2(mouseY-yPos, mouseX-xPos);
 			//msgtype, mousex, mousey, speed, angle, barmode, user name, size
-			getClient().write(MsgType.BAR.toString()+AudioSketchProtocol.SPLITTER+mouseX+AudioSketchProtocol.SPLITTER+
+			getClient().write(MsgType.PLAY_BAR.toString()+AudioSketchProtocol.SPLITTER+mouseX+AudioSketchProtocol.SPLITTER+
 					mouseY+AudioSketchProtocol.SPLITTER+speed+AudioSketchProtocol.SPLITTER+angle+AudioSketchProtocol.SPLITTER+
 					mainFrame.getActionPanel().getBarMode().getSelectedIndex()+AudioSketchProtocol.SPLITTER+
 					mainFrame.getUserName()+AudioSketchProtocol.SPLITTER+playBackBar.size()+AudioSketchProtocol.TERMINATOR);
-			released = false;
-			dragged = false;
+			mouseReleased = false;
+			mouseDragged = false;
 		}
 	}
 
@@ -353,10 +362,10 @@ public class MusicalWindow extends PApplet {
 			action.mousePressed();
 			action.mouseDragged();
 			action.mouseReleased();
-			if(released)
-				released = false;
-			if(dragged)
-				dragged = false;
+			if(mouseReleased)
+				mouseReleased = false;
+			if(mouseDragged)
+				mouseDragged = false;
 			//			if(clicked)
 			//				clicked = false;
 		}
@@ -379,10 +388,11 @@ public class MusicalWindow extends PApplet {
 	 */
 	private void sendName(){
 		for(int i=0;i<soundObject.size();i++){
-			if(clicked){
+			if(mouseClicked){
 				if(action.getMousePressed().get(i)) {
-					getClient().write(MsgType.NAME.toString()+" "+mainFrame.getUserName()+" "+i+"\n");
-					clicked = false;
+					getClient().write(MsgType.USER_NAME.toString()+AudioSketchProtocol.SPLITTER+
+							mainFrame.getUserName()+AudioSketchProtocol.SPLITTER+i+AudioSketchProtocol.TERMINATOR);
+					mouseClicked = false;
 				}
 			}
 		}
@@ -469,31 +479,39 @@ public class MusicalWindow extends PApplet {
 	 * Only the drawer of the box can see this.
 	 */
 	private void drawPrevBoxThenSend(){
-		if(clicked){
+		if(mouseClicked){
 			xPos = mouseX;
 			yPos = mouseY;
-			clicked = false;
+			mouseClicked = false;
 		}
-		if(dragged){
+		if(mouseDragged){
 			this.stroke(255, 255, 255, 200);
 			this.noFill();
 			this.rectMode(PConstants.CORNER);
 			this.rect(xPos, yPos, mouseX-xPos, mouseY-yPos);
 		}
-		if(released){
+		if(mouseReleased){
 			if(mouseX - xPos == 0 || mouseY - yPos == 0){
 				xPos += 1; yPos +=1;
 			}
+			//Shuffle effect
+			//TODO instead of shuffling. Can we come up with something else?
 			if(incr > SndConstants.NUM_EFFECT){
 				shuffleEffect();
 				incr = 0;
 			}
-			else
-				//TODO
+			else{
 				effType = EffectType.values()[shuffle[incr++]];
-			getClient().write(MsgType.BOX.toString()+" "+xPos+" "+yPos+" "+(mouseX-xPos)+" "+(mouseY-yPos)+" "+effType.ordinal()+" "+mainFrame.getUserName()+" "+effectBox.size()+"\n");
-			released = false;
-			dragged = false;
+			}
+			
+			//Broadcast message
+			getClient().write(MsgType.EFFECT_BOX.toString()+AudioSketchProtocol.SPLITTER+xPos+AudioSketchProtocol.SPLITTER+
+					yPos+AudioSketchProtocol.SPLITTER+(mouseX-xPos)+AudioSketchProtocol.SPLITTER+(mouseY-yPos)+
+					AudioSketchProtocol.SPLITTER+effType.ordinal()+AudioSketchProtocol.SPLITTER+mainFrame.getUserName()+
+					AudioSketchProtocol.SPLITTER+effectBox.size()+AudioSketchProtocol.TERMINATOR);
+			
+			mouseReleased = false;
+			mouseDragged = false;
 		}
 	}
 
@@ -597,17 +615,17 @@ public class MusicalWindow extends PApplet {
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		super.mousePressed(arg0);
-		clicked = true;
+		mouseClicked = true;
 	}
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		super.mouseReleased(arg0);
-		released = true;
+		mouseReleased = true;
 	}
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		dragged = true;
+		mouseDragged = true;
 		super.mouseDragged(arg0);
 	}
 	

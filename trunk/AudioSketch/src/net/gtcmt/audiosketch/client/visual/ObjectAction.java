@@ -3,8 +3,8 @@ package net.gtcmt.audiosketch.client.visual;
 import java.util.LinkedList;
 
 import net.gtcmt.audiosketch.client.util.SoundObject;
-import net.gtcmt.audiosketch.protocol.AudioSketchProtocol;
-import net.gtcmt.audiosketch.protocol.AudioSketchProtocol.MsgType;
+import net.gtcmt.audiosketch.network.util.AudioSketchProtocol;
+import net.gtcmt.audiosketch.network.util.MsgType;
 
 /**
  * Mostly handle mouse action on sound object
@@ -85,8 +85,11 @@ public class ObjectAction {
 				else{
 					moveY.set(i, moveY.get(i) + (musicalWindow.mouseY - musicalWindow.pmouseY));
 				}
+				
 				//Broad cast action
-				musicalWindow.getClient().write(MsgType.MOVE.toString()+AudioSketchProtocol.SPLITTER+i+AudioSketchProtocol.SPLITTER+moveX.get(i)+AudioSketchProtocol.SPLITTER+moveY.get(i)+AudioSketchProtocol.TERMINATOR);
+				musicalWindow.getClient().write(MsgType.MOVE_OBJECT.toString()+AudioSketchProtocol.SPLITTER+
+						i+AudioSketchProtocol.SPLITTER+moveX.get(i)+AudioSketchProtocol.SPLITTER+moveY.get(i)+
+						AudioSketchProtocol.TERMINATOR);
 			}
 		}
 	}

@@ -15,14 +15,14 @@ public class VisualConstants {
 	
 	//Sound object
 	public static final int NUM_SHAPE = 3;
-	public static final String[] SHAPE_NAME = {"Images/Gear.svg","Images/Triangle.svg","Images/Star.svg"};
+	public static final String[] SHAPE_NAME = {"Gear.svg","Triangle.svg","Star.svg"};
 	
-	public enum ObjectShape{
+	public enum ObjectShapeType{
 		GEAR, TRIANGLE, STAR
 	}
 	public static final String[] SHAPE_LIST = { "Gear", "Triangle", "Star" }; 
 	
-	public enum ObjectColor{
+	public enum ObjectColorType{
 		WHITE, BLUE, GREEN, YELLOW, ORANGE
 	}
 	public static final String[] COLOR_LIST = { "White", "Blue", "Green", "Yellow", "Orange" };

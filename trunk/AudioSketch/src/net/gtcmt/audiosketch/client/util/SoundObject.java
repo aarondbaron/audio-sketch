@@ -9,8 +9,8 @@ import net.gtcmt.audiosketch.client.sound.synth.Shir;
 import net.gtcmt.audiosketch.client.sound.util.SndConstants.SndType;
 import net.gtcmt.audiosketch.client.visual.MusicalWindow;
 import net.gtcmt.audiosketch.client.visual.util.VisualConstants;
-import net.gtcmt.audiosketch.client.visual.util.VisualConstants.ObjectColor;
-import net.gtcmt.audiosketch.client.visual.util.VisualConstants.ObjectShape;
+import net.gtcmt.audiosketch.client.visual.util.VisualConstants.ObjectColorType;
+import net.gtcmt.audiosketch.client.visual.util.VisualConstants.ObjectShapeType;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PShape;
@@ -48,7 +48,7 @@ public class SoundObject {
 	 * @param colorSet Color of the object
 	 * @param p
 	 */
-	public SoundObject(float x, float y, int width, int height, ObjectColor color, ObjectShape shape, int midiNote, SndType sndType, Minim minim, PApplet p){
+	public SoundObject(float x, float y, int width, int height, ObjectColorType color, ObjectShapeType shape, int midiNote, SndType sndType, Minim minim, PApplet p){
 		this.posX = x;
 		this.posY = y;
 		this.width = width;
@@ -69,7 +69,7 @@ public class SoundObject {
 	 * @param color
 	 * @return
 	 */
-	public float[] chooseColor(ObjectColor color){
+	public float[] chooseColor(ObjectColorType color){
 		float[] colorSet = new float[3];
 		switch (color) {
 		case WHITE: colorSet[0] = 255f; colorSet[1] = 255f; colorSet[2] = 255f; break;
