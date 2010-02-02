@@ -2,14 +2,14 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="Jar/core.jar"/>
-	<classpathentry kind="lib" path="Jar/jl1.0.jar"/>
-	<classpathentry kind="lib" path="Jar/jsminim.jar"/>
-	<classpathentry kind="lib" path="Jar/minim-spi.jar"/>
-	<classpathentry kind="lib" path="Jar/minim.jar"/>
-	<classpathentry kind="lib" path="Jar/mp3spi1.9.4.jar"/>
-	<classpathentry kind="lib" path="Jar/net.jar"/>
-	<classpathentry kind="lib" path="Jar/tritonus_aos.jar"/>
-	<classpathentry kind="lib" path="Jar/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/core.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/jl1.0.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/jsminim.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/minim-spi.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/minim.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/mp3spi1.9.4.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/net.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/tritonus_aos.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/tritonus_share.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

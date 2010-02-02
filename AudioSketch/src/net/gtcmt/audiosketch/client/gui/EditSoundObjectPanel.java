@@ -26,10 +26,10 @@ import net.gtcmt.audiosketch.client.sound.util.SndConstants;
 import net.gtcmt.audiosketch.client.sound.util.SndConstants.SndType;
 import net.gtcmt.audiosketch.client.visual.ObjectWindow;
 import net.gtcmt.audiosketch.client.visual.util.VisualConstants;
-import net.gtcmt.audiosketch.client.visual.util.VisualConstants.ObjectColor;
-import net.gtcmt.audiosketch.client.visual.util.VisualConstants.ObjectShape;
-import net.gtcmt.audiosketch.protocol.AudioSketchProtocol;
-import net.gtcmt.audiosketch.protocol.AudioSketchProtocol.MsgType;
+import net.gtcmt.audiosketch.client.visual.util.VisualConstants.ObjectColorType;
+import net.gtcmt.audiosketch.client.visual.util.VisualConstants.ObjectShapeType;
+import net.gtcmt.audiosketch.network.util.AudioSketchProtocol;
+import net.gtcmt.audiosketch.network.util.MsgType;
 import processing.net.Client;
 import ddf.minim.Minim;
 
@@ -45,8 +45,8 @@ public class EditSoundObjectPanel extends JPanel {
 	private JComboBox shapeChooser;			// Choose shape of sound object
 	private JComboBox midiNoteChooser;		// Choose midi note of synth sound
 	private JComboBox soundChooser;			// Choose synth sound
-	private ObjectShape objectShape;			// Sound object type
-	private ObjectColor objectColor;			// Sound object color
+	private ObjectShapeType objectShape;			// Sound object type
+	private ObjectColorType objectColor;			// Sound object color
 	private int midiIndex;					// midi note index obtained from combo box
 	private SndType sndType;					// sound type Index obtained from combo box
 	private ObjectWindow objectWindow;		// actual window where sound object is displayed
@@ -63,8 +63,8 @@ public class EditSoundObjectPanel extends JPanel {
 	 */
 	public EditSoundObjectPanel(AudioSketchMainFrame mainFrame) throws UnknownHostException, IOException, InterruptedException {
 		this.mainFrame = mainFrame;
-		objectColor = ObjectColor.WHITE;
-		objectShape = ObjectShape.GEAR;
+		objectColor = ObjectColorType.WHITE;
+		objectShape = ObjectShapeType.GEAR;
 		sndType = SndType.BUZZ;
 		
 		Box vBox = Box.createVerticalBox();
@@ -115,7 +115,7 @@ public class EditSoundObjectPanel extends JPanel {
 		colorChooser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					JComboBox box = (JComboBox) e.getSource();
-					objectColor = ObjectColor.values()[box.getSelectedIndex()];
+					objectColor = ObjectColorType.values()[box.getSelectedIndex()];
 			}
 		});
 		hBox.add(colorChooser);
@@ -128,7 +128,7 @@ public class EditSoundObjectPanel extends JPanel {
 		shapeChooser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					JComboBox box = (JComboBox) e.getSource();
-					objectShape = ObjectShape.values()[box.getSelectedIndex()];
+					objectShape = ObjectShapeType.values()[box.getSelectedIndex()];
 			}
 		});
 		hBox.add(shapeChooser);
@@ -203,13 +203,12 @@ public class EditSoundObjectPanel extends JPanel {
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//keyword, X position, Y position, width, height, color, shape, midi, sndType
-				String msg = MsgType.ADD.toString()+AudioSketchProtocol.SPLITTER+((int) (Math.random()*500))+AudioSketchProtocol.SPLITTER+
+				String msg = MsgType.ADD_OBJECT.toString()+AudioSketchProtocol.SPLITTER+((int) (Math.random()*500))+AudioSketchProtocol.SPLITTER+
 				((int) (Math.random()*500))+AudioSketchProtocol.SPLITTER+objectWindow.getObjectWidth()+AudioSketchProtocol.SPLITTER+
 				objectWindow.getObjectHeight()+AudioSketchProtocol.SPLITTER+objectColor.toString()+AudioSketchProtocol.SPLITTER+
 				objectShape.toString()+AudioSketchProtocol.SPLITTER+midiIndex+AudioSketchProtocol.SPLITTER+
 				sndType.toString()+AudioSketchProtocol.TERMINATOR;
 				
-				System.out.println(msg);
 				getClient().write(msg);
 			}
 		});
@@ -229,19 +228,19 @@ public class EditSoundObjectPanel extends JPanel {
 		return objectWindow;
 	}
 
-	public ObjectShape getObjectShape() {
+	public ObjectShapeType getObjectShape() {
 		return objectShape;
 	}
 
-	public void setObjectShape(ObjectShape objectShape) {
+	public void setObjectShape(ObjectShapeType objectShape) {
 		this.objectShape = objectShape;
 	}
 
-	public ObjectColor getObjectColor() {
+	public ObjectColorType getObjectColor() {
 		return objectColor;
 	}
 
-	public void setObjectColor(ObjectColor objectColor) {
+	public void setObjectColor(ObjectColorType objectColor) {
 		this.objectColor = objectColor;
 	}
 

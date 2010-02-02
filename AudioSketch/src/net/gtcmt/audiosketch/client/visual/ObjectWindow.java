@@ -7,8 +7,10 @@ import java.net.UnknownHostException;
 import net.gtcmt.audiosketch.client.gui.EditSoundObjectPanel;
 import net.gtcmt.audiosketch.client.gui.util.GUIConstants;
 import net.gtcmt.audiosketch.client.visual.util.VisualConstants;
-import net.gtcmt.audiosketch.protocol.AudioSketchProtocol;
-import net.gtcmt.audiosketch.protocol.AudioSketchProtocol.MsgType;
+import net.gtcmt.audiosketch.network.util.AudioSketchProtocol;
+import net.gtcmt.audiosketch.network.util.MsgType;
+import net.gtcmt.audiosketch.util.Constants;
+import net.gtcmt.audiosketch.util.LogMessage;
 import processing.core.PApplet;
 import processing.core.PShape;
 import ddf.minim.AudioOutput;
@@ -39,7 +41,7 @@ public class ObjectWindow  extends PApplet {
 		//Create shapes
 		shape = new PShape[VisualConstants.NUM_SHAPE];
 		for(int i=0;i<shape.length;i++){
-			shape[i] = this.loadShape(VisualConstants.SHAPE_NAME[i]);
+			shape[i] = this.loadShape(Constants.OBJECT_PATH+VisualConstants.SHAPE_NAME[i]);
 			shape[i].disableStyle();
 		}
 	}
@@ -73,35 +75,38 @@ public class ObjectWindow  extends PApplet {
 			input = editPanel.getClient().readStringUntil(AudioSketchProtocol.TERMINATOR_BYTE);
 			data = AudioSketchProtocol.createTokens(input);
 		
-			System.out.println(input);
-			System.out.println(data[0]);
-			switch(MsgType.valueOf(data[0])){
-			case CHAT:
-				// display a message
-				editPanel.getMainFrame().getChatWindow().append(Color.BLUE, data[1]+" ");
-				for(int i=2;i<data.length;i++){
-					editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, data[i]+" ");
+			if(MsgType.contains(data[0])){
+				switch(MsgType.valueOf(data[0])){
+				case CHAT:
+					// display a message
+					editPanel.getMainFrame().getChatWindow().append(Color.BLUE, data[1]+" ");
+					for(int i=2;i<data.length;i++){
+						editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, data[i]+" ");
+					}
+					//add new line
+					editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, "\n");
+					break;
+				case LOGIN:
+					//Display message on chat window
+					editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, "Welcome "+data[1]+" ");
+					for(int i=2;i<data.length;i++){
+						editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, data[i]+" ");
+					}
+					editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, "\n");
+					break;
+				case QUIT:
+					editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, "GoodBye "+data[1]+" ");
+					for(int i=2;i<data.length;i++){
+						editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, data[i]+" ");
+					}
+					editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, "\n");
+					break;
+				default:
+
 				}
-				//add new line
-				editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, "\n");
-				break;
-			case INIT:
-				//Display message on chat window
-				editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, "Welcome "+data[1]+" ");
-				for(int i=2;i<data.length;i++){
-					editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, data[i]+" ");
-				}
-				editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, "\n");
-				break;
-			case QUIT:
-				editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, "GoodBye "+data[1]+" ");
-				for(int i=2;i<data.length;i++){
-					editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, data[i]+" ");
-				}
-				editPanel.getMainFrame().getChatWindow().append(Color.DARK_GRAY, "\n");
-				break;
-			default:
-				
+			}
+			else{
+				LogMessage.err("MsgType does not contain "+data[0]+"!");
 			}
 		}
 	}

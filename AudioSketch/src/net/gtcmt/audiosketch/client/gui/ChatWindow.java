@@ -21,8 +21,8 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
 import net.gtcmt.audiosketch.client.gui.util.GUIConstants;
-import net.gtcmt.audiosketch.protocol.AudioSketchProtocol;
-import net.gtcmt.audiosketch.protocol.AudioSketchProtocol.MsgType;
+import net.gtcmt.audiosketch.network.util.AudioSketchProtocol;
+import net.gtcmt.audiosketch.network.util.MsgType;
 
 public class ChatWindow extends JPanel {
 
@@ -84,8 +84,7 @@ public class ChatWindow extends JPanel {
 		textField.setPreferredSize(new Dimension(GUIConstants.EDITPANEL_WIDTH, GUIConstants.TEXT_HEIGHT));
 		textField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mainFrame.getClient().write(MsgType.CHAT.toString()+AudioSketchProtocol.SPLITTER+userName+":"+AudioSketchProtocol.SPLITTER+textField.getText()+AudioSketchProtocol.TERMINATOR);
-				textField.setText("");
+				chatAction();
 			}
 		});
 	}
@@ -97,10 +96,18 @@ public class ChatWindow extends JPanel {
 		postButton = new JButton("Post");
 		postButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mainFrame.getClient().write(MsgType.CHAT.toString()+AudioSketchProtocol.SPLITTER+userName+":"+AudioSketchProtocol.SPLITTER+textField.getText()+AudioSketchProtocol.TERMINATOR);
-				textField.setText("");
+				chatAction();
 			}
 		});
+	}
+	
+	/**
+	 * Action performed when button or enter is pressed
+	 */
+	private void chatAction(){
+		mainFrame.getClient().write(MsgType.CHAT.toString()+AudioSketchProtocol.SPLITTER+
+				userName+":"+AudioSketchProtocol.SPLITTER+textField.getText()+AudioSketchProtocol.TERMINATOR);
+		textField.setText("");
 	}
 	
 	public void append(Color c, String s) { // better implementation--uses StyleContext
