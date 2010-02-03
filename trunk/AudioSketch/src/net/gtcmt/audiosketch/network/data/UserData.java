@@ -1,7 +1,10 @@
 package net.gtcmt.audiosketch.network.data;
 
-public class UserData {
+import java.io.Serializable;
 
+public class UserData implements Serializable {
+
+	private static final long serialVersionUID = -368291529004866447L;
 	private String userName;
 	private int userID;
 	
@@ -10,6 +13,11 @@ public class UserData {
 		this.userID = userID;
 	}
 
+	public UserData(String userName){
+		this.userID = 0;
+		this.userName = userName;
+	}
+	
 	public String getUserName() {
 		return userName;
 	}

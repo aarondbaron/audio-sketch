@@ -7,6 +7,7 @@ import ddf.minim.effects.LowPassFS;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.util.SoundObject;
+import net.gtcmt.audiosketch.p5.window.MusicalWindow;
 import net.gtcmt.audiosketch.sound.effect.Delay;
 import net.gtcmt.audiosketch.sound.effect.Distort;
 import net.gtcmt.audiosketch.sound.effect.Reverb;

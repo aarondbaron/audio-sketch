@@ -1,4 +1,4 @@
-package net.gtcmt.audiosketch.p5.object;
+package net.gtcmt.audiosketch.p5.window;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -35,7 +35,7 @@ public class ObjectWindow  extends PApplet {
 		//Create shapes
 		shape = new PShape[P5Constants.NUM_SHAPE];
 		for(int i=0;i<shape.length;i++){
-			shape[i] = this.loadShape(Constants.OBJECT_PATH+P5Constants.SHAPE_NAME[i]);
+			shape[i] = this.loadShape(Constants.SOUND_OBJECT_PATH+P5Constants.SHAPE_NAME[i]);
 			shape[i].disableStyle();
 		}
 	}

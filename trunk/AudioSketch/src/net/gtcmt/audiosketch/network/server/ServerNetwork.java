@@ -23,7 +23,7 @@ public final class ServerNetwork extends Thread {
 	private Hashtable<Socket, ClientOnServer> clientsByClientID; // clients keyed by socket
 	private int threadNum = 0;
 	private boolean isRunning = false;
-	private static int DEFAULT_PORT = 36785;
+	public static final int DEFAULT_PORT = 36785;
 	
 	/**
 	 * Constructor: Initializes socket and hash table
@@ -38,29 +38,31 @@ public final class ServerNetwork extends Thread {
 	private void initServer(int port) {
 		try {
 			serverSock = new ServerSocket(port);
-			LogMessage.info("Server listening to port: "+port);
+			LogMessage.serverInfo("Server listening to port: "+port);
 		} catch (IOException e) {
-			LogMessage.err("Could not listen on port: " +port);
-			LogMessage.err("Exiting application");
+			LogMessage.serverErr("Could not listen on port: " +port);
+			LogMessage.serverErr("Exiting application");
 			System.exit(1);
 		}
 	}
 
 	public void run() {
-		LogMessage.info("Accepting client connection ...");
+		LogMessage.serverInfo("Accepting client connection ...");
 		isRunning = true;
 
 		while (isRunning) {
 			try {
 				// Blocks until the connection is made
 				Socket client = serverSock.accept(); 
-				LogMessage.info("New connection established");
 				clientsByClientID.put(client, new AudioSketchClient(this, client, ++threadNum));
 				
 				//broad cast to all clients that there are new client
 				broadCastEvent(new AudioSketchData(MsgType.LOGIN, new LoginData(), "",0));
+				
+				LogMessage.serverInfo("New connection established");
 			} catch (IOException e) {
 				//XXX throws error on closing socket because of accept method. For now I ignore this.
+				LogMessage.serverJavaError(e);
 			}
 		}
 	}
@@ -88,7 +90,8 @@ public final class ServerNetwork extends Thread {
 					client.getMessageWriter().flush();
 					client.getMessageWriter().reset();
 				} catch (IOException e1) {
-					//XXX Throws socket close error but ignored 
+					//XXX Throws socket close error but ignored
+					LogMessage.serverJavaError(e1);
 				}
 			}
 		}
@@ -120,7 +123,7 @@ public final class ServerNetwork extends Thread {
 		try {
 			socket.close();
 		} catch (IOException e) {
-			LogMessage.javaErr(e);
+			LogMessage.serverJavaError(e);
 		}
 	}
 
@@ -135,6 +138,7 @@ public final class ServerNetwork extends Thread {
 				lc.getSocket().close();
 			} catch (IOException e1) {
 				//XXX socket close execption thrown but ignored
+				LogMessage.serverJavaError(e1);
 			}
 		}
 		clientsByClientID.clear();
@@ -155,15 +159,7 @@ public final class ServerNetwork extends Thread {
 			LogMessage.javaErr(e);
 		}
 		
-		LogMessage.info("Server connection closed ...");
-	}
-	
-	public static int getDefaultPortNum() {
-		return DEFAULT_PORT;
-	}
-
-	public static void setDefaultPortNum(int defaultPortNum) {
-		ServerNetwork.DEFAULT_PORT = defaultPortNum;
+		LogMessage.serverInfo("Server connection closed ...");
 	}
 
 	public boolean isRunning() {

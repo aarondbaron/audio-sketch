@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import net.gtcmt.audiosketch.gui.client.EditSoundObjectPanel;
-import net.gtcmt.audiosketch.p5.object.MusicalWindow;
+import net.gtcmt.audiosketch.p5.window.MusicalWindow;
 
 public class TCPClient extends Thread {
 

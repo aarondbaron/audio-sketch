@@ -16,7 +16,7 @@ import net.gtcmt.audiosketch.network.client.Client;
 import net.gtcmt.audiosketch.network.data.AudioSketchData;
 import net.gtcmt.audiosketch.network.data.QuitData;
 import net.gtcmt.audiosketch.network.util.MsgType;
-import net.gtcmt.audiosketch.p5.object.MusicalWindow;
+import net.gtcmt.audiosketch.p5.window.MusicalWindow;
 import net.gtcmt.audiosketch.util.LogMessage;
 
 /**

@@ -46,6 +46,7 @@ public final class ClientMessageHandler extends Thread {
 				data = (AudioSketchData) client.getMessageReader().readObject();
 			} catch (Throwable e) {
 				//XXX throws error when client disconnects connection
+				LogMessage.serverJavaError(e);
 				shutdownClientSocket();
 			} 
 
@@ -55,10 +56,10 @@ public final class ClientMessageHandler extends Thread {
 			else {
 				if(data != null) {
 					if(data.getUserName() != null) {
-						LogMessage.err("Client connection on clientID "+data.getUserName()+" is gone. Closing server socket.");
+						LogMessage.serverErr("Client connection on clientID "+data.getUserName()+" is gone. Closing server socket.");
 					}
 					else {
-						LogMessage.err("Client connection on unknown clientID is gone. Closing server socket.");
+						LogMessage.serverErr("Client connection on unknown clientID is gone. Closing server socket.");
 					}
 					shutdownClientSocket();
 				}
@@ -83,8 +84,8 @@ public final class ClientMessageHandler extends Thread {
 			interrupt();
 			client.getSocket().close();
 		} catch (IOException e1) {
-			LogMessage.err("Could not disconnect client socket.");
-			LogMessage.javaErr(e1);
+			LogMessage.serverErr("Could not disconnect client socket.");
+			LogMessage.serverJavaError(e1);
 		}	
 	}
 	
