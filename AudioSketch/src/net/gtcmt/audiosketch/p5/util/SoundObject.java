@@ -1,8 +1,8 @@
 package net.gtcmt.audiosketch.p5.util;
 
-import net.gtcmt.audiosketch.p5.object.MusicalWindow;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectColorType;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectShapeType;
+import net.gtcmt.audiosketch.p5.window.MusicalWindow;
 import net.gtcmt.audiosketch.sound.synth.Blip;
 import net.gtcmt.audiosketch.sound.synth.Buzz;
 import net.gtcmt.audiosketch.sound.synth.InharmonicBell;
@@ -10,6 +10,7 @@ import net.gtcmt.audiosketch.sound.synth.RandomSig;
 import net.gtcmt.audiosketch.sound.synth.Ring;
 import net.gtcmt.audiosketch.sound.synth.Shir;
 import net.gtcmt.audiosketch.sound.util.SndConstants.SndType;
+import net.gtcmt.audiosketch.util.Constants;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PShape;
@@ -56,7 +57,7 @@ public class SoundObject {
 		this.sndType = sndType;
 		this.collide = false;
 		this.getFrame = false;
-		image = p.loadShape(this.shape);
+		image = p.loadShape(Constants.SOUND_OBJECT_PATH+this.shape);
 		image.disableStyle();
 		audioOut = minim.getLineOut(Minim.STEREO, 1024);
 	}

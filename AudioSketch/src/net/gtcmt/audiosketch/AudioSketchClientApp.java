@@ -3,8 +3,10 @@ package net.gtcmt.audiosketch;
 import net.gtcmt.audiosketch.gui.client.AudioSketchMainFrame;
 import net.gtcmt.audiosketch.gui.client.WelcomePanel;
 import net.gtcmt.audiosketch.network.client.Client;
+import net.gtcmt.audiosketch.network.client.ClientNetwork;
 import net.gtcmt.audiosketch.network.data.AudioSketchData;
 import net.gtcmt.audiosketch.network.data.LoginData;
+import net.gtcmt.audiosketch.network.server.ServerNetwork;
 import net.gtcmt.audiosketch.network.util.MsgType;
 import net.gtcmt.audiosketch.util.LogMessage;
 
@@ -17,7 +19,6 @@ public class AudioSketchClientApp {
 
 	private static final long serialVersionUID = 1341314636999597438L;
 	private static String ADDRESS="localhost";	//set server address
-	private static int PORT = 12345;				// port number to connect to
 	public Client client;						// client network 
 
 	/**
@@ -27,7 +28,7 @@ public class AudioSketchClientApp {
 	public AudioSketchClientApp(String userName) {
 		
 		//Initialize client network
-		client = new Client(ADDRESS, PORT);
+		client = new Client(ADDRESS, ServerNetwork.DEFAULT_PORT);
 		client.start();
 		
 		AudioSketchMainFrame mainFrame = null;
@@ -38,10 +39,11 @@ public class AudioSketchClientApp {
 			LogMessage.javaErr(e);
 		}
 		
+		//Reference to main frame is passed
 		client.setMainFrame(mainFrame);
 		
 		//send message
-		client.getOutQueue().push(new AudioSketchData(MsgType.LOGIN, new LoginData(), userName, 0));
+		client.getOutQueue().push(new AudioSketchData(MsgType.LOGIN, new LoginData(), userName));
 	}
 	
 	/*---------------------- Getter/Setter ------------------*/

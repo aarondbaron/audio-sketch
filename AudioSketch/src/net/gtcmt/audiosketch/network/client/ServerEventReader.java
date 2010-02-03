@@ -36,17 +36,16 @@ public class ServerEventReader extends Thread {
 			try {
 				data = client.readData();
 			} catch (Throwable e) {
-				// XXX Throws error on disconnect
+				// XXX Throws error when client closes socket
+				LogMessage.javaErr(e);
 			} 
-			if (data != null && data instanceof MessageData){
+			if (data != null && data instanceof AudioSketchData){
 				// Push in data to queue so that client network can process it
 				inQueue.push(data);
 			}
 			else {
-				if(data == null) {
-					LogMessage.err("Server connection is gone. Closing connection.");
-					shutdown();
-				}
+				LogMessage.err("Server connection is gone. Closing connection.");
+				shutdown();
 			}
 		}
 	}

@@ -30,6 +30,17 @@ public class AudioSketchData implements Serializable {
 		this.userData = new UserData(userName, userID);
 	}
 
+	/**
+	 * abreviated constructor when we don't need userID
+	 * @param msgType
+	 * @param msgData
+	 * @param userName
+	 */
+	public AudioSketchData(MsgType msgType, MessageData msgData, String userName){
+		this.msgType = msgType;
+		this.msgData = msgData;
+		this.userData = new UserData(userName);
+	}
 	/*---------------- Getter/Setter ------------------*/
 	public MsgType getMsgType() {
 		return msgType;

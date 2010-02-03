@@ -11,11 +11,13 @@ import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
 
 /**
  * Handles play back bar within musical window.
+ * Acts as a trigger.
  * @author akito
  *
  */
 public class PlayBackBar {
 
+	public static final int MAX_TRIG = 10;
 	private P5Points2D objPos;
 	private P5Points2D initPos;
 	private P5Size2D objSize;
@@ -55,13 +57,13 @@ public class PlayBackBar {
 		
 		switch(pbType){
 		case BAR:
-			this.objSize.setSize(P5Constants.BAR_WIDTH,12);
+			this.objSize = new P5Size2D(P5Constants.BAR_WIDTH,10);
 			break;
 		case RADIAL:
-			this.objSize.setSize(0, 0);
+			this.objSize = new P5Size2D(0, 0);
 			break;
 		default:
-			this.objSize.setSize(0, 0);
+			this.objSize = new P5Size2D(0, 0);
 		}
 		
 		collisionArea = P5Constants.COLLISION_AREA;
@@ -88,14 +90,14 @@ public class PlayBackBar {
 	/**
 	 * Draws and animates time line bar
 	 */
-	public void play(){		
+	public void draw(){		
 		switch(playbackType){
 		case RADIAL:
 			p5.strokeWeight(10);
 			p5.stroke(255, 255, 255, 200);
 			p5.fill(0, 0, 0, 0);
 			p5.ellipse(objPos.getPosX(), objPos.getPosY(), objSize.getWidth(), objSize.getHeight());
-			objSize.setWidth((int) (objSize.getWidth()+speed));
+			objSize.setSize(((int) (objSize.getWidth()+speed)), ((int) (objSize.getHeight()+speed)));
 			break;
 		case BAR:
 			p5.pushMatrix();	

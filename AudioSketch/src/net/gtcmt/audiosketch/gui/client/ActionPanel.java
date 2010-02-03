@@ -16,8 +16,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import net.gtcmt.audiosketch.p5.object.MusicalWindow;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
+import net.gtcmt.audiosketch.p5.window.MusicalWindow;
 
 public class ActionPanel extends JPanel {
 

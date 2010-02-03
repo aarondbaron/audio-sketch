@@ -8,6 +8,7 @@ import net.gtcmt.audiosketch.network.data.RelocationData;
 import net.gtcmt.audiosketch.network.util.MsgType;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.SoundObject;
+import net.gtcmt.audiosketch.p5.window.MusicalWindow;
 
 /**
  * Mostly handle mouse action on sound object
@@ -55,7 +56,6 @@ public class ObjectAction {
 			//Boundary condition as square inside circle
 			if(musicalWindow.mouseX > soundObject.get(i).getPosX() && musicalWindow.mouseX < soundObject.get(i).getPosX() + soundObject.get(i).getWidth() 
 					&& musicalWindow.mouseY > soundObject.get(i).getPosY() && musicalWindow.mouseY < soundObject.get(i).getPosY() + soundObject.get(i).getHeight()) {
-				
 				mouseOver.set(i, true);	//Mouse is over the ball				
 			}
 			else

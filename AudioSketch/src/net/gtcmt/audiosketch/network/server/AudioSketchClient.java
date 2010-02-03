@@ -41,7 +41,7 @@ public final class AudioSketchClient extends ClientOnServer {
 			clientThread.start();
 		} catch (IOException e) {
 			// Could not establish input or output connection with client
-			LogMessage.javaErr(e);
+			LogMessage.serverJavaError(e);
 		}
 	}
 	

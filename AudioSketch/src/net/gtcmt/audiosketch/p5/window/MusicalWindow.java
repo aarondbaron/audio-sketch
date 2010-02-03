@@ -1,4 +1,4 @@
-package net.gtcmt.audiosketch.p5.object;
+package net.gtcmt.audiosketch.p5.window;
 
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -16,6 +16,9 @@ import net.gtcmt.audiosketch.network.data.RelocationData;
 import net.gtcmt.audiosketch.network.data.SoundObjectData;
 import net.gtcmt.audiosketch.network.data.UserData;
 import net.gtcmt.audiosketch.network.util.MsgType;
+import net.gtcmt.audiosketch.p5.object.EffectBox;
+import net.gtcmt.audiosketch.p5.object.ObjectAction;
+import net.gtcmt.audiosketch.p5.object.PlayBackBar;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.util.SoundObject;
@@ -209,29 +212,30 @@ public class MusicalWindow extends PApplet {
 	}
 
 	/**
-	 * Sends triggered play back info to server when user clicks and releases mouse.
+	 * Sends play back info to server when user clicks and releases mouse.
 	 */
 	private synchronized void trigPlayBackBar(){
-		
-		if(mouseClicked){ //Store mouse click position
-			xPos = mouseX;
-			yPos = mouseY;
-			mouseClicked = false;
-		}
-
-		if(mouseReleased){
-			if(mouseX - xPos == 0 && mouseY - yPos == 0){
-				xPos -= 1;
+		if(playBackBar.size() <= PlayBackBar.MAX_TRIG){
+			if(mouseClicked){ //Store mouse click position
+				xPos = mouseX;
+				yPos = mouseY;
+				mouseClicked = false;
 			}
-			//Calculate speed and angle from mouse actions
-			float speed = (float) Math.sqrt(Math.pow(mouseX-xPos, 2)+Math.pow(mouseY-yPos, 2));
-			float angle = (float) Math.atan2(mouseY-yPos, mouseX-xPos);
 
-			getClient().getOutQueue().push(new AudioSketchData(MsgType.PLAY_BAR, new PlaybackData(PlayBackType.values()[getPBIndex()], 
-					new P5Points2D(mouseX, mouseY), speed, angle), mainFrame.getUserName(), playBackBar.size()));
-			
-			mouseReleased = false;
-			mouseDragged = false;
+			if(mouseReleased){
+				if(mouseX - xPos == 0 && mouseY - yPos == 0){
+					xPos -= 1;
+				}
+				//Calculate speed and angle from mouse actions
+				float speed = (float) Math.sqrt(Math.pow(mouseX-xPos, 2)+Math.pow(mouseY-yPos, 2));
+				float angle = (float) Math.atan2(mouseY-yPos, mouseX-xPos);
+
+				getClient().getOutQueue().push(new AudioSketchData(MsgType.PLAY_BAR, new PlaybackData(PlayBackType.values()[getPBIndex()], 
+						new P5Points2D(mouseX, mouseY), speed, angle), mainFrame.getUserName(), playBackBar.size()));
+
+				mouseReleased = false;
+				mouseDragged = false;
+			}
 		}
 	}
 
@@ -253,7 +257,7 @@ public class MusicalWindow extends PApplet {
 	 */
 	private synchronized void playBar(){
 		for(int i=0;i<playBackBar.size();i++){
-			playBackBar.get(i).play();
+			playBackBar.get(i).draw();
 			switch(playBackBar.get(i).getPlaybackType()){
 			case RADIAL:
 				playBackBar.get(i).collideCircle();
@@ -577,9 +581,15 @@ public class MusicalWindow extends PApplet {
 	}
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		mouseDragged = true;
 		super.mouseDragged(arg0);
+	}
+	
+	/*---------------------- Key Action -----------------------------*/
+	@Override
+	public void keyReleased() {
+		// TODO Auto-generated method stub
+		super.keyReleased();
 	}
 	
 	/*------------------ Getter/Setter --------------------*/

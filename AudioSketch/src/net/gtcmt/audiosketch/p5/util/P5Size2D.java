@@ -1,7 +1,10 @@
 package net.gtcmt.audiosketch.p5.util;
 
-public class P5Size2D {
+import java.io.Serializable;
 
+public class P5Size2D implements Serializable {
+
+	private static final long serialVersionUID = -8193166306461384786L;
 	private int width;
 	private int height;
 	
