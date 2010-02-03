@@ -1,6 +1,6 @@
 package net.gtcmt.audiosketch.network.client;
 
-import net.gtcmt.audiosketch.client.gui.AudioSketchMainFrame;
+import net.gtcmt.audiosketch.gui.client.AudioSketchMainFrame;
 import net.gtcmt.audiosketch.network.util.AudioSketchProtocol;
 import net.gtcmt.audiosketch.util.LogMessage;
 
