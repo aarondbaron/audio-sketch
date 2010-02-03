@@ -62,6 +62,9 @@ public class PlayBackBar {
 		case RADIAL:
 			this.objSize = new P5Size2D(0, 0);
 			break;
+		case RADIAL2:
+			this.objSize = new P5Size2D(0, 0);
+			break;
 		default:
 			this.objSize = new P5Size2D(0, 0);
 		}
@@ -99,6 +102,15 @@ public class PlayBackBar {
 			p5.ellipse(objPos.getPosX(), objPos.getPosY(), objSize.getWidth(), objSize.getHeight());
 			objSize.setSize(((int) (objSize.getWidth()+speed)), ((int) (objSize.getHeight()+speed)));
 			break;
+			
+		case RADIAL2:
+			p5.strokeWeight(10);
+			p5.stroke(255, 25, 255, 200);
+			p5.fill(0, 0, 0, 0);
+			p5.ellipse(objPos.getPosX(), objPos.getPosY(), objSize.getWidth(), objSize.getHeight());
+			objSize.setSize(((int) (objSize.getWidth()+speed)), ((int) (objSize.getHeight()+speed)));
+			break;
+			
 		case BAR:
 			p5.pushMatrix();	
 			p5.translate(objPos.getPosX(), objPos.getPosY());
@@ -119,6 +131,7 @@ public class PlayBackBar {
 			objPos.setPosX((int) (objPos.getPosX()+speed*Math.cos(angle)));
 			objPos.setPosY((int) (objPos.getPosY()+speed*Math.sin(angle)));
 			collisionArea += speed*2;
+			
 		}
 	}
 
