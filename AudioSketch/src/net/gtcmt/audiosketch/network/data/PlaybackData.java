@@ -1,7 +1,7 @@
 package net.gtcmt.audiosketch.network.data;
 
-import net.gtcmt.audiosketch.client.util.P5Points2D;
-import net.gtcmt.audiosketch.client.visual.util.VisualConstants.PlayBackType;
+import net.gtcmt.audiosketch.p5.util.P5Points2D;
+import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
 
 public final class PlaybackData implements MessageData {
 

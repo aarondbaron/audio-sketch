@@ -1,8 +1,8 @@
 package net.gtcmt.audiosketch.network.data;
 
-import net.gtcmt.audiosketch.client.sound.util.SndConstants.EffectType;
-import net.gtcmt.audiosketch.client.util.P5Points2D;
-import net.gtcmt.audiosketch.client.util.P5Size2D;
+import net.gtcmt.audiosketch.p5.util.P5Points2D;
+import net.gtcmt.audiosketch.p5.util.P5Size2D;
+import net.gtcmt.audiosketch.sound.util.SndConstants.EffectType;
 
 /**
  * Data container for effect box drawn on p5 canvas

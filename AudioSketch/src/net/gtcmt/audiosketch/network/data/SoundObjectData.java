@@ -1,10 +1,10 @@
 package net.gtcmt.audiosketch.network.data;
 
-import net.gtcmt.audiosketch.client.sound.util.SndConstants.SndType;
-import net.gtcmt.audiosketch.client.util.P5Points2D;
-import net.gtcmt.audiosketch.client.util.P5Size2D;
-import net.gtcmt.audiosketch.client.visual.util.VisualConstants.ObjectColorType;
-import net.gtcmt.audiosketch.client.visual.util.VisualConstants.ObjectShapeType;
+import net.gtcmt.audiosketch.p5.util.P5Points2D;
+import net.gtcmt.audiosketch.p5.util.P5Size2D;
+import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectColorType;
+import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectShapeType;
+import net.gtcmt.audiosketch.sound.util.SndConstants.SndType;
 
 /**
  * Contains information about sound object data. This class is used to
