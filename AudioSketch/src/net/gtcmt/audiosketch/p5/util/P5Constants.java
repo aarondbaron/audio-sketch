@@ -4,10 +4,10 @@ public class P5Constants {
 
 	//Playback bar 
 	public enum PlayBackType{
-		BAR, RADIAL
+		BAR, RADIAL, RADIAL2
 	}
 	
-	public static final String[] BAR_TYPE = {"Bar", "Radial"};
+	public static final String[] BAR_TYPE = {"Bar", "Radial", "Radial2"};
 	public static final int MAX_SPEED=11;
 	public static final double NINETY = 1.5707963267948966;
 	public static final int BAR_WIDTH = 1400;
