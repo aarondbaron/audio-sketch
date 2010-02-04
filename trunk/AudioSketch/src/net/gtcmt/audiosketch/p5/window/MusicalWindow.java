@@ -601,7 +601,10 @@ public class MusicalWindow extends PApplet {
 	/*---------------------- Key Action -----------------------------*/
 	@Override
 	public void keyReleased() {
-		// TODO Auto-generated method stub
+		soundObject.get(0).play();
+		soundObject.get(0).setCollide(true);
+		soundObject.get(0).setGetFrame(true);
+		soundObject.get(0).startTime = millis();
 		super.keyReleased();
 	}
 	
