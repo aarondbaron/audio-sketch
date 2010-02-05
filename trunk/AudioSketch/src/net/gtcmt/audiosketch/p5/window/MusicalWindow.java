@@ -273,13 +273,36 @@ public class MusicalWindow extends PApplet {
 					//int y = playBackBar.get(i).getInitY();
 					//playBackBar.get(i).setPosX(x);
 					//playBackBar.get(i).setPosX(y);
-					playBackBar.get(i).setSize(0, 0);
+					playBackBar.get(i).setSize(0, 0); // reset the circle
+					Boolean b = false;
+					playBackBar.get(i).setTrigState(i, b);// i put this here so it will change the trigger state object, when it resets in the previous line
+					
 					//playBackBar.get(i).setWidth(0);
 					//playBackBar.get(i).setHeight(0);
 				}
 				break;
 				
-				
+			case BAR2:
+				playBackBar.get(i).collideBar();
+				if((playBackBar.get(i).getPosX() < 0 && playBackBar.get(i).getPosY() < 0) 
+						|| (playBackBar.get(i).getPosX() < 0 && playBackBar.get(i).getPosY() > this.height) 
+						|| (playBackBar.get(i).getPosX() > this.width && playBackBar.get(i).getPosY() < 0) 
+						|| (playBackBar.get(i).getPosX() > this.width && playBackBar.get(i).getPosY() > this.height)
+						|| (playBackBar.get(i).getPosX() < -(P5Constants.BAR_WIDTH)) || (playBackBar.get(i).getPosX() > this.width+P5Constants.BAR_WIDTH)
+						|| (playBackBar.get(i).getPosY() < -(P5Constants.BAR_WIDTH)) || (playBackBar.get(i).getPosY() > this.height+P5Constants.BAR_WIDTH)) {
+					//playBackBar.remove(i);
+					int x = playBackBar.get(i).getInitX();
+					int y = playBackBar.get(i).getInitY();
+					playBackBar.get(i).setPosX(0);
+					playBackBar.get(i).setPosY(0);
+					
+					//Boolean b = false;
+					//playBackBar.get(i).setTrigState(i, b);// i put this here so it will change the trigger state object, when it resets in the previous line
+					
+					System.out.println("x and y : " + x + "," + y);
+					//playBackBar.get(i).setSize(0, 0);
+				}
+				break;
 			case BAR:
 				playBackBar.get(i).collideBar();
 				if((playBackBar.get(i).getPosX() < 0 && playBackBar.get(i).getPosY() < 0) 
