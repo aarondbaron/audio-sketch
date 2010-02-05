@@ -59,6 +59,9 @@ public class PlayBackBar {
 		case BAR:
 			this.objSize = new P5Size2D(P5Constants.BAR_WIDTH,10);
 			break;
+		case BAR2:
+			this.objSize = new P5Size2D(P5Constants.BAR_WIDTH,10);
+			break;
 		case RADIAL:
 			this.objSize = new P5Size2D(0, 0);
 			break;
@@ -111,6 +114,28 @@ public class PlayBackBar {
 			objSize.setSize(((int) (objSize.getWidth()+speed)), ((int) (objSize.getHeight()+speed)));
 			break;
 			
+		case BAR2:
+			p5.pushMatrix();	
+			p5.translate(objPos.getPosX(), objPos.getPosY());
+			p5.rotate((float) (angle+P5Constants.NINETY));
+			p5.rectMode(PConstants.CENTER);
+			p5.noStroke();
+			p5.fill(255, 255, 250, 200);
+			p5.rect(0, 0, objSize.getWidth(), objSize.getHeight());
+			p5.popMatrix();
+			
+			p5.pushMatrix(); //Used for collision detection
+			p5.translate(initPos.getPosX()+(float)(Math.cos(angle+Math.PI)*(P5Constants.COLLISION_AREA/2)), initPos.getPosY()+(float) (Math.sin(angle+Math.PI)*(P5Constants.COLLISION_AREA/2)));	
+			p5.noStroke();
+			p5.noFill();
+			p5.scale(collisionArea/P5Constants.COLLISION_AREA, collisionArea/P5Constants.COLLISION_AREA);
+			p5.ellipse(0, 0, P5Constants.COLLISION_AREA, P5Constants.COLLISION_AREA);
+			p5.popMatrix();
+			objPos.setPosX((int) (objPos.getPosX()+speed*Math.cos(angle)));
+			objPos.setPosY((int) (objPos.getPosY()+speed*Math.sin(angle)));
+			collisionArea += speed*2;
+			break;
+			
 		case BAR:
 			p5.pushMatrix();	
 			p5.translate(objPos.getPosX(), objPos.getPosY());
@@ -153,7 +178,10 @@ public class PlayBackBar {
 					soundObject.get(i).setCollide(true);
 					soundObject.get(i).setGetFrame(true);
 					soundObject.get(i).startTime = p5.millis();
+					
+					
 				}
+				
 			}
 		}
 	}
@@ -238,4 +266,15 @@ public class PlayBackBar {
 	public int getInitX() {
 		return initPos.getPosX();
 	}
+	
+	public void setTrigState(int i, Boolean b) {
+		//trigState.set(i, b);
+	}
+	
+	public Boolean getTrigState(int i) {
+		
+		return trigState.get(i);
+	}
+	
+	
 }
