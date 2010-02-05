@@ -273,7 +273,9 @@ public class MusicalWindow extends PApplet {
 					int y = playBackBar.get(i).getInitY();
 					playBackBar.get(i).setPosX(x);
 					playBackBar.get(i).setPosX(y);
-					playBackBar.get(i).setWidth(0);
+					playBackBar.get(i).setSize(0, 0);
+					//playBackBar.get(i).setWidth(0);
+					//playBackBar.get(i).setHeight(0);
 				}
 				break;
 				
@@ -606,6 +608,16 @@ public class MusicalWindow extends PApplet {
 		soundObject.get(0).setGetFrame(true);
 		soundObject.get(0).startTime = millis();
 		super.keyReleased();
+	}
+	
+	@Override
+	public void keyPressed() {
+		soundObject.get(0).play();
+		soundObject.get(0).setCollide(true);
+		soundObject.get(0).setGetFrame(true);
+		soundObject.get(0).startTime = millis();
+		super.keyPressed();
+		
 	}
 	
 	/*------------------ Getter/Setter --------------------*/
