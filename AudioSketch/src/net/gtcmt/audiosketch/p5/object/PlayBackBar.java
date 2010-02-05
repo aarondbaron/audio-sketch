@@ -199,6 +199,14 @@ public class PlayBackBar {
 		this.objSize.setWidth(width);
 	}
 	
+	public void setHeight(int height) {
+		this.objSize.setHeight(height);
+	}
+	
+	public void setSize(int width, int height) {
+		this.objSize.setSize(width, height);
+	}
+	
 	public int getPosX() {
 		return objPos.getPosX();
 	}
