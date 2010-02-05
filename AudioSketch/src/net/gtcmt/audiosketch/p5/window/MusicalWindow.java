@@ -269,10 +269,10 @@ public class MusicalWindow extends PApplet {
 				playBackBar.get(i).collideCircle();
 				if(playBackBar.get(i).getWidth() > this.width/2 && playBackBar.get(i).getWidth() > this.height/2){
 					//playBackBar.remove(i);
-					int x  = playBackBar.get(i).getInitX();
-					int y = playBackBar.get(i).getInitY();
-					playBackBar.get(i).setPosX(x);
-					playBackBar.get(i).setPosX(y);
+					//int x  = playBackBar.get(i).getInitX();
+					//int y = playBackBar.get(i).getInitY();
+					//playBackBar.get(i).setPosX(x);
+					//playBackBar.get(i).setPosX(y);
 					playBackBar.get(i).setSize(0, 0);
 					//playBackBar.get(i).setWidth(0);
 					//playBackBar.get(i).setHeight(0);
