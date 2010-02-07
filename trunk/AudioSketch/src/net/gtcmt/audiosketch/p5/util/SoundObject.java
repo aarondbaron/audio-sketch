@@ -131,7 +131,7 @@ public class SoundObject {
 	}
 
 	/*------------------ Getter/Setter ----------------*/
-	public float getPosX() {
+	public int getPosX() {
 		return objPos.getPosX();
 	}
 
@@ -139,7 +139,7 @@ public class SoundObject {
 		this.objPos.setPosX(posX);
 	}
 
-	public float getPosY() {
+	public int getPosY() {
 		return objPos.getPosY();
 	}
 
