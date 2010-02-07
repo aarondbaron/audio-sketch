@@ -16,8 +16,8 @@ public class ObjectWindow  extends PApplet {
 
 	private static final long serialVersionUID = 2957684291479793914L;
 	private EditSoundObjectPanel editPanel;
-	public int objectWidth=100;
-	public int objectHeight=100;
+	public int objectWidth;
+	public int objectHeight;
 	public Minim minim;
 	public AudioOutput audioOut;
 	private PShape[] shape;
@@ -38,13 +38,16 @@ public class ObjectWindow  extends PApplet {
 			shape[i] = this.loadShape(Constants.SOUND_OBJECT_PATH+P5Constants.SHAPE_NAME[i]);
 			shape[i].disableStyle();
 		}
+		
+		objectWidth = 100;
+		objectHeight = 100;
 	}
 
 	/**
 	 * Set up p5 canvas
 	 */
 	public void setup(){
-		this.size(GUIConstants.EDITPANEL_WIDTH, GUIConstants.EDITPANEL_HEIGHT-50);
+		this.size(GUIConstants.EDITPANEL_WIDTH-50, GUIConstants.EDITPANEL_HEIGHT-50);
 		this.smooth();
 		minim = new Minim(this);
 	}
@@ -54,6 +57,7 @@ public class ObjectWindow  extends PApplet {
 		colorPick();
 		reSizeObject();
 		
+		this.shapeMode(PApplet.CORNER);
 		this.shape(shape[editPanel.getObjectShape().ordinal()], (width/2)-(objectWidth/2), 
 				(height/2)-(objectHeight/2), objectWidth, objectHeight);
 	}

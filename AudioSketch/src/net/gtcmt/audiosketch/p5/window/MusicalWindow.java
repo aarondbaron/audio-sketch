@@ -231,7 +231,7 @@ public class MusicalWindow extends PApplet {
 				float angle = (float) Math.atan2(mouseY-yPos, mouseX-xPos);
 
 				getClient().getOutQueue().push(new AudioSketchData(MsgType.PLAY_BAR, new PlaybackData(PlayBackType.values()[getPBIndex()], 
-						new P5Points2D(mouseX, mouseY), speed, angle), mainFrame.getUserName(), playBackBar.size()));
+						new P5Points2D(xPos, yPos), speed, angle), mainFrame.getUserName(), playBackBar.size()));
 
 				mouseReleased = false;
 				mouseDragged = false;
@@ -373,8 +373,6 @@ public class MusicalWindow extends PApplet {
 				mouseReleased = false;
 			if(mouseDragged)
 				mouseDragged = false;
-			//			if(clicked)
-			//				clicked = false;
 		}
 	}
 
@@ -626,19 +624,23 @@ public class MusicalWindow extends PApplet {
 	/*---------------------- Key Action -----------------------------*/
 	@Override
 	public void keyReleased() {
-		soundObject.get(0).play();
-		soundObject.get(0).setCollide(true);
-		soundObject.get(0).setGetFrame(true);
-		soundObject.get(0).startTime = millis();
+		if(soundObject.size() > 0){
+			soundObject.get(0).play();
+			soundObject.get(0).setCollide(true);
+			soundObject.get(0).setGetFrame(true);
+			soundObject.get(0).startTime = millis();
+		}
 		super.keyReleased();
 	}
 	
 	@Override
 	public void keyPressed() {
-		soundObject.get(0).play();
-		soundObject.get(0).setCollide(true);
-		soundObject.get(0).setGetFrame(true);
-		soundObject.get(0).startTime = millis();
+		if(soundObject.size() > 0){
+			soundObject.get(0).play();
+			soundObject.get(0).setCollide(true);
+			soundObject.get(0).setGetFrame(true);
+			soundObject.get(0).startTime = millis();
+		}
 		super.keyPressed();
 		
 	}
