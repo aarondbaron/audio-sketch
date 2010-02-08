@@ -32,7 +32,7 @@ public class SoundObject {
 	private SndType sndType;
 	private PShape image;
 	private AudioOutput audioOut;
-	private boolean collide;
+	private boolean collide;	
 	private boolean getFrame;
 	private long frame=0;
 	
@@ -163,7 +163,7 @@ public class SoundObject {
 		this.objSize.setHeight(height);
 	}
 
-	public boolean isCollide() {
+	public synchronized boolean isCollide() {
 		return collide;
 	}
 
