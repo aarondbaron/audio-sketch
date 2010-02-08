@@ -8,8 +8,10 @@
 	<classpathentry kind="lib" path="lib/Jar/minim-spi.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/minim.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/mp3spi1.9.4.jar"/>
-	<classpathentry kind="lib" path="lib/Jar/net.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/tritonus_aos.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/javaosc.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/javaoscfull.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/junit.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

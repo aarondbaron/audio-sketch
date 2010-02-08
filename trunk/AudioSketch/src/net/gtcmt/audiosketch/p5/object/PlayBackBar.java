@@ -26,8 +26,8 @@ public class PlayBackBar {
 	private LinkedList<SoundObject> soundObject;
 	private PlayBackType playbackType;
 	private PApplet p5;
-	private LinkedList<Boolean> trigState;
-	private LinkedList<Boolean> ignoreState;
+	private LinkedList<Boolean> trigState;				//TrigState correspoinds to soundObject. So the size are the same.
+	private LinkedList<Boolean> ignoreState;				
 	private float collisionArea;
 	private int numObject;
 	
@@ -186,9 +186,7 @@ public class PlayBackBar {
 					soundObject.get(i).play();
 					soundObject.get(i).setCollide(true);
 					soundObject.get(i).setGetFrame(true);
-					soundObject.get(i).startTime = p5.millis();
-					
-					
+					soundObject.get(i).startTime = p5.millis();			
 				}
 				
 			}
@@ -198,7 +196,7 @@ public class PlayBackBar {
 	/**
 	 * Detects collision for time line bar. When collision happens initiate action.
 	 */
-	//TODO come up with better collision algorithm
+	//TODO Akito come up with better collision algorithm
 	public void collideBar(){
 		for (int i = numObject - 1; i >= 0; i--) {
 
@@ -218,7 +216,7 @@ public class PlayBackBar {
 			}
 		}
 	}
-	
+
 	/*------------------- Getter/Setter ------------------*/
 	public PlayBackType getPlaybackType() {
 		return playbackType;
@@ -276,14 +274,36 @@ public class PlayBackBar {
 		return initPos.getPosX();
 	}
 	
+	/**
+	 * 
+	 * @param i index of sound object
+	 * @param b
+	 */
 	public void setTrigState(int i, Boolean b) {
-		//trigState.set(i, b);
+		trigState.set(i, b);
 	}
 	
-	public Boolean getTrigState(int i) {
-		
+	public Boolean getTrigState(int i) {		
 		return trigState.get(i);
 	}
 	
+	public void setSoundObjectCollide(int index, boolean bool){
+		soundObject.get(index).setCollide(bool);
+	}
 	
+	public boolean getSoundObjectCollide(int index){
+		return soundObject.get(index).isCollide();
+	}
+	
+	public SoundObject getSoundObject(int index){
+		return soundObject.get(index);
+	}
+	
+	public LinkedList<SoundObject> getSoundObject() {
+		return soundObject;
+	}
+
+	public void setSoundObject(LinkedList<SoundObject> soundObject) {
+		this.soundObject = soundObject;
+	}
 }

@@ -258,6 +258,7 @@ public class MusicalWindow extends PApplet {
 	 * It also handles collision detection and removing of play back bar.
 	 */
 	private synchronized void playBar(){
+		//Go through each play bar
 		for(int i=0;i<playBackBar.size();i++){
 			playBackBar.get(i).draw();
 			switch(playBackBar.get(i).getPlaybackType()){
@@ -284,7 +285,14 @@ public class MusicalWindow extends PApplet {
 					//playBackBar.get(i).setPosX(y);
 					playBackBar.get(i).setSize(0, 0); // reset the circle
 					Boolean b = false;
-					playBackBar.get(i).setTrigState(i, b);// i put this here so it will change the trigger state object, when it resets in the previous line
+					//go to each sound object in play bar
+					for(int j=0; j<playBackBar.get(i).getSoundObject().size();j++){
+						if(playBackBar.get(i).getTrigState(j)){
+							playBackBar.get(i).setSoundObjectCollide(j, false);
+							playBackBar.get(i).setTrigState(j, b);// i put this here so it will change the trigger state object, when it resets in the previous line
+						}
+					}
+					
 					
 					//playBackBar.get(i).setWidth(0);
 					//playBackBar.get(i).setHeight(0);
@@ -639,10 +647,10 @@ public class MusicalWindow extends PApplet {
 	@Override
 	public void keyReleased() {
 		if(soundObject.size() > 0){
-			soundObject.get(0).play();
-			soundObject.get(0).setCollide(true);
-			soundObject.get(0).setGetFrame(true);
-			soundObject.get(0).startTime = millis();
+//			soundObject.get(0).play();
+//			soundObject.get(0).setCollide(true);
+//			soundObject.get(0).setGetFrame(true);
+//			soundObject.get(0).startTime = millis();
 		}
 		super.keyReleased();
 	}
@@ -650,10 +658,10 @@ public class MusicalWindow extends PApplet {
 	@Override
 	public void keyPressed() {
 		if(soundObject.size() > 0){
-			soundObject.get(0).play();
-			soundObject.get(0).setCollide(true);
-			soundObject.get(0).setGetFrame(true);
-			soundObject.get(0).startTime = millis();
+//			soundObject.get(0).play();
+//			soundObject.get(0).setCollide(true);
+//			soundObject.get(0).setGetFrame(true);
+//			soundObject.get(0).startTime = millis();
 		}
 		super.keyPressed();
 		
