@@ -269,7 +269,7 @@ public class MusicalWindow extends PApplet {
 //					distOutOfBounds = P5Math.compareDist(playBackBar.get(i).getInitX(), playBackBar.get(i).getInitY(), this.width, this.height);
 //				}
 				// remove the radial playBar when it is out of the window
-				if(playBackBar.get(i).getWidth()/2 > P5Math.compareDist(playBackBar.get(i).getInitX(), playBackBar.get(i).getInitY(), this.width, this.height)) {
+				if(playBackBar.get(i).getWidth()/2 > (P5Math.compareDist(playBackBar.get(i).getInitX(), playBackBar.get(i).getInitY(), this.width, this.height) + 100)) {
 //					System.out.println("bottom left corner : ( " + this.width + " , " + this.height + " )");
 //					System.out.println("radius: " + playBackBar.get(i).getWidth()/2 + " , distance: " + distOutOfBounds);
 					playBackBar.remove(i);
