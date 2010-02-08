@@ -19,6 +19,7 @@ import net.gtcmt.audiosketch.network.util.MsgType;
 import net.gtcmt.audiosketch.p5.object.EffectBox;
 import net.gtcmt.audiosketch.p5.object.ObjectAction;
 import net.gtcmt.audiosketch.p5.object.PlayBackBar;
+import net.gtcmt.audiosketch.p5.util.P5Math;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.util.SoundObject;
@@ -262,7 +263,8 @@ public class MusicalWindow extends PApplet {
 			switch(playBackBar.get(i).getPlaybackType()){
 			case RADIAL:
 				playBackBar.get(i).collideCircle();
-				if(playBackBar.get(i).getWidth() > this.width*1.5 && playBackBar.get(i).getWidth() > this.height*1.5){
+				// remove the radial playBar when it is out of the window
+				if(playBackBar.get(i).getWidth()/2 > P5Math.compareDist(playBackBar.get(i).getInitX(), playBackBar.get(i).getInitX(), this.width, this.height)/*this.width*1.5 && playBackBar.get(i).getWidth() > this.height*1.5*/){
 					playBackBar.remove(i);
 				}
 				break;
