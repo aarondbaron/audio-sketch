@@ -50,13 +50,19 @@ public class AudioSketchProtocol {
 			mainFrame.getMusicalWindow().addSoundObject((SoundObjectData) asData.getMsgData());
 			break;
 		case MOVE_OBJECT:
-			mainFrame.getMusicalWindow().moveObject((RelocationData) asData.getMsgData()	);
+			mainFrame.getMusicalWindow().moveObject((RelocationData) asData.getMsgData());
 			break;
 		case PLAY_BAR:
 			mainFrame.getMusicalWindow().addPlayBackBar((PlaybackData) asData.getMsgData(), asData.getUserData());
 			break;
 		case EFFECT_BOX:
 			mainFrame.getMusicalWindow().addEffectBox((AudioEffectData) asData.getMsgData(), asData.getUserData());
+			break;
+		case REMOVE_OBJECT:
+			mainFrame.getMusicalWindow().remove();
+			break;
+		case REMOVE_EFFECT:
+			mainFrame.getMusicalWindow().removeEffectBox();
 			break;
 		case USER_NAME:
 		case CHAT:

@@ -5,7 +5,7 @@ import java.util.Hashtable;
 public enum MsgType {
 
 	//Message type
-	CHAT, LOGIN, QUIT, MOVE_OBJECT, PLAY_BAR, USER_NAME, EFFECT_BOX, ADD_OBJECT, REMOVE_OBJECT;
+	CHAT, LOGIN, QUIT, MOVE_OBJECT, PLAY_BAR, USER_NAME, EFFECT_BOX, ADD_OBJECT, REMOVE_OBJECT, REMOVE_EFFECT;
 	
 	private static Hashtable<String, MsgType> msgTypeTable = new Hashtable<String, MsgType>();
 	

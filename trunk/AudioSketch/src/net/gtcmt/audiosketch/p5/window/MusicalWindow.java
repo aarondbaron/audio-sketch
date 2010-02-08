@@ -227,10 +227,11 @@ public class MusicalWindow extends PApplet {
 					xPos -= 1;
 				}
 				//Calculate speed and angle from mouse actions
-				float speed = (float) Math.sqrt(Math.pow(mouseX-xPos, 2)+Math.pow(mouseY-yPos, 2));
+				float speed = (float) Math.sqrt(Math.pow(mouseX-xPos, 2)+Math.pow(mouseY-yPos, 2))/P5Constants.MAX_TRIG_DISTANCE;
 				float angle = (float) Math.atan2(mouseY-yPos, mouseX-xPos);
 
-				getClient().getOutQueue().push(new AudioSketchData(MsgType.PLAY_BAR, new PlaybackData(PlayBackType.values()[getPBIndex()], 
+				System.out.println("Speed : "+speed);
+				getClient().sendData(new AudioSketchData(MsgType.PLAY_BAR, new PlaybackData(PlayBackType.values()[getPlayBarIndex()], 
 						new P5Points2D(xPos, yPos), speed, angle), mainFrame.getUserName(), playBackBar.size()));
 
 				mouseReleased = false;
@@ -261,7 +262,7 @@ public class MusicalWindow extends PApplet {
 			switch(playBackBar.get(i).getPlaybackType()){
 			case RADIAL:
 				playBackBar.get(i).collideCircle();
-				if(playBackBar.get(i).getWidth() > this.width*2 && playBackBar.get(i).getWidth() > this.height*2){
+				if(playBackBar.get(i).getWidth() > this.width*1.5 && playBackBar.get(i).getWidth() > this.height*1.5){
 					playBackBar.remove(i);
 				}
 				break;
@@ -513,7 +514,7 @@ public class MusicalWindow extends PApplet {
 			}
 			
 			//Broadcast message
-			getClient().getOutQueue().push(new AudioSketchData(MsgType.EFFECT_BOX, new AudioEffectData(effType, new P5Points2D(xPos, yPos), 
+			getClient().sendData(new AudioSketchData(MsgType.EFFECT_BOX, new AudioEffectData(effType, new P5Points2D(xPos, yPos), 
 					new P5Size2D(mouseX-xPos, mouseY-yPos)), mainFrame.getUserName(), effectBox.size()));
 			
 			mouseReleased = false;
@@ -666,7 +667,7 @@ public class MusicalWindow extends PApplet {
 		return mainFrame.getClient();
 	}
 	
-	public int getPBIndex(){
+	public int getPlayBarIndex(){
 		return mainFrame.getActionPanel().getBarMode().getSelectedIndex();
 	}
 	

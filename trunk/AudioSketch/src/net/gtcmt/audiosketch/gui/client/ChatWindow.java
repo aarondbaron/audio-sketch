@@ -107,7 +107,7 @@ public class ChatWindow extends JPanel {
 	 * Action performed when button or enter is pressed
 	 */
 	private void chatAction(){
-		getClient().getOutQueue().push(new AudioSketchData(MsgType.CHAT, new ChatData(textField.getText()), userName, 0));
+		getClient().sendData(new AudioSketchData(MsgType.CHAT, new ChatData(textField.getText()), userName, 0));
 		textField.setText("");
 	}
 	

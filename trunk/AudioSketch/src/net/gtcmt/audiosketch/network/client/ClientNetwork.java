@@ -139,6 +139,9 @@ public abstract class ClientNetwork extends Thread {
 		return (AudioSketchData) in.readObject();
 	}
 	
+	public void sendData(AudioSketchData data){
+		outQueue.push(data);
+	}
 	/*-------------- getter/setter methods -------------*/
 	public Socket getClientSocket() {
 		return clientSocket;

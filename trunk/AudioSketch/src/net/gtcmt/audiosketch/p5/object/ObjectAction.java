@@ -98,7 +98,7 @@ public class ObjectAction {
 				}
 				
 				//Broadcast action
-				getClient().getOutQueue().push(new AudioSketchData(MsgType.MOVE_OBJECT, 
+				getClient().sendData(new AudioSketchData(MsgType.MOVE_OBJECT, 
 						new RelocationData(i,new P5Points2D(moveX.get(i).intValue(),moveY.get(i).intValue())), 
 						mwp5.getUserName(), 0));
 			}

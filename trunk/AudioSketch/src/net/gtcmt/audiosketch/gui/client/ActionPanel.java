@@ -16,8 +16,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import net.gtcmt.audiosketch.network.data.AudioSketchData;
+import net.gtcmt.audiosketch.network.data.RemoveEffectData;
+import net.gtcmt.audiosketch.network.data.RemoveObjectData;
+import net.gtcmt.audiosketch.network.util.MsgType;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
-import net.gtcmt.audiosketch.p5.window.MusicalWindow;
 
 public class ActionPanel extends JPanel {
 
@@ -28,10 +31,10 @@ public class ActionPanel extends JPanel {
 	public JCheckBox editButton;
 	public JCheckBox effectButton;
 	public JComboBox barMode;
-	private MusicalWindow musicalWindow;
+	private AudioSketchMainFrame mainFrame;
 	
 	public ActionPanel(AudioSketchMainFrame mainFrame) {
-		this.musicalWindow = mainFrame.getMusicalWindow();
+		this.mainFrame = mainFrame;
 		Box hBox = Box.createHorizontalBox();
 
 		createModeButtons();
@@ -51,11 +54,11 @@ public class ActionPanel extends JPanel {
 		removeButton = new JButton("Remove");
 		removeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				synchronized (musicalWindow.getLockObject()) {
-					if(playButton.isSelected() || editButton.isSelected())
-						musicalWindow.remove();
-					if(effectButton.isSelected())
-						musicalWindow.removeEffectBox();
+				synchronized (mainFrame.getMusicalWindow().getLockObject()) {
+					if(playButton.isSelected() || editButton.isSelected()) 	//If play mode or edit mode
+						mainFrame.getClient().sendData(new AudioSketchData(MsgType.REMOVE_OBJECT, new RemoveObjectData(), mainFrame.getUserName()));
+					if(effectButton.isSelected()) 	//if effectButton is selected
+						mainFrame.getClient().sendData(new AudioSketchData(MsgType.REMOVE_EFFECT, new RemoveEffectData(), mainFrame.getUserName()));
 				}
 			}
 		});
@@ -194,11 +197,7 @@ public class ActionPanel extends JPanel {
 		this.barMode = barMode;
 	}
 
-	public MusicalWindow getMusicalWindow() {
-		return musicalWindow;
-	}
-
-	public void setMusicalWindow(MusicalWindow musicalWindow) {
-		this.musicalWindow = musicalWindow;
+	public AudioSketchMainFrame getMainFrame() {
+		return mainFrame;
 	}
 }

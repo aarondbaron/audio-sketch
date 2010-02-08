@@ -206,7 +206,7 @@ public class EditSoundObjectPanel extends JPanel {
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Send message to server
-				getClient().getOutQueue().push(new AudioSketchData(MsgType.ADD_OBJECT, 
+				getClient().sendData(new AudioSketchData(MsgType.ADD_OBJECT, 
 						new SoundObjectData(objectShape, objectColor, sndType, 
 						new P5Points2D((int) (Math.random()*500), (int) (Math.random()*500)), 
 						new P5Size2D(objectWindow.getObjectWidth(), objectWindow.getObjectHeight()), midiIndex), 
