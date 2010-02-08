@@ -32,7 +32,41 @@ public class AudioSketchMainFrame extends JFrame {
 	private ActionPanel actionPanel;
 	private MusicalWindow musicalWindow;
 	private EditSoundObjectPanel  editPanel;
-	private Client client;
+	protected Client client;
+	
+	public AudioSketchMainFrame(Client client) throws UnknownHostException, IOException, InterruptedException{
+		super("Audience View");
+		
+		this.client = client;
+		this.userName = "Audience";
+		
+		initGUI();
+		musicalWindow.init();
+		editPanel.getObjectWindow().init();
+		
+		//Add action listener on application quit
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent evt){
+				try {
+					close();
+				} catch (IOException e) {
+					LogMessage.javaErr(e);
+				}
+				System.exit(0);
+			}
+		});
+	
+		add(musicalWindow);
+		
+		setUndecorated(true);
+		setLocationRelativeTo(null);
+		setSize(GUIConstants.WINDOW_WIDTH, GUIConstants.WINDOW_HEIGHT);
+		setLocation(0, 0);
+		setVisible(true);
+		repaint();
+		validate();
+	}
 	
 	/**
 	 * Constructor for starting main gui panel
@@ -42,6 +76,7 @@ public class AudioSketchMainFrame extends JFrame {
 	 * @throws InterruptedException
 	 */
 	public AudioSketchMainFrame(Client client, String userName) throws UnknownHostException, IOException, InterruptedException{
+		super("Audio Sketch");
 		
 		this.client = client;
 		this.userName = userName;
@@ -127,8 +162,24 @@ public class AudioSketchMainFrame extends JFrame {
 		add(mainPanel);
 	}
 	
+	
+	private void initGUI() throws UnknownHostException, IOException, InterruptedException {		
+		//Main Window
+		musicalWindow = new MusicalWindow(this);
+		
+		//Action Panel
+		actionPanel = new ActionPanel(this);
+		
+		//Object Editing Panel
+		editPanel = new EditSoundObjectPanel(this);
+		
+		//Chat Panel
+		chat = new ChatWindow(this);
+
+	}
+	
 	private void close() throws IOException{
-		client.getOutQueue().push(new AudioSketchData(MsgType.QUIT, new QuitData(), userName,0));
+		client.sendData(new AudioSketchData(MsgType.QUIT, new QuitData(), userName,0));
 		client.shutdown();
 	}
 

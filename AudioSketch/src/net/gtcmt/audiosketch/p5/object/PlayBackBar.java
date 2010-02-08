@@ -46,11 +46,20 @@ public class PlayBackBar {
 		this.initPos = this.objPos = objPos;
 		this.p5 = p;
 		
-		if(speed > P5Constants.MAX_SPEED)
+		if(speed > P5Constants.MAX_SPEED){
 			this.speed = P5Constants.MAX_SPEED;
-		else
+		}
+		else{
 			this.speed = speed;
+		}
 		
+		if(speed < P5Constants.MIN_SPEED){
+			this.speed = P5Constants.MIN_SPEED;
+		}
+		else{
+			this.speed = speed;
+		}
+			
 		this.angle = angle;
 		this.soundObject = soundObject;
 		this.playbackType = pbType;

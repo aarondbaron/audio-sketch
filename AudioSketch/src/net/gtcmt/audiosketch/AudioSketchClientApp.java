@@ -3,7 +3,6 @@ package net.gtcmt.audiosketch;
 import net.gtcmt.audiosketch.gui.client.AudioSketchMainFrame;
 import net.gtcmt.audiosketch.gui.client.WelcomePanel;
 import net.gtcmt.audiosketch.network.client.Client;
-import net.gtcmt.audiosketch.network.client.ClientNetwork;
 import net.gtcmt.audiosketch.network.data.AudioSketchData;
 import net.gtcmt.audiosketch.network.data.LoginData;
 import net.gtcmt.audiosketch.network.server.ServerNetwork;
@@ -43,7 +42,7 @@ public class AudioSketchClientApp {
 		client.setMainFrame(mainFrame);
 		
 		//send message
-		client.getOutQueue().push(new AudioSketchData(MsgType.LOGIN, new LoginData(), userName));
+		client.sendData(new AudioSketchData(MsgType.LOGIN, new LoginData(), userName));
 	}
 	
 	/*---------------------- Getter/Setter ------------------*/
