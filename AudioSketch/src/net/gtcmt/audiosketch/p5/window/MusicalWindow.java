@@ -72,7 +72,7 @@ public class MusicalWindow extends PApplet {
 	private Minim minim;
 	private Object lockObject;
 	private AudioSketchMainFrame mainFrame;
-
+	private float distOutOfBounds; 
 	/**
 	 * Constructor for MusicalWindow
 	 * @param width Width of Processing window
@@ -263,8 +263,14 @@ public class MusicalWindow extends PApplet {
 			switch(playBackBar.get(i).getPlaybackType()){
 			case RADIAL:
 				playBackBar.get(i).collideCircle();
+
+//				if(mouseClicked){
+//					distOutOfBounds = P5Math.compareDist(playBackBar.get(i).getInitX(), playBackBar.get(i).getInitY(), this.width, this.height);
+//				}
 				// remove the radial playBar when it is out of the window
-				if(playBackBar.get(i).getWidth()/2 > P5Math.compareDist(playBackBar.get(i).getInitX(), playBackBar.get(i).getInitX(), this.width, this.height)/*this.width*1.5 && playBackBar.get(i).getWidth() > this.height*1.5*/){
+				if(playBackBar.get(i).getWidth()/2 > P5Math.compareDist(playBackBar.get(i).getInitX(), playBackBar.get(i).getInitY(), this.width, this.height)) {
+//					System.out.println("bottom left corner : ( " + this.width + " , " + this.height + " )");
+//					System.out.println("radius: " + playBackBar.get(i).getWidth()/2 + " , distance: " + distOutOfBounds);
 					playBackBar.remove(i);
 				}
 				break;
@@ -624,6 +630,11 @@ public class MusicalWindow extends PApplet {
 		super.mouseDragged(arg0);
 	}
 	
+	@Override
+	public void mouseClicked() {
+
+		super.mouseClicked();
+	}
 	/*---------------------- Key Action -----------------------------*/
 	@Override
 	public void keyReleased() {

@@ -30,6 +30,9 @@ public class P5Math {
 			yCorner = windowHeight;
 		}
 		
+//		System.out.println("grapped corner : ( " + xCorner + " , " + yCorner + " )");
+//		System.out.println("clicked point : ( " + clickPositionX + " , " + clickPositionY + " )");
+
 		// return the distance to the furthest corner
 		return (float) Math.sqrt(Math.pow((clickPositionX-xCorner),2)+Math.pow((clickPositionY-yCorner), 2));
 		
