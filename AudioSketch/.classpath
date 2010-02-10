@@ -10,8 +10,6 @@
 	<classpathentry kind="lib" path="lib/Jar/mp3spi1.9.4.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/tritonus_aos.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/tritonus_share.jar"/>
-	<classpathentry kind="lib" path="lib/Jar/javaosc.jar"/>
-	<classpathentry kind="lib" path="lib/Jar/javaoscfull.jar"/>
-	<classpathentry kind="lib" path="lib/Jar/junit.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/oscP5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
