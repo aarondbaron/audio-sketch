@@ -12,12 +12,18 @@ import oscP5.OscP5;
 
 	
 public class AudioControl {
-	OscP5 oscP5;
-	NetAddress myRemoteLocation;
-	boolean haveReceivedMsg;
+	private OscP5 oscP5;
+	private NetAddress remoteLocation;
+	private boolean haveReceivedMsg;
+
+	private static AudioControl audioCtrl = null;
+	private static final String OUT_IP = "localhost";
+	private static final int IN_PORT = 57849;
+	private static final int OUT_PORT = 57848;
+	public static final int TRIG_ON = 1;
+	public static final int TRIG_OFF = 0;
 	
-	
-	AudioControl(String outIP,int thisPort,int outPort){
+	public AudioControl(String outIP,int thisPort,int outPort){
 	/* start oscP5, listening for incoming messages at port inPort */
 		
 		oscP5 = new OscP5(this,thisPort);
@@ -29,28 +35,62 @@ public class AudioControl {
 	   * and the port of the remote location address are the same, hence you will
 	   * send messages back to this sketch.
 	   */
-	  myRemoteLocation = new NetAddress(outIP,outPort);
+	  remoteLocation = new NetAddress(outIP,outPort);
 	  
 	  this.haveReceivedMsg=false;
 	}
 
-	void trigger(int onOff) {
-		OscMessage myMessage = new OscMessage("/trigger");
-		myMessage.add(onOff);
-		System.out.println("Sending...");
+	/**
+	 * 
+	 * @param soundID
+	 * @param midi
+	 */
+	public void trigger(String soundID, float midi) {
+		OscMessage oscMsg = new OscMessage("/trigger");
+		oscMsg.add(soundID);
+		oscMsg.add(midi);
+		
 		/* send the message */
-		  oscP5.send(myMessage, myRemoteLocation);
-		
-		
+		 oscP5.send(oscMsg, remoteLocation);
 	}
 	
 	/* incoming osc message are forwarded to the oscEvent method. */
-	void oscEvent(OscMessage theOscMessage) {
+	public void oscEvent(OscMessage theOscMessage) {
 	  System.out.println(theOscMessage.toString());
 	  this.haveReceivedMsg=true;
 	}
 	
+	public static AudioControl getAudioCtrl(){
+		if(audioCtrl == null){
+			audioCtrl = new AudioControl(OUT_IP, IN_PORT, OUT_PORT);
+		}
+		return audioCtrl;
+	}
+	
+	/*-------------- Getter/Setter -------------*/
+	public OscP5 getOscP5() {
+		return oscP5;
+	}
 
+	public void setOscP5(OscP5 oscP5) {
+		this.oscP5 = oscP5;
+	}
+
+	public NetAddress getMyRemoteLocation() {
+		return remoteLocation;
+	}
+
+	public void setMyRemoteLocation(NetAddress myRemoteLocation) {
+		this.remoteLocation = myRemoteLocation;
+	}
+
+	public boolean receivedMsg() {
+		return haveReceivedMsg;
+	}
+
+	public void setReceivedMsg(boolean receivedMsg) {
+		this.haveReceivedMsg = receivedMsg;
+	}
 }
 	
 	
