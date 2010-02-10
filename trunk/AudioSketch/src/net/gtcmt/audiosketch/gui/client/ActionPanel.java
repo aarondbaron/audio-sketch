@@ -54,12 +54,10 @@ public class ActionPanel extends JPanel {
 		removeButton = new JButton("Remove");
 		removeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				synchronized (mainFrame.getMusicalWindow().getLockObject()) {
-					if(playButton.isSelected() || editButton.isSelected()) 	//If play mode or edit mode
-						mainFrame.getClient().sendData(new AudioSketchData(MsgType.REMOVE_OBJECT, new RemoveObjectData(), mainFrame.getUserName()));
-					if(effectButton.isSelected()) 	//if effectButton is selected
-						mainFrame.getClient().sendData(new AudioSketchData(MsgType.REMOVE_EFFECT, new RemoveEffectData(), mainFrame.getUserName()));
-				}
+				if(playButton.isSelected() || editButton.isSelected()) 	//If play mode or edit mode
+					mainFrame.getClient().sendData(new AudioSketchData(MsgType.REMOVE_OBJECT, new RemoveObjectData(), mainFrame.getUserName()));
+				if(effectButton.isSelected()) 	//if effectButton is selected
+					mainFrame.getClient().sendData(new AudioSketchData(MsgType.REMOVE_EFFECT, new RemoveEffectData(), mainFrame.getUserName()));
 			}
 		});
 	}
