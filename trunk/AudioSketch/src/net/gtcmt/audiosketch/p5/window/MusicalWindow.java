@@ -20,7 +20,10 @@ import net.gtcmt.audiosketch.p5.action.Collision;
 import net.gtcmt.audiosketch.p5.action.MouseAction;
 import net.gtcmt.audiosketch.p5.object.EffectBox;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
+import net.gtcmt.audiosketch.p5.object.playbar.Bar;
+import net.gtcmt.audiosketch.p5.object.playbar.Bar2;
 import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
+import net.gtcmt.audiosketch.p5.object.playbar.Radial2Bar;
 import net.gtcmt.audiosketch.p5.object.playbar.RadialBar;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Math;
@@ -248,6 +251,21 @@ public class MusicalWindow extends PApplet {
 			{
 			case RADIAL:
 				playBackBar.add(new RadialBar(data.getMousePoints(), data.getPlaybackSpeed(), data.getAngle(), 
+						data.getPlaybackType(), this));
+				break;
+				
+			case RADIAL2:
+				playBackBar.add(new Radial2Bar(data.getMousePoints(), data.getPlaybackSpeed(), data.getAngle(), 
+						data.getPlaybackType(), this));
+				break;
+				
+			case BAR:
+				playBackBar.add(new Bar(data.getMousePoints(), data.getPlaybackSpeed(), data.getAngle(), 
+						data.getPlaybackType(), this));
+				break;
+				
+			case BAR2:
+				playBackBar.add(new Bar2(data.getMousePoints(), data.getPlaybackSpeed(), data.getAngle(), 
 						data.getPlaybackType(), this));
 				break;
 			}
