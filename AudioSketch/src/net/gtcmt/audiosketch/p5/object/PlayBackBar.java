@@ -1,13 +1,11 @@
 package net.gtcmt.audiosketch.p5.object;
 
-import java.util.LinkedList;
-import processing.core.PApplet;
-import processing.core.PConstants;
+import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
-import net.gtcmt.audiosketch.p5.util.SoundObject;
-import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
+import processing.core.PApplet;
+import processing.core.PConstants;
 
 /**
  * Handles play back bar within musical window.
@@ -23,14 +21,10 @@ public class PlayBackBar {
 	private P5Size2D objSize;
 	private float speed;
 	private float angle;
-	private LinkedList<SoundObject> soundObject;
 	private PlayBackType playbackType;
 	private PApplet p5;
-	private LinkedList<Boolean> trigState;				//TrigState correspoinds to soundObject. So the size are the same.
-	private LinkedList<Boolean> ignoreState;				
 	private float collisionArea;
-	private int numObject;
-	
+
 	/**
 	 * Constructor for PlayBackBar
 	 * @param x position on x-axis where the playback bar originates
@@ -42,7 +36,7 @@ public class PlayBackBar {
 	 * @param numObject 
 	 * @param p
 	 */
-	public PlayBackBar(P5Points2D objPos, float speed, float angle, PlayBackType pbType, LinkedList<SoundObject> soundObject, PApplet p){
+	public PlayBackBar(P5Points2D objPos, float speed, float angle, PlayBackType pbType, PApplet p){
 		this.initPos = this.objPos = objPos;
 		this.p5 = p;
 		
@@ -61,7 +55,6 @@ public class PlayBackBar {
 		}
 			
 		this.angle = angle;
-		this.soundObject = soundObject;
 		this.playbackType = pbType;
 		
 		switch(pbType){
@@ -82,24 +75,6 @@ public class PlayBackBar {
 		}
 		
 		collisionArea = P5Constants.COLLISION_AREA;
-		numObject = soundObject.size();
-
-		trigState = new LinkedList<Boolean>();
-		for(int i=0;i<soundObject.size();i++)
-			trigState.add(false);
-		
-		ignoreState = new LinkedList<Boolean>();
-		for(int i=0;i<soundObject.size();i++){
-			float objectX = (float) ((soundObject.get(i).getPosX()+(soundObject.get(i).getWidth()/2)) - (objPos.getPosX()+(Math.cos(angle+Math.PI)*(P5Constants.COLLISION_AREA/2))));
-			float objectY = (float) ((soundObject.get(i).getPosY()+(soundObject.get(i).getHeight()/2)) - (objPos.getPosY()+(Math.sin(angle+Math.PI)*(P5Constants.COLLISION_AREA/2))));
-
-			float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.get(i).getWidth()/2, 2)+Math.pow(soundObject.get(i).getHeight()/2, 2))/4)+((collisionArea)/2));
-
-			if(Math.sqrt(Math.pow(objectX, 2)+Math.pow(objectY, 2)) < minDistance) 
-				ignoreState.add(true);
-			else
-				ignoreState.add(false);
-		}
 	}
 
 	/**
@@ -169,54 +144,6 @@ public class PlayBackBar {
 		}
 	}
 
-	/**
-	 * Detects collision for Radial time line. When collision happens initiate action.
-	 */
-	public void collideCircle(){
-		for (int i = numObject - 1; i >= 0; i--) {
-
-			float objectX = (soundObject.get(i).getPosX()+(soundObject.get(i).getWidth()/2)) - objPos.getPosX();
-			float objectY = (soundObject.get(i).getPosY()+(soundObject.get(i).getHeight()/2)) - objPos.getPosY();
-
-			float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.get(i).getWidth()/2, 2)+Math.pow(soundObject.get(i).getHeight()/2, 2))/4)+(objSize.getWidth()/2));
-
-			if(!trigState.get(i)){
-				if(Math.sqrt(Math.pow(objectX, 2)+Math.pow(objectY, 2)) < minDistance) {
-					trigState.set(i, true);
-					soundObject.get(i).play();
-					soundObject.get(i).setCollide(true);
-					soundObject.get(i).setGetFrame(true);
-					soundObject.get(i).startTime = p5.millis();			
-				}
-				
-			}
-		}
-	}
-	
-	/**
-	 * Detects collision for time line bar. When collision happens initiate action.
-	 */
-	//TODO Akito come up with better collision algorithm
-	public void collideBar(){
-		for (int i = numObject - 1; i >= 0; i--) {
-
-			float objectX = (float) ((soundObject.get(i).getPosX()+(soundObject.get(i).getWidth()/2)) - (objPos.getPosX()+(Math.cos(angle+Math.PI)*(P5Constants.COLLISION_AREA/2))));
-			float objectY = (float) ((soundObject.get(i).getPosY()+(soundObject.get(i).getHeight()/2)) - (objPos.getPosY()+(Math.sin(angle+Math.PI)*(P5Constants.COLLISION_AREA/2))));
-
-			float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.get(i).getWidth()/2, 2)+Math.pow(soundObject.get(i).getHeight()/2, 2))/4)+((collisionArea-400)/2));
-
-			if(!trigState.get(i) && !ignoreState.get(i)){
-				if(Math.sqrt(Math.pow(objectX, 2)+Math.pow(objectY, 2)) < minDistance) {
-					trigState.set(i, true);
-					soundObject.get(i).play();
-					soundObject.get(i).setCollide(true);
-					soundObject.get(i).setGetFrame(true);
-					soundObject.get(i).startTime = p5.millis();
-				}
-			}
-		}
-	}
-
 	/*------------------- Getter/Setter ------------------*/
 	public PlayBackType getPlaybackType() {
 		return playbackType;
@@ -257,14 +184,6 @@ public class PlayBackBar {
 	public void setPosY(int posY) {
 		this.objPos.setPosY(posY);
 	}
-	
-	public int getNumObject() {
-		return numObject;
-	}
-
-	public void setNumObject(int numObject) {
-		this.numObject = numObject;
-	}
 
 	public int getInitY() {
 		return initPos.getPosY();
@@ -274,36 +193,27 @@ public class PlayBackBar {
 		return initPos.getPosX();
 	}
 	
-	/**
-	 * 
-	 * @param i index of sound object
-	 * @param b
-	 */
-	public void setTrigState(int i, Boolean b) {
-		trigState.set(i, b);
-	}
-	
-	public Boolean getTrigState(int i) {		
-		return trigState.get(i);
-	}
-	
-	public void setSoundObjectCollide(int index, boolean bool){
-		soundObject.get(index).setCollide(bool);
-	}
-	
-	public boolean getSoundObjectCollide(int index){
-		return soundObject.get(index).isCollide();
-	}
-	
-	public SoundObject getSoundObject(int index){
-		return soundObject.get(index);
-	}
-	
-	public LinkedList<SoundObject> getSoundObject() {
-		return soundObject;
+	public float getSpeed() {
+		return speed;
 	}
 
-	public void setSoundObject(LinkedList<SoundObject> soundObject) {
-		this.soundObject = soundObject;
+	public void setSpeed(float speed) {
+		this.speed = speed;
+	}
+
+	public float getAngle() {
+		return angle;
+	}
+
+	public void setAngle(float angle) {
+		this.angle = angle;
+	}
+	
+	public float getCollisionArea() {
+		return collisionArea;
+	}
+
+	public void setCollisionArea(float collisionArea) {
+		this.collisionArea = collisionArea;
 	}
 }

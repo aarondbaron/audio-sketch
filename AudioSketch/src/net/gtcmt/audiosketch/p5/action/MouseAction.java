@@ -1,4 +1,4 @@
-package net.gtcmt.audiosketch.p5.object;
+package net.gtcmt.audiosketch.p5.action;
 
 import java.util.LinkedList;
 
@@ -6,8 +6,8 @@ import net.gtcmt.audiosketch.network.client.Client;
 import net.gtcmt.audiosketch.network.data.AudioSketchData;
 import net.gtcmt.audiosketch.network.data.RelocationData;
 import net.gtcmt.audiosketch.network.util.MsgType;
+import net.gtcmt.audiosketch.p5.object.SoundObject;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
-import net.gtcmt.audiosketch.p5.util.SoundObject;
 import net.gtcmt.audiosketch.p5.window.MusicalWindow;
 
 /**
@@ -15,7 +15,7 @@ import net.gtcmt.audiosketch.p5.window.MusicalWindow;
  * @author akito
  *
  */
-public class ObjectAction {
+public class MouseAction {
 
 	private static final int MOUSE_AREA = 20;
 	private LinkedList<SoundObject> soundObject;
@@ -29,7 +29,7 @@ public class ObjectAction {
 	 * @param soundObject
 	 * @param m
 	 */
-	public ObjectAction(LinkedList<SoundObject> soundObject, MusicalWindow mw){
+	public MouseAction(LinkedList<SoundObject> soundObject, MusicalWindow mw){
 		this.soundObject = soundObject;
 		this.mwp5 = mw;
 		moveX = new LinkedList<Integer>();

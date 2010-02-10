@@ -1,8 +1,12 @@
-package net.gtcmt.audiosketch.p5.util;
+package net.gtcmt.audiosketch.p5.object;
 
+import java.util.Hashtable;
+
+import net.gtcmt.audiosketch.p5.util.P5Constants;
+import net.gtcmt.audiosketch.p5.util.P5Points2D;
+import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectColorType;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectShapeType;
-import net.gtcmt.audiosketch.p5.window.MusicalWindow;
 import net.gtcmt.audiosketch.sound.synth.Blip;
 import net.gtcmt.audiosketch.sound.synth.Buzz;
 import net.gtcmt.audiosketch.sound.synth.InharmonicBell;
@@ -32,13 +36,14 @@ public class SoundObject {
 	private SndType sndType;
 	private PShape image;
 	private AudioOutput audioOut;
-	private boolean collide;	
+	private Hashtable<PlayBackBar, Boolean> collideState;	//collide state for each playback
+	private boolean isCollide;
 	private boolean getFrame;
 	private long frame=0;
 	
 	private static int MAX_DEGREE = 360;
-	public int startTime=0;
-		
+	public long startTime = 0;
+
 	/**
 	 * SoundObject represents sound in Musical Window. It contains sound information.
 	 * @param x Location on X-axis where the object is going to stay
@@ -55,11 +60,12 @@ public class SoundObject {
 		this.shape = P5Constants.SHAPE_NAME[shape.ordinal()];
 		this.midiNote = midiNote;
 		this.sndType = sndType;
-		this.collide = false;
+		this.isCollide = false;
 		this.getFrame = false;
-		image = p.loadShape(Constants.SOUND_OBJECT_PATH+this.shape);
-		image.disableStyle();
-		audioOut = minim.getLineOut(Minim.STEREO, 1024);
+		this.collideState = new Hashtable<PlayBackBar, Boolean>();
+		this.image = p.loadShape(Constants.SOUND_OBJECT_PATH+this.shape);
+		this.image.disableStyle();
+		this.audioOut = minim.getLineOut(Minim.STEREO, 1024);
 	}
 
 	/**
@@ -83,9 +89,10 @@ public class SoundObject {
 	 * Play sound. It uses thread to do this
 	 */
 	public void play(){
-		if(audioOut != null && audioOut.signalCount() > 0)
+		if(audioOut != null && audioOut.signalCount() > 0){
 			audioOut.removeSignal(0);
-		switch(this.sndType){
+		}
+		switch(this.sndType) {
 		case BUZZ: new Thread(new Buzz(audioOut, this.midiNote)).start(); break;
 		case RANDOM: new Thread(new RandomSig(audioOut, this.midiNote)).start(); break;
 		case INHARMONIC_BELL: new Thread(new InharmonicBell(audioOut, this.midiNote)).start(); break;
@@ -97,37 +104,47 @@ public class SoundObject {
 	
 	/**
 	 * Draw sound object
-	 * @param m
+	 * @param p5
 	 */
-	public void draw(MusicalWindow m){
-		m.pushMatrix();
-		m.translate(objPos.getPosX(), objPos.getPosY());
-		if(collide){
+	public void draw(PApplet p5){
+		p5.pushMatrix();
+		p5.translate(objPos.getPosX(), objPos.getPosY());
+		rotate(p5);
+		p5.strokeWeight(5);
+		p5.fill(0, 0, 0, 0);
+		p5.stroke(color[0], color[1], color[2], 200);
+		p5.shapeMode(PConstants.CENTER);
+		p5.shape(image, 0, 0, objSize.getWidth(), objSize.getHeight());
+		p5.popMatrix();
+	}
+
+	/**
+	 * Rotate sound object
+	 * @param p5
+	 */
+	private void rotate(PApplet p5){
+		//TODO isCollider no longer relevant?
+		if(isCollide){
 			if(getFrame){
-				frame = m.frameCount;
+				frame = p5.frameCount;
 				getFrame=false;
 			}
-			float theta = (m.frameCount*2) % MAX_DEGREE;
-			float size = (float) (2.0 - Math.abs((double) (((m.frameCount-frame)*2) % MAX_DEGREE) / (MAX_DEGREE/2)));
-			m.rotate((float) Math.toRadians(theta));
-			m.scale(size, size);
-			timeOutRotate(m);
+			float theta = (p5.frameCount*2) % MAX_DEGREE;
+			float size = (float) (2.0 - Math.abs((double) (((p5.frameCount-frame)*2) % MAX_DEGREE) / (MAX_DEGREE/2)));
+			p5.rotate((float) Math.toRadians(theta));
+			p5.scale(size, size);
+			timeOutRotate(p5);
 		}
-		m.strokeWeight(5);
-		m.fill(0, 0, 0, 0);
-		m.stroke(color[0], color[1], color[2], 200);
-		m.shapeMode(PConstants.CENTER);
-		m.shape(image, 0, 0, objSize.getWidth(), objSize.getHeight());
-		m.popMatrix();
 	}
 	
 	/**
 	 * Amount of time sound object will rotate
-	 * @param m
+	 * @param p5
 	 */
-	private void timeOutRotate(MusicalWindow m){
-		if(m.millis()  - startTime > 1500)
-			collide = false;
+	private void timeOutRotate(PApplet p5){
+		if(System.currentTimeMillis()  - startTime > 1500){
+			isCollide = false;
+		}
 	}
 
 	/*------------------ Getter/Setter ----------------*/
@@ -164,11 +181,11 @@ public class SoundObject {
 	}
 
 	public synchronized boolean isCollide() {
-		return collide;
+		return isCollide;
 	}
 
 	public void setCollide(boolean collide) {
-		this.collide = collide;
+		this.isCollide = collide;
 	}
 
 	public boolean isGetFrame() {
@@ -186,5 +203,33 @@ public class SoundObject {
 	public void setAudioOut(AudioOutput audioOut) {
 		this.audioOut = audioOut;
 	}
+
+	public long getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
+	}
 	
+	public Hashtable<PlayBackBar, Boolean> getCollideState() {
+		return collideState;
+	}
+	
+	public void putCollideState(PlayBackBar playBar, boolean collideState){
+		this.collideState.put(playBar, collideState);
+	}
+	
+	public boolean getCollideState(PlayBackBar playBar){
+		return this.collideState.get(playBar);
+	}
+	
+	public void removeCollideState(PlayBackBar playBar) {
+		this.collideState.remove(playBar);
+	}
+
+	public void setCollideState(PlayBackBar playBar, boolean bool) {
+		this.collideState.remove(playBar);
+		this.collideState.put(playBar, bool);
+	}
 }

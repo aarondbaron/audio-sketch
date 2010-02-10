@@ -47,22 +47,32 @@ public class AudioSketchProtocol {
 	public void processServerInput(AudioSketchData asData, ClientNetwork clientNetwork){
 		switch (asData.getMsgType()) {
 		case ADD_OBJECT:
+			synchronized (mainFrame.getMusicalWindow().getLockObject()) {
 			mainFrame.getMusicalWindow().addSoundObject((SoundObjectData) asData.getMsgData());
+			}
 			break;
 		case MOVE_OBJECT:
 			mainFrame.getMusicalWindow().moveObject((RelocationData) asData.getMsgData());
 			break;
 		case PLAY_BAR:
+			synchronized (mainFrame.getMusicalWindow().getLockObject()) {
 			mainFrame.getMusicalWindow().addPlayBackBar((PlaybackData) asData.getMsgData(), asData.getUserData());
+			}
 			break;
 		case EFFECT_BOX:
+			synchronized (mainFrame.getMusicalWindow().getLockObject()) {
 			mainFrame.getMusicalWindow().addEffectBox((AudioEffectData) asData.getMsgData(), asData.getUserData());
+			}
 			break;
 		case REMOVE_OBJECT:
-			mainFrame.getMusicalWindow().remove();
+			synchronized (mainFrame.getMusicalWindow().getLockObject()) {
+				mainFrame.getMusicalWindow().remove();
+			}
 			break;
 		case REMOVE_EFFECT:
-			mainFrame.getMusicalWindow().removeEffectBox();
+			synchronized (mainFrame.getMusicalWindow().getLockObject()) {
+				mainFrame.getMusicalWindow().removeEffectBox();
+			}
 			break;
 		case USER_NAME:
 		case CHAT:
