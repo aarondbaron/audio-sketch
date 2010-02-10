@@ -12,10 +12,11 @@ public class SndConstants {
 	public static final int MAX_MIDI = 127;
 	
 	public enum SndType{
-		BUZZ, RANDOM, INHARMONIC_BELL, RING, BLIP, SHIR
+		BUZZ, BANJO, CHING, GUITAR_ELEC, GUITAR_CLASSIC, CLARINET, POP, SAX, FEMALE, TOY_PIANO, VIOLA, ZAP
 	}
 	
 	public static final String[] EFFECT_NAME = {"Reverb","Distortion","Delay","Lowpass","Hipass","Bandpass"};
-	public static final String[] SOUND_NAME = {"Buzz", "Random", "Inharmonic Bell", "Ring", "Blip", "Shir"};
+	public static final String[] SOUND_NAME = {"buzz", "banjo", "ching", "guitar-elec", "guitar-classic", 
+		"clarinet","pop","sax","female","toy-piano","viola","zap"};
 	public static final String[] MIDI_NAME = {"C  ", "C#", "D  ", "D#", "E  ", "F  ", "F#", "G  ", "G#", "A  ", "A#", "B  "};
 }

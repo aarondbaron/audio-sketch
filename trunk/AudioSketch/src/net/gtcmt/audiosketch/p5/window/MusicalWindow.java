@@ -19,8 +19,9 @@ import net.gtcmt.audiosketch.network.util.MsgType;
 import net.gtcmt.audiosketch.p5.action.Collision;
 import net.gtcmt.audiosketch.p5.action.MouseAction;
 import net.gtcmt.audiosketch.p5.object.EffectBox;
-import net.gtcmt.audiosketch.p5.object.PlayBackBar;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
+import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
+import net.gtcmt.audiosketch.p5.object.playbar.RadialBar;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Math;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
@@ -70,7 +71,7 @@ public class MusicalWindow extends PApplet {
 	private Minim minim;
 	private Object lockObject;
 	private AudioSketchMainFrame mainFrame;
-
+	
 	/**
 	 * Constructor for MusicalWindow
 	 * @param width Width of Processing window
@@ -159,7 +160,7 @@ public class MusicalWindow extends PApplet {
 			action.addActionObject(soundObject.getLast());
 			addEffects(soundObject, effectBox);
 			//TODO before adding playback bar check collision state and pass in appropriate boolean
-			for(int i=0;i<playBackBar.size();i++){
+			for(int i=0;i<playBackBar.size();i++) {
 				soundObject.getLast().putCollideState(playBackBar.get(i), false);
 			}
 		}
@@ -243,8 +244,14 @@ public class MusicalWindow extends PApplet {
 	 */
 	public synchronized void addPlayBackBar(PlaybackData data, UserData userData) {
 		if(data != null){
-			playBackBar.add(new PlayBackBar(data.getMousePoints(), data.getPlaybackSpeed(), data.getAngle(), 
-					data.getPlaybackType(), this));
+			switch(data.getPlaybackType())
+			{
+			case RADIAL:
+				playBackBar.add(new RadialBar(data.getMousePoints(), data.getPlaybackSpeed(), data.getAngle(), 
+						data.getPlaybackType(), this));
+				break;
+			}
+			
 			for(int j=0;j<soundObject.size();j++){
 				soundObject.get(j).putCollideState(playBackBar.getLast(), false);
 			}
@@ -294,8 +301,8 @@ public class MusicalWindow extends PApplet {
 					
 					//go to each sound object in play bar
 					for(int j=0; j<soundObject.size();j++){
-						if(soundObject.get(j).isCollide()){
-							soundObject.get(j).setCollide(false);
+						if(soundObject.get(j).getCollideState(playBackBar.get(i))){
+							soundObject.get(j).setCollideState(playBackBar.get(i), false);
 						}
 					}
 					

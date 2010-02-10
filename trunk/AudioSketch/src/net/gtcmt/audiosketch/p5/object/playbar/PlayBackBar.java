@@ -1,4 +1,4 @@
-package net.gtcmt.audiosketch.p5.object;
+package net.gtcmt.audiosketch.p5.object.playbar;
 
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
@@ -13,17 +13,17 @@ import processing.core.PConstants;
  * @author akito
  *
  */
-public class PlayBackBar {
+public abstract class PlayBackBar {
 
 	public static final int MAX_TRIG = 10;
-	private P5Points2D objPos;
-	private P5Points2D initPos;
-	private P5Size2D objSize;
-	private float speed;
-	private float angle;
-	private PlayBackType playbackType;
-	private PApplet p5;
-	private float collisionArea;
+	protected P5Points2D playbarPos;
+	protected P5Points2D initPlaybarPos;
+	protected P5Size2D playbarSize;
+	protected float speed;
+	protected float angle;
+	protected PlayBackType playbackType;
+	protected PApplet p5;
+	protected float collisionArea;
 
 	/**
 	 * Constructor for PlayBackBar
@@ -37,7 +37,7 @@ public class PlayBackBar {
 	 * @param p
 	 */
 	public PlayBackBar(P5Points2D objPos, float speed, float angle, PlayBackType pbType, PApplet p){
-		this.initPos = this.objPos = objPos;
+		this.initPlaybarPos = this.playbarPos = objPos;
 		this.p5 = p;
 		
 		if(speed > P5Constants.MAX_SPEED){
@@ -59,19 +59,19 @@ public class PlayBackBar {
 		
 		switch(pbType){
 		case BAR:
-			this.objSize = new P5Size2D(P5Constants.BAR_WIDTH,10);
+			this.playbarSize = new P5Size2D(P5Constants.BAR_WIDTH,10);
 			break;
 		case BAR2:
-			this.objSize = new P5Size2D(P5Constants.BAR_WIDTH,10);
+			this.playbarSize = new P5Size2D(P5Constants.BAR_WIDTH,10);
 			break;
 		case RADIAL:
-			this.objSize = new P5Size2D(0, 0);
+			this.playbarSize = new P5Size2D(0, 0);
 			break;
 		case RADIAL2:
-			this.objSize = new P5Size2D(0, 0);
+			this.playbarSize = new P5Size2D(0, 0);
 			break;
 		default:
-			this.objSize = new P5Size2D(0, 0);
+			this.playbarSize = new P5Size2D(0, 0);
 		}
 		
 		collisionArea = P5Constants.COLLISION_AREA;
@@ -80,70 +80,71 @@ public class PlayBackBar {
 	/**
 	 * Draws and animates time line bar
 	 */
-	public void draw(){		
+	public abstract void draw();
+/*	{		
 		switch(playbackType){
 		case RADIAL:
 			p5.strokeWeight(10);
 			p5.stroke(255, 255, 255, 200);
 			p5.fill(0, 0, 0, 0);
-			p5.ellipse(objPos.getPosX(), objPos.getPosY(), objSize.getWidth(), objSize.getHeight());
-			objSize.setSize(((int) (objSize.getWidth()+speed)), ((int) (objSize.getHeight()+speed)));
+			p5.ellipse(playbarPos.getPosX(), playbarPos.getPosY(), playbarSize.getWidth(), playbarSize.getHeight());
+			playbarSize.setSize(((int) (playbarSize.getWidth()+speed)), ((int) (playbarSize.getHeight()+speed)));
 			break;
 			
 		case RADIAL2:
 			p5.strokeWeight(10);
 			p5.stroke(255, 25, 255, 200);
 			p5.fill(0, 0, 0, 0);
-			p5.ellipse(objPos.getPosX(), objPos.getPosY(), objSize.getWidth(), objSize.getHeight());
-			objSize.setSize(((int) (objSize.getWidth()+speed)), ((int) (objSize.getHeight()+speed)));
+			p5.ellipse(playbarPos.getPosX(), playbarPos.getPosY(), playbarSize.getWidth(), playbarSize.getHeight());
+			playbarSize.setSize(((int) (playbarSize.getWidth()+speed)), ((int) (playbarSize.getHeight()+speed)));
 			break;
 			
 		case BAR2:
 			p5.pushMatrix();	
-			p5.translate(objPos.getPosX(), objPos.getPosY());
+			p5.translate(playbarPos.getPosX(), playbarPos.getPosY());
 			p5.rotate((float) (angle+P5Constants.NINETY));
 			p5.rectMode(PConstants.CENTER);
 			p5.noStroke();
 			p5.fill(255, 255, 250, 200);
-			p5.rect(0, 0, objSize.getWidth(), objSize.getHeight());
+			p5.rect(0, 0, playbarSize.getWidth(), playbarSize.getHeight());
 			p5.popMatrix();
 			
 			p5.pushMatrix(); //Used for collision detection
-			p5.translate(initPos.getPosX()+(float)(Math.cos(angle+Math.PI)*(P5Constants.COLLISION_AREA/2)), initPos.getPosY()+(float) (Math.sin(angle+Math.PI)*(P5Constants.COLLISION_AREA/2)));	
+			p5.translate(initPlaybarPos.getPosX()+(float)(Math.cos(angle+Math.PI)*(P5Constants.COLLISION_AREA/2)), initPlaybarPos.getPosY()+(float) (Math.sin(angle+Math.PI)*(P5Constants.COLLISION_AREA/2)));	
 			p5.noStroke();
 			p5.noFill();
 			p5.scale(collisionArea/P5Constants.COLLISION_AREA, collisionArea/P5Constants.COLLISION_AREA);
 			p5.ellipse(0, 0, P5Constants.COLLISION_AREA, P5Constants.COLLISION_AREA);
 			p5.popMatrix();
-			objPos.setPosX((int) (objPos.getPosX()+speed*Math.cos(angle)));
-			objPos.setPosY((int) (objPos.getPosY()+speed*Math.sin(angle)));
+			playbarPos.setPosX((int) (playbarPos.getPosX()+speed*Math.cos(angle)));
+			playbarPos.setPosY((int) (playbarPos.getPosY()+speed*Math.sin(angle)));
 			collisionArea += speed*2;
 			break;
 			
 		case BAR:
 			p5.pushMatrix();	
-			p5.translate(objPos.getPosX(), objPos.getPosY());
+			p5.translate(playbarPos.getPosX(), playbarPos.getPosY());
 			p5.rotate((float) (angle+P5Constants.NINETY));
 			p5.rectMode(PConstants.CENTER);
 			p5.noStroke();
 			p5.fill(255, 255, 255, 200);
-			p5.rect(0, 0, objSize.getWidth(), objSize.getHeight());
+			p5.rect(0, 0, playbarSize.getWidth(), playbarSize.getHeight());
 			p5.popMatrix();
 			
 			p5.pushMatrix(); //Used for collision detection
-			p5.translate(initPos.getPosX()+(float)(Math.cos(angle+Math.PI)*(P5Constants.COLLISION_AREA/2)), initPos.getPosY()+(float) (Math.sin(angle+Math.PI)*(P5Constants.COLLISION_AREA/2)));	
+			p5.translate(initPlaybarPos.getPosX()+(float)(Math.cos(angle+Math.PI)*(P5Constants.COLLISION_AREA/2)), initPlaybarPos.getPosY()+(float) (Math.sin(angle+Math.PI)*(P5Constants.COLLISION_AREA/2)));	
 			p5.noStroke();
 			p5.noFill();
 			p5.scale(collisionArea/P5Constants.COLLISION_AREA, collisionArea/P5Constants.COLLISION_AREA);
 			p5.ellipse(0, 0, P5Constants.COLLISION_AREA, P5Constants.COLLISION_AREA);
 			p5.popMatrix();
-			objPos.setPosX((int) (objPos.getPosX()+speed*Math.cos(angle)));
-			objPos.setPosY((int) (objPos.getPosY()+speed*Math.sin(angle)));
+			playbarPos.setPosX((int) (playbarPos.getPosX()+speed*Math.cos(angle)));
+			playbarPos.setPosY((int) (playbarPos.getPosY()+speed*Math.sin(angle)));
 			collisionArea += speed*2;
 			
 		}
 	}
-
+*/
 	/*------------------- Getter/Setter ------------------*/
 	public PlayBackType getPlaybackType() {
 		return playbackType;
@@ -154,43 +155,43 @@ public class PlayBackBar {
 	}
 	
 	public int getWidth() {
-		return objSize.getWidth();
+		return playbarSize.getWidth();
 	}
 
 	public void setWidth(int width) {
-		this.objSize.setWidth(width);
+		this.playbarSize.setWidth(width);
 	}
 	
 	public void setHeight(int height) {
-		this.objSize.setHeight(height);
+		this.playbarSize.setHeight(height);
 	}
 	
 	public void setSize(int width, int height) {
-		this.objSize.setSize(width, height);
+		this.playbarSize.setSize(width, height);
 	}
 	
 	public int getPosX() {
-		return objPos.getPosX();
+		return playbarPos.getPosX();
 	}
 
 	public void setPosX(int x) {
-		this.objPos.setPosX(x);
+		this.playbarPos.setPosX(x);
 	}
 	
 	public int getPosY() {
-		return objPos.getPosY();
+		return playbarPos.getPosY();
 	}
 
 	public void setPosY(int posY) {
-		this.objPos.setPosY(posY);
+		this.playbarPos.setPosY(posY);
 	}
 
 	public int getInitY() {
-		return initPos.getPosY();
+		return initPlaybarPos.getPosY();
 	}
 
 	public int getInitX() {
-		return initPos.getPosX();
+		return initPlaybarPos.getPosX();
 	}
 	
 	public float getSpeed() {

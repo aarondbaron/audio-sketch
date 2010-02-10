@@ -1,8 +1,9 @@
 package net.gtcmt.audiosketch.p5.action;
 
-import net.gtcmt.audiosketch.p5.object.PlayBackBar;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
+import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
+import net.gtcmt.audiosketch.sound.util.AudioControl;
 
 public class Collision {
 
@@ -18,7 +19,8 @@ public class Collision {
 					+Math.pow(soundObject.getHeight()/2, 2))/4)+(playBar.getWidth()/2));
 
 			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
-				soundObject.play();
+				AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) Math.random()*2);
+				//soundObject.play();
 				soundObject.setCollideState(playBar, true);
 				soundObject.setCollide(true);
 				soundObject.setGetFrame(true);
@@ -42,7 +44,8 @@ public class Collision {
 					+Math.pow(soundObject.getHeight()/2, 2))/4)+((playBar.getCollisionArea()-400)/2));
 
 			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
-				soundObject.play();
+				AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) Math.random()*2);
+				//soundObject.play();
 				soundObject.setCollideState(playBar, true);
 				soundObject.setCollide(true);
 				soundObject.setGetFrame(true);

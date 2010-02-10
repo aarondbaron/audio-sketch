@@ -32,6 +32,7 @@ import net.gtcmt.audiosketch.sound.synth.InharmonicBell;
 import net.gtcmt.audiosketch.sound.synth.RandomSig;
 import net.gtcmt.audiosketch.sound.synth.Ring;
 import net.gtcmt.audiosketch.sound.synth.Shir;
+import net.gtcmt.audiosketch.sound.util.AudioControl;
 import net.gtcmt.audiosketch.sound.util.SndConstants;
 import net.gtcmt.audiosketch.sound.util.SndConstants.SndType;
 import ddf.minim.Minim;
@@ -189,12 +190,8 @@ public class EditSoundObjectPanel extends JPanel {
 					getObjectWindow().audioOut.removeSignal(0);
 				getObjectWindow().audioOut = getObjectWindow().minim.getLineOut(Minim.STEREO, 1024);
 				switch(sndType){
-				case BUZZ: new Thread(new Buzz(getObjectWindow().audioOut, midiNoteChooser.getSelectedIndex()+SndConstants.MIN_MIDI)).start(); break;
-				case RANDOM: new Thread(new RandomSig(getObjectWindow().audioOut, midiNoteChooser.getSelectedIndex()+SndConstants.MIN_MIDI)).start(); break;
-				case INHARMONIC_BELL: new Thread(new InharmonicBell(getObjectWindow().audioOut, midiNoteChooser.getSelectedIndex()+SndConstants.MIN_MIDI)).start(); break;
-				case RING: new Thread(new Ring(getObjectWindow().audioOut, midiNoteChooser.getSelectedIndex()+SndConstants.MIN_MIDI)).start(); break;
-				case BLIP: new Thread(new Blip(getObjectWindow().audioOut, midiNoteChooser.getSelectedIndex()+SndConstants.MIN_MIDI)).start(); break;
-				case SHIR: new Thread(new Shir(getObjectWindow().audioOut, midiNoteChooser.getSelectedIndex()+SndConstants.MIN_MIDI)).start(); break;
+				case BUZZ: AudioControl.getAudioCtrl().trigger(SndType.BUZZ.toString(), 1); break;
+				case BANJO: AudioControl.getAudioCtrl().trigger(SndType.BANJO.toString(), 1); break;
 				}
 			}
 		});

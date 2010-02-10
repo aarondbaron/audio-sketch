@@ -2,6 +2,7 @@ package net.gtcmt.audiosketch.p5.object;
 
 import java.util.Hashtable;
 
+import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
@@ -13,6 +14,7 @@ import net.gtcmt.audiosketch.sound.synth.InharmonicBell;
 import net.gtcmt.audiosketch.sound.synth.RandomSig;
 import net.gtcmt.audiosketch.sound.synth.Ring;
 import net.gtcmt.audiosketch.sound.synth.Shir;
+import net.gtcmt.audiosketch.sound.util.AudioControl;
 import net.gtcmt.audiosketch.sound.util.SndConstants.SndType;
 import net.gtcmt.audiosketch.util.Constants;
 import processing.core.PApplet;
@@ -40,6 +42,8 @@ public class SoundObject {
 	private boolean isCollide;
 	private boolean getFrame;
 	private long frame=0;
+	//private
+	//sound name, pitch, filter type, cutoff, q, center freq, gain, effect type, effect on/off
 	
 	private static int MAX_DEGREE = 360;
 	public long startTime = 0;
@@ -93,12 +97,8 @@ public class SoundObject {
 			audioOut.removeSignal(0);
 		}
 		switch(this.sndType) {
-		case BUZZ: new Thread(new Buzz(audioOut, this.midiNote)).start(); break;
-		case RANDOM: new Thread(new RandomSig(audioOut, this.midiNote)).start(); break;
-		case INHARMONIC_BELL: new Thread(new InharmonicBell(audioOut, this.midiNote)).start(); break;
-		case RING: new Thread(new Ring(audioOut, this.midiNote)).start(); break;
-		case BLIP: new Thread(new Blip(audioOut, this.midiNote)).start(); break;
-		case SHIR: new Thread(new Shir(audioOut, this.midiNote)).start(); break;
+		case BUZZ: AudioControl.getAudioCtrl().trigger(SndType.BUZZ.toString(), (float) Math.random()*2); break;
+		case BANJO: AudioControl.getAudioCtrl().trigger(SndType.BANJO.toString(), (float) Math.random()*2); break;
 		}
 	}
 	
@@ -231,5 +231,13 @@ public class SoundObject {
 	public void setCollideState(PlayBackBar playBar, boolean bool) {
 		this.collideState.remove(playBar);
 		this.collideState.put(playBar, bool);
+	}
+
+	public SndType getSndType() {
+		return sndType;
+	}
+
+	public void setSndType(SndType sndType) {
+		this.sndType = sndType;
 	}
 }
