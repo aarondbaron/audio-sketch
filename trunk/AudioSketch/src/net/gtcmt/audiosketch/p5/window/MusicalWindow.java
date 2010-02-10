@@ -158,6 +158,7 @@ public class MusicalWindow extends PApplet {
 					data.getShapeType(), data.getMidiNote(), data.getSndType(), minim, this));
 			action.addActionObject(soundObject.getLast());
 			addEffects(soundObject, effectBox);
+			//TODO before adding playback bar check collision state and pass in appropriate boolean
 			for(int i=0;i<playBackBar.size();i++){
 				soundObject.getLast().putCollideState(playBackBar.get(i), false);
 			}
