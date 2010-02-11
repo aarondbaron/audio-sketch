@@ -37,7 +37,6 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PFont;
 import ddf.minim.EffectsChain;
-import ddf.minim.Minim;
 
 /**
  * This is the main window where all the action user makes happen such
