@@ -35,14 +35,14 @@ public class ClockBar extends PlayBackBar{
 		}
 
 		p5.pushMatrix();
-		p5.translate(playbarPos.getPosX(), playbarPos.getPosX());
+		p5.translate(playbarPos.getPosX(), playbarPos.getPosY());
 		p5.rotate(clockAngle);
 
 		p5.stroke(250, 200, 25, 100);
 		p5.strokeWeight(5);
 		//p5.line(0, 0, 100, 0);
 		int len=50;
-		p5.line(0,0,playbarPos.getPosX(), playbarPos.getPosY()/*, p5.mouseX,p5.mouseY*/);
+		p5.line(0,0,len, len);
 		//p5.fill(255, 255, 250, 200);
 		//p5.ellipse(170, 0, 7, 7);
 		//p5.ellipse(playbarPos.getPosX(), playbarPos.getPosY(), playbarSize.getWidth(), playbarSize.getHeight());
