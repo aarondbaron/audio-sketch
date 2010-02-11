@@ -22,6 +22,7 @@ import net.gtcmt.audiosketch.p5.object.EffectBox;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
 import net.gtcmt.audiosketch.p5.object.playbar.Bar;
 import net.gtcmt.audiosketch.p5.object.playbar.Bar2;
+import net.gtcmt.audiosketch.p5.object.playbar.ClockBar;
 import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
 import net.gtcmt.audiosketch.p5.object.playbar.Radial2Bar;
 import net.gtcmt.audiosketch.p5.object.playbar.RadialBar;
@@ -259,6 +260,11 @@ public class MusicalWindow extends PApplet {
 						data.getPlaybackType(), this));
 				break;
 				
+			case CLOCKBAR:
+				playBackBar.add(new ClockBar(data.getMousePoints(), data.getPlaybackSpeed(), data.getAngle(), 
+						data.getPlaybackType(), this));
+				break;
+				
 			case BAR:
 				playBackBar.add(new Bar(data.getMousePoints(), data.getPlaybackSpeed(), data.getAngle(), 
 						data.getPlaybackType(), this));
@@ -327,6 +333,23 @@ public class MusicalWindow extends PApplet {
 					//playBackBar.get(i).setWidth(0);
 					//playBackBar.get(i).setHeight(0);
 				}
+				break;
+				
+			case CLOCKBAR:
+
+				//Check for collision
+				for(int j=0;j<soundObject.size();j++){
+					Collision.collideCircle(soundObject.get(j), playBackBar.get(i));
+				}
+				
+				// remove the radial playBar when it is out of the window
+				if(playBackBar.get(i).getWidth()/2 > (P5Math.compareDist(playBackBar.get(i).getInitX(), playBackBar.get(i).getInitY(), this.width, this.height) + 100)) {
+					for(int j=0;j<soundObject.size();j++){
+						soundObject.get(j).removeCollideState(playBackBar.get(i));
+					}
+					//playBackBar.remove(i);
+				}
+
 				break;
 				
 			case BAR2:
