@@ -72,7 +72,6 @@ public class MusicalWindow extends PApplet {
 	private Random rgen;
 	private int incr=0;	
 	private EffectType effType;
-	private Minim minim;
 	private Object lockObject;
 	private AudioSketchMainFrame mainFrame;
 	
@@ -127,7 +126,6 @@ public class MusicalWindow extends PApplet {
 		smooth();
 		action = new MouseAction(soundObject, this);
 		font = this.createFont("skia", 14);
-		minim = new Minim(this);
 	}
 
 	/**
@@ -146,7 +144,6 @@ public class MusicalWindow extends PApplet {
 	}
 
 	public void stop() {
-		minim.stop();
 		super.stop();
 	}
 
@@ -160,7 +157,7 @@ public class MusicalWindow extends PApplet {
 		//Add new soundObject to Musical Window
 		if(data != null){
 			soundObject.add(new SoundObject(data.getObjPos(), data.getObjSize(), data.getColorType(), 
-					data.getShapeType(), data.getMidiNote(), data.getSndType(), minim, this));
+					data.getShapeType(), data.getMidiNote(), data.getSndType(), this));
 			action.addActionObject(soundObject.getLast());
 			addEffects(soundObject, effectBox);
 			//TODO before adding playback bar check collision state and pass in appropriate boolean
@@ -175,13 +172,12 @@ public class MusicalWindow extends PApplet {
 	 * @param soundObject
 	 * @param effectBox
 	 */
+	//TODO effect box is broken
 	private synchronized void addEffects(LinkedList<SoundObject>soundObject, LinkedList<EffectBox> effectBox){
 		EffectsChain chain = new EffectsChain();
 		for(int i=0;i<effectBox.size();i++)
 			if(effectBox.get(i).bound(soundObject.getLast()))	
 				chain.add(effectBox.get(i).effect());
-		if(chain.size() > 0)
-			soundObject.getLast().getAudioOut().addEffect(chain);
 	}
 
 	/**
@@ -541,15 +537,13 @@ public class MusicalWindow extends PApplet {
 	 * Reinserts effect into specified soundObject
 	 * @param id id of soundObject in LinkedList
 	 */
+	//TODO effect box is broken
 	private synchronized void reInsertEffect(int id){
-		EffectsChain chain = new EffectsChain();
-		for(int i=0;i<soundObject.get(id).getAudioOut().effectCount();i++)
-			soundObject.get(id).getAudioOut().removeEffect(i);
+		/*EffectsChain chain = new EffectsChain();
 		for(int i=0;i<effectBox.size();i++)
 			if(effectBox.get(i).bound(soundObject.get(id)))
 				chain.add(effectBox.get(i).effect());
-		if(chain.size() > 0)
-			soundObject.get(id).getAudioOut().addEffect(chain);
+				*/
 	}
 	/*----------------------- Effect Mode -----------------------------*/
 	/**

@@ -18,8 +18,6 @@ public class ObjectWindow  extends PApplet {
 	private EditSoundObjectPanel editPanel;
 	public int objectWidth;
 	public int objectHeight;
-	public Minim minim;
-	public AudioOutput audioOut;
 	private PShape[] shape;
 
 	/**
@@ -49,7 +47,6 @@ public class ObjectWindow  extends PApplet {
 	public void setup(){
 		this.size(GUIConstants.EDITPANEL_WIDTH-50, GUIConstants.EDITPANEL_HEIGHT-50);
 		this.smooth();
-		minim = new Minim(this);
 	}
 
 	public void draw(){
@@ -63,7 +60,6 @@ public class ObjectWindow  extends PApplet {
 	}
 
 	public void stop() {
-		minim.stop();
 		super.stop();
 	}
 

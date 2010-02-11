@@ -184,17 +184,25 @@ public class EditSoundObjectPanel extends JPanel {
 		
 		//Preview sound
 		playButton = new JButton("Play");
-		playButton.addActionListener(new ActionListener() {
+		playButton.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(getObjectWindow().audioOut != null && getObjectWindow().audioOut.signalCount() > 0)
-					getObjectWindow().audioOut.removeSignal(0);
-				getObjectWindow().audioOut = getObjectWindow().minim.getLineOut(Minim.STEREO, 1024);
 				switch(sndType){
 				case BUZZ: AudioControl.getAudioCtrl().trigger(SndType.BUZZ.toString(), 1); break;
 				case BANJO: AudioControl.getAudioCtrl().trigger(SndType.BANJO.toString(), 1); break;
+				case CHING: AudioControl.getAudioCtrl().trigger(SndType.CHING.toString(), 1); break;
+				case CLARINET: AudioControl.getAudioCtrl().trigger(SndType.CLARINET.toString(), 1); break;
+				case POP: AudioControl.getAudioCtrl().trigger(SndType.POP.toString(), 1); break;
+				case FEMALE: AudioControl.getAudioCtrl().trigger(SndType.FEMALE.toString(), 1); break;
+				case GUITAR_CLASSIC: AudioControl.getAudioCtrl().trigger(SndType.GUITAR_CLASSIC.toString(), 1); break;
+				case GUITAR_ELEC: AudioControl.getAudioCtrl().trigger(SndType.GUITAR_ELEC.toString(), 1); break;
+				case SAX: AudioControl.getAudioCtrl().trigger(SndType.SAX.toString(), 1); break;
+				case TOY_PIANO: AudioControl.getAudioCtrl().trigger(SndType.TOY_PIANO.toString(), 1); break;
+				case VIOLA: AudioControl.getAudioCtrl().trigger(SndType.VIOLA.toString(), 1); break;
+				case ZAP: AudioControl.getAudioCtrl().trigger(SndType.ZAP.toString(), 1); break;
 				}
 			}
 		});
+	
 		hBox.add(playButton);
 		
 		//Add button to add it to musical window

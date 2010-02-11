@@ -1,5 +1,10 @@
 package net.gtcmt.audiosketch.sound.effect;
 
+/**
+ * 
+ * @author akito
+ * @deprecated
+ */
 public class Allpass 
 {
 	private float	feedback;

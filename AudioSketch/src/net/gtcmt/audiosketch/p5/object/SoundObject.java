@@ -8,20 +8,12 @@ import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectColorType;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectShapeType;
-import net.gtcmt.audiosketch.sound.synth.Blip;
-import net.gtcmt.audiosketch.sound.synth.Buzz;
-import net.gtcmt.audiosketch.sound.synth.InharmonicBell;
-import net.gtcmt.audiosketch.sound.synth.RandomSig;
-import net.gtcmt.audiosketch.sound.synth.Ring;
-import net.gtcmt.audiosketch.sound.synth.Shir;
 import net.gtcmt.audiosketch.sound.util.AudioControl;
 import net.gtcmt.audiosketch.sound.util.SndConstants.SndType;
 import net.gtcmt.audiosketch.util.Constants;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PShape;
-import ddf.minim.AudioOutput;
-import ddf.minim.Minim;
 
 /**
  * Sound object drawn on musical window
@@ -37,7 +29,6 @@ public class SoundObject {
 	private int midiNote;
 	private SndType sndType;
 	private PShape image;
-	private AudioOutput audioOut;
 	private Hashtable<PlayBackBar, Boolean> collideState;	//collide state for each playback
 	private boolean isCollide;
 	private boolean getFrame;
@@ -57,7 +48,7 @@ public class SoundObject {
 	 * @param colorSet Color of the object
 	 * @param p
 	 */
-	public SoundObject(P5Points2D objPos, P5Size2D objSize, ObjectColorType color, ObjectShapeType shape, int midiNote, SndType sndType, Minim minim, PApplet p){
+	public SoundObject(P5Points2D objPos, P5Size2D objSize, ObjectColorType color, ObjectShapeType shape, int midiNote, SndType sndType, PApplet p){
 		this.objPos = objPos;
 		this.objSize = objSize;
 		this.color = chooseColor(color);
@@ -69,7 +60,6 @@ public class SoundObject {
 		this.collideState = new Hashtable<PlayBackBar, Boolean>();
 		this.image = p.loadShape(Constants.SOUND_OBJECT_PATH+this.shape);
 		this.image.disableStyle();
-		this.audioOut = minim.getLineOut(Minim.STEREO, 1024);
 	}
 
 	/**
@@ -93,12 +83,19 @@ public class SoundObject {
 	 * Play sound. It uses thread to do this
 	 */
 	public void play(){
-		if(audioOut != null && audioOut.signalCount() > 0){
-			audioOut.removeSignal(0);
-		}
 		switch(this.sndType) {
 		case BUZZ: AudioControl.getAudioCtrl().trigger(SndType.BUZZ.toString(), (float) Math.random()*2); break;
 		case BANJO: AudioControl.getAudioCtrl().trigger(SndType.BANJO.toString(), (float) Math.random()*2); break;
+		case CHING: AudioControl.getAudioCtrl().trigger(SndType.CHING.toString(), (float) Math.random()*2); break;
+		case CLARINET: AudioControl.getAudioCtrl().trigger(SndType.CLARINET.toString(), (float) Math.random()*2); break;
+		case POP: AudioControl.getAudioCtrl().trigger(SndType.POP.toString(), (float) Math.random()*2); break;
+		case FEMALE: AudioControl.getAudioCtrl().trigger(SndType.FEMALE.toString(), (float) Math.random()*2); break;
+		case GUITAR_CLASSIC: AudioControl.getAudioCtrl().trigger(SndType.GUITAR_CLASSIC.toString(), (float) Math.random()*2); break;
+		case GUITAR_ELEC: AudioControl.getAudioCtrl().trigger(SndType.GUITAR_ELEC.toString(), (float) Math.random()*2); break;
+		case SAX: AudioControl.getAudioCtrl().trigger(SndType.SAX.toString(), (float) Math.random()*2); break;
+		case TOY_PIANO: AudioControl.getAudioCtrl().trigger(SndType.TOY_PIANO.toString(), (float) Math.random()*2); break;
+		case VIOLA: AudioControl.getAudioCtrl().trigger(SndType.VIOLA.toString(), (float) Math.random()*2); break;
+		case ZAP: AudioControl.getAudioCtrl().trigger(SndType.ZAP.toString(), (float) Math.random()*2); break;
 		}
 	}
 	
@@ -196,14 +193,6 @@ public class SoundObject {
 		this.getFrame = getFrame;
 	}
 
-	public AudioOutput getAudioOut() {
-		return audioOut;
-	}
-
-	public void setAudioOut(AudioOutput audioOut) {
-		this.audioOut = audioOut;
-	}
-
 	public long getStartTime() {
 		return startTime;
 	}
@@ -239,5 +228,13 @@ public class SoundObject {
 
 	public void setSndType(SndType sndType) {
 		this.sndType = sndType;
+	}
+	
+	public int getMidiNote() {
+		return midiNote;
+	}
+
+	public void setMidiNote(int midiNote) {
+		this.midiNote = midiNote;
 	}
 }

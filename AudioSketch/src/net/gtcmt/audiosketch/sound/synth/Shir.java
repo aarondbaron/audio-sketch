@@ -3,6 +3,11 @@ package net.gtcmt.audiosketch.sound.synth;
 import ddf.minim.AudioOutput;
 import ddf.minim.signals.SineWave;
 
+/**
+ * 
+ * @author akito
+ * @deprecated
+ */
 public class Shir extends AddSynth implements Runnable{
 
 	private static final long serialVersionUID = -8444136963154317346L;
