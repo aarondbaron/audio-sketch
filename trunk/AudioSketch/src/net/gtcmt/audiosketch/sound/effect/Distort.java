@@ -2,6 +2,11 @@ package net.gtcmt.audiosketch.sound.effect;
 
 import ddf.minim.AudioEffect;
 
+/**
+ * 
+ * @author akito
+ * @deprecated
+ */
 public class Distort implements AudioEffect {
 	
 	

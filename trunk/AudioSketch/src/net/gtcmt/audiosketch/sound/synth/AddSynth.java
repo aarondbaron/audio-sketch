@@ -9,7 +9,7 @@ import ddf.minim.signals.SineWave;
 /**
  * Abstract class for additive synthesis
  * @author akito
- *
+ * @deprecated
  */
 public abstract class AddSynth{
 
