@@ -20,6 +20,14 @@ public class ClockBar extends PlayBackBar{
 	public void draw() {
 		// TODO Auto-generated method stub
 
+		
+		int initx=this.getInitX();
+		int inity=this.getInitY();
+		
+		int fposx= this.getPosX();
+		int fposy = this.getPosY();
+		//System.out.println("intix: " + initx + " inity: " +inity + "fposx:" +fposx + " fposy:" + fposy);
+		
 		clockAngle=clockAngle+(float).02;
 		//DisplayAngleMouse();
 		float ox = (float)Math.sin(clockAngle);
@@ -36,6 +44,8 @@ public class ClockBar extends PlayBackBar{
 
 		p5.pushMatrix();
 		p5.translate(playbarPos.getPosX(), playbarPos.getPosY());
+		//p5.translate(initx, inity);
+		//p5.translate(fposx, fposy);
 		p5.rotate(clockAngle);
 
 		p5.stroke(250, 200, 25, 100);
@@ -49,9 +59,14 @@ public class ClockBar extends PlayBackBar{
 		
 		p5.popMatrix();
 		
+		PVector point = new PVector((int) (len*Math.cos(clockAngle)),(int) (len*Math.sin(clockAngle)));
+		
 		//System.out.println(clockAngle);
 
 
 	}
+	
+	
+	
 
 }

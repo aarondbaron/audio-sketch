@@ -339,7 +339,7 @@ public class MusicalWindow extends PApplet {
 
 				//Check for collision
 				for(int j=0;j<soundObject.size();j++){
-					Collision.collideCircle(soundObject.get(j), playBackBar.get(i));
+					Collision.collideClockBar(soundObject.get(j), playBackBar.get(i));
 				}
 				
 				// remove the radial playBar when it is out of the window

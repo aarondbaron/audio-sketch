@@ -69,7 +69,7 @@ public abstract class PlayBackBar {
 			break;
 			
 		case CLOCKBAR:
-			this.playbarSize = new P5Size2D(0, 0);
+			this.playbarSize = new P5Size2D(p5.mouseX, p5.mouseY);
 			break;
 			
 		case RADIAL2:
