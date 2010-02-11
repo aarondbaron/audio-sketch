@@ -28,29 +28,29 @@ public class ClockBar extends PlayBackBar{
 		PVector v = new PVector(ox, oy);
 		PVector dum = new PVector(100000,0); //the x axis
 		float rawAngle = PVector.angleBetween(v, dum);
-		float angle = rawAngle;
+		float clockAngle = rawAngle;
 		if (v.y < 0)
 		{
 			clockAngle = PConstants.TWO_PI - clockAngle;
 		}
 
 		p5.pushMatrix();
-		p5.translate(100, 100);
-		p5.rotate(angle);
+		p5.translate(playbarPos.getPosX(), playbarPos.getPosX());
+		p5.rotate(clockAngle);
 
 		p5.stroke(250, 200, 25, 100);
 		p5.strokeWeight(5);
 		//p5.line(0, 0, 100, 0);
-		p5.line(50 ,50, playbarPos.getPosX(), playbarPos.getPosY());
+		int len=50;
+		p5.line(0,0,playbarPos.getPosX(), playbarPos.getPosY()/*, p5.mouseX,p5.mouseY*/);
 		//p5.fill(255, 255, 250, 200);
 		//p5.ellipse(170, 0, 7, 7);
 		//p5.ellipse(playbarPos.getPosX(), playbarPos.getPosY(), playbarSize.getWidth(), playbarSize.getHeight());
 		
 		p5.popMatrix();
+		
+		//System.out.println(clockAngle);
 
-		if (angle>360){
-			angle=0;
-		}
 
 	}
 
