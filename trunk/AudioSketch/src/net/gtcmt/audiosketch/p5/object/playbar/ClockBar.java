@@ -19,7 +19,7 @@ public class ClockBar extends PlayBackBar{
 	}
 
 
-	int len=100;//this is the bar length...needs to be a parameter
+	int len=200;//this is the bar length...needs to be a parameter
 
 	public int getLen() {
 		return len;
