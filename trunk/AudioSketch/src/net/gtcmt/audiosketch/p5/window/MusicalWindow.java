@@ -337,13 +337,13 @@ public class MusicalWindow extends PApplet {
 					Collision.collideClockBar(soundObject.get(j), playBackBar.get(i));
 				}
 				
-				// remove the radial playBar when it is out of the window
-				if(playBackBar.get(i).getWidth()/2 > (P5Math.compareDist(playBackBar.get(i).getInitX(), playBackBar.get(i).getInitY(), this.width, this.height) + 100)) {
-					for(int j=0;j<soundObject.size();j++){
-						soundObject.get(j).removeCollideState(playBackBar.get(i));
+				//go to each sound object in play bar
+				for(int j=0; j<soundObject.size();j++){
+					if(soundObject.get(j).getCollideState(playBackBar.get(i))){
+						soundObject.get(j).setCollideState(playBackBar.get(i), false);
 					}
-					//playBackBar.remove(i);
 				}
+
 
 				break;
 				
