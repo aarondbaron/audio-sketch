@@ -1,6 +1,7 @@
 package net.gtcmt.audiosketch.p5.action;
 
 import net.gtcmt.audiosketch.p5.object.SoundObject;
+import net.gtcmt.audiosketch.p5.object.playbar.ClockBar;
 import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.sound.util.AudioControl;
@@ -32,9 +33,26 @@ public class Collision {
 	public static void collideClockBar(SoundObject soundObject, PlayBackBar playBar){
 		if(!soundObject.getCollideState(playBar)) {
 			
+			ClockBar temp= (ClockBar) playBar;
+			int pBarX = playBar.getPosX();
+			int pBarY = playBar.getPosY();
+			int len = temp.getLen();
+			float ang = temp.getClockAngle();
+			
+			
+			//System.out.println(ang);
+			int p2X = (int) (Math.cos(ang+Math.PI)*len) + pBarX;
+			int p2Y = (int) (-Math.sin(ang+Math.PI)*len) + pBarY;
+			
+			System.out.println("p2X: " + p2X + " p2Y: " + p2Y + "pBarX: " + pBarX + " pBarY: " + pBarY );
+			System.out.println(Math.sqrt(  Math.pow(pBarX-p2X,2) + Math.pow(pBarY-p2Y,2)));
+			
 
-			float[] iSectPoints = sphere_line_iSect(0, 0, 0,playBar.getPosX(), playBar.getPosY(), 0, 0, soundObject.getPosX(), soundObject.getPosY(), soundObject.getWidth());
-
+			float[] iSectPoints = sphere_line_iSect(p2X, p2Y, 0,pBarX, pBarY, 0, 0, soundObject.getPosX(), soundObject.getPosY(), soundObject.getWidth());
+			/*for(int i = 0; i<iSectPoints.length;i++){
+				System.out.println("iSectPoints[" + i + "]: "+ iSectPoints[i]);
+				
+			}*/
 			
 			if (iSectPoints[0]>0) {
 				for(int i = 0; i<iSectPoints.length;i++){
