@@ -8,14 +8,27 @@ import processing.core.PVector;
 
 public class ClockBar extends PlayBackBar{
 	
-	float clockAngle;
+	float oldClockAngle;
+	float someAngle;
+	
+	
+	public float getSomeAngle() {
+		return someAngle;
+	}
+
+
+	public void setSomeAngle(float someAngle) {
+		this.someAngle = someAngle;
+	}
+
+
 	public float getClockAngle() {
-		return clockAngle;
+		return oldClockAngle;
 	}
 
 
 	public void setClockAngle(float clockAngle) {
-		this.clockAngle = clockAngle;
+		this.oldClockAngle = clockAngle;
 	}
 
 
@@ -35,7 +48,7 @@ public class ClockBar extends PlayBackBar{
 			PlayBackType pbType, PApplet p) {
 		super(objPos, speed, angle, pbType, p);
 		// TODO Auto-generated constructor stub
-		clockAngle=0;
+		oldClockAngle=0;
 		//len=100;
 	}
 	
@@ -54,28 +67,28 @@ public class ClockBar extends PlayBackBar{
 		
 
 		
-		clockAngle=clockAngle+(float).01;
+		oldClockAngle=oldClockAngle+(float).01;
 		/*if(clockAngle>PConstants.TWO_PI){
 			clockAngle=0;
 		}*/
 		//DisplayAngleMouse();
-		float ox = (float)Math.sin(clockAngle);
-		float oy= (float) Math.cos(clockAngle);
+		float ox = (float)Math.sin(oldClockAngle);
+		float oy= (float) Math.cos(oldClockAngle);
 
 		PVector v = new PVector(ox, oy);
 		PVector dum = new PVector(1,0); //the x axis
 		float rawAngle = PVector.angleBetween(v, dum);
-		float someangle = rawAngle;
+		someAngle = rawAngle;
 		if (v.y < 0)
 		{
-			someangle = PConstants.TWO_PI - someangle;
+			someAngle = PConstants.TWO_PI - someAngle;
 		}
-
+		//System.out.println("someAngle: " + someAngle + " oldClockAngle: " + oldClockAngle);
 		p5.pushMatrix();
 		p5.translate(playbarPos.getPosX(), playbarPos.getPosY());
 		//p5.translate(initx, inity);
 		//p5.translate(fposx, fposy);
-		p5.rotate(someangle);
+		p5.rotate(someAngle);
 
 		p5.stroke(250, 200, 25, 100);
 		p5.strokeWeight(5);

@@ -48,14 +48,15 @@ public class Collision {
 			if(dR<len){
 				
 				//System.out.println("dR is " + dR);
-				float ang = temp.getClockAngle();
+				//float ang = temp.getClockAngle();
+				float ang = temp.getSomeAngle();
 				//System.out.println(ang);
-				int p2X = (int) Math.round((Math.cos(ang+Math.PI)*len) + pBarX);//the Math.PI is necessary but shoudl be fixed so you dotn have to do this
-				int p2Y = (int) Math.round((-Math.sin(ang+Math.PI)*len) + pBarY);
-				//System.out.println("p2X: " + p2X + " p2Y: " + p2Y + "...pBarX: " + pBarX + " pBarY: " + pBarY );//what are coordinates
+				int p2X = (int) Math.round((Math.cos(ang+Math.PI/2)*len) + pBarX);//the Math.PI is necessary but shoudl be fixed so you dotn have to do this
+				int p2Y = (int) Math.round((Math.sin(ang+Math.PI/2)*len) + pBarY);
+				System.out.println("p2X: " + p2X + " p2Y: " + p2Y + "...pBarX: " + pBarX + " pBarY: " + pBarY );//what are coordinates
 				//System.out.println(Math.sqrt(  Math.pow(pBarX-p2X,2) + Math.pow(pBarY-p2Y,2)));//just a length check
 				
-				float[] iSectPoints = sphere_line_iSect(p2X, p2Y, 0,pBarX, pBarY, 0, 0, sobjX, sobjY, soundObject.getWidth());
+				float[] iSectPoints = sphere_line_iSect(p2X, p2Y, pBarX, pBarY, sobjX, sobjY, soundObject.getWidth());
 				//System.out.println("iSectPoints[0]: "+ iSectPoints[0]);
 				/*for(int i = 0; i<iSectPoints.length;i++){
 				System.out.println("iSectPoints[" + i + "]: "+ iSectPoints[i]);
@@ -86,8 +87,8 @@ public class Collision {
 	 * line defined by points {x1;y1;z1} -> {x2;y2;z2} 
 	 * circle/sphere defined by center point at {x3;y3;z3} and radius r 
 	 **/
-	public static float[] sphere_line_iSect(int x1, int y1, int z1,int x2, int y2, int
-			z2,int x3, int y3, int z3, int r) {
+	public static float[] sphere_line_iSect(int x1, int y1,int x2, int y2, 
+			int x3, int y3, int r) {
 
 		
 
@@ -95,17 +96,16 @@ public class Collision {
 
 
 
-		float[] points=new float[7];
+		float[] points=new float[5];
 		//float a =  sq(x2 - x1) + sq(y2 - y1) + sq(z2 - z1);
-		float a =  (float) (Math.pow(x2-x1, 2) + Math.pow(y2-y1,2) + Math.pow(z2-z1,2));
+		float a =  (float) (Math.pow(x2-x1, 2) + Math.pow(y2-y1,2) );
 
-		float b =  2* ( (x2 - x1)*(x1 - x3) + (y2 - y1)*(y1 - y3) + (z2 -
-				z1)*(z1 - z3) ) ;
-		float c =  x3*x3 + y3*y3 + z3*z3 + x1*x1 + y1*y1 + z1*z1 - 2* (
-				x3*x1 + y3*y1 + z3*z1 ) - r*r ;
+		float b =  2* ( (x2 - x1)*(x1 - x3) + (y2 - y1)*(y1 - y3)  ) ;
+		float c =  x3*x3 + y3*y3  + x1*x1 + y1*y1  - 2* (
+				x3*x1 + y3*y1  ) - r*r ;
 		float i = b * b - 4 * a * c;
-		System.out.println("a: "+ a + " b: "+ b + " c: "+ c);
-		System.out.println("i: "+ i);
+		//System.out.println("a: "+ a + " b: "+ b + " c: "+ c);
+		//System.out.println("i: "+ i);
 
 		if ( i < 0.0 ) {
 			// no intersection
@@ -118,8 +118,9 @@ public class Collision {
 			float mu = -b/(2*a) ;
 			points[1] = x1 + mu*(x2-x1);
 			points[2] = y1 + mu*(y2-y1);
-			points[3] = z1 + mu*(z2-z1);
+			System.out.println("i: "+ i);
 			return(points);
+			
 
 		} else {
 			// two intersections
@@ -128,12 +129,17 @@ public class Collision {
 			float mu = (float)(-b + Math.sqrt( b*b - 4*a*c )) / (2*a);
 			points[1] = x1 + mu*(x2-x1);
 			points[2] = y1 + mu*(y2-y1);
-			points[3] = z1 + mu*(z2-z1);
 			// second intersection
 			mu = (float)(-b - Math.sqrt(b*b - 4*a*c )) / (2*a);
-			points[4] = x1 + mu*(x2-x1);
-			points[5] = y1 + mu*(y2-y1);
-			points[6] = z1 + mu*(z2-z1);
+			points[3] = x1 + mu*(x2-x1);
+			points[4] = y1 + mu*(y2-y1);
+			System.out.println("i: "+ i);
+			
+			System.out.println("point1: "+ points[1]);
+			System.out.println("point2: "+ points[2]);
+			System.out.println("point3: "+ points[3]);
+			System.out.println("point4: "+ points[4]);
+			
 			return(points);
 
 		}
