@@ -13,15 +13,14 @@ public class Collision {
 	 */
 	public static void collideCircle(SoundObject soundObject, PlayBackBar playBar){
 		if(!soundObject.getCollideState(playBar)) {
-			float objectX = (soundObject.getPosX()+(soundObject.getWidth()/2)) - playBar.getPosX();
-			float objectY = (soundObject.getPosY()+(soundObject.getHeight()/2)) - playBar.getPosY();
+			float objectX = (soundObject.getPosX()) - playBar.getPosX();
+			float objectY = (soundObject.getPosY()) - playBar.getPosY();
 
-			float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.getWidth()/2, 2)
-					+Math.pow(soundObject.getHeight()/2, 2))/4)+(playBar.getWidth()/2));
+			float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.getWidth()/3, 2)
+					+Math.pow(soundObject.getHeight()/3, 2)))+(playBar.getWidth()/2));
 
 			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
 				AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) Math.random()*2);
-				//soundObject.play();
 				soundObject.setCollideState(playBar, true);
 				soundObject.setCollide(true);
 				soundObject.setGetFrame(true);
