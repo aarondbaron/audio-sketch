@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="lib/Jar/tritonus_aos.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/tritonus_share.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/oscP5.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/OpenCV.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
