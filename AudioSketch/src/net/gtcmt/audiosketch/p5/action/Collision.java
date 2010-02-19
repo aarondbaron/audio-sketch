@@ -20,7 +20,7 @@ public class Collision {
 					+Math.pow(soundObject.getHeight()/3, 2)))+(playBar.getWidth()/2));
 
 			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
-				AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) Math.random()*2);
+				AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) (Math.random()*.01 +1));
 				soundObject.setCollideState(playBar, true);
 				soundObject.setCollide(true);
 				soundObject.setGetFrame(true);
