@@ -127,9 +127,10 @@ public class SoundObject {
 				getFrame=false;
 			}
 			float theta = (p5.frameCount*2) % MAX_DEGREE;
-			float size = (float) (2.0 - Math.abs((double) (((p5.frameCount-frame)*2) % MAX_DEGREE) / (MAX_DEGREE/2)));
+			//float size = (float) (2.0 - Math.abs((double) (((p5.frameCount-frame)*2) % MAX_DEGREE) / (MAX_DEGREE/2)));
 			p5.rotate((float) Math.toRadians(theta));
-			p5.scale(size, size);
+			float sfactor=(float).1;
+			p5.scale((float)(Math.random()*sfactor+1), (float)(Math.random()*sfactor+1));
 			timeOutRotate(p5);
 		}
 	}
@@ -139,7 +140,7 @@ public class SoundObject {
 	 * @param p5
 	 */
 	private void timeOutRotate(PApplet p5){
-		if(System.currentTimeMillis()  - startTime > 1500){
+		if(System.currentTimeMillis()  - startTime > 500){
 			isCollide = false;
 		}
 	}
