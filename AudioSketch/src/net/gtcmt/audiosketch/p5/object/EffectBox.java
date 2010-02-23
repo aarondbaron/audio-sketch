@@ -1,15 +1,8 @@
 package net.gtcmt.audiosketch.p5.object;
 
-import ddf.minim.AudioEffect;
-import ddf.minim.effects.BandPass;
-import ddf.minim.effects.HighPassSP;
-import ddf.minim.effects.LowPassFS;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.window.MusicalWindow;
-import net.gtcmt.audiosketch.sound.effect.Delay;
-import net.gtcmt.audiosketch.sound.effect.Distort;
-import net.gtcmt.audiosketch.sound.effect.Reverb;
 import net.gtcmt.audiosketch.sound.util.SndConstants.EffectType;
 import processing.core.PConstants;
 import processing.core.PFont;
@@ -86,16 +79,12 @@ public class EffectBox {
 	 * return effect
 	 * @return
 	 */
-	public AudioEffect effect(){
+	public void effect(){
 		switch(this.effType) {
-			case REVERB: return new Reverb();
-			case DISTORTION: return new Distort();
-			case DELAY: return new Delay((float)(0.2+0.3*Math.random()), (float)(0.5+0.2*Math.random()), 44100);
-			case LPF: return new LowPassFS((float) (60+500*Math.random()), 44100);
-			case HPF: return new HighPassSP((float) (60+2000*Math.random()), 44100);
-			case BPF: return new BandPass((float) (60+2000*Math.random()), (float) (0.01 + Math.random()), 44100);
+			//TODO implement this method
+		default:
+			return;
 		}
-		return null;
 	}
 
 	/*------------- Getter/Setter -----------------*/

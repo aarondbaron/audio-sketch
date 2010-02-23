@@ -1,7 +1,6 @@
 package net.gtcmt.audiosketch.network.client;
 
 import net.gtcmt.audiosketch.network.data.AudioSketchData;
-import net.gtcmt.audiosketch.network.data.MessageData;
 import net.gtcmt.audiosketch.network.util.MessageQueue;
 import net.gtcmt.audiosketch.util.LogMessage;
 
