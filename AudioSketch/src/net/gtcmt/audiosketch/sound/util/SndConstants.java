@@ -18,5 +18,5 @@ public class SndConstants {
 	public static final String[] EFFECT_NAME = {"Reverb","Distortion","Delay","Lowpass","Hipass","Bandpass"};
 	public static final String[] SOUND_NAME = {"buzz", "banjo", "ching", "guitar-elec", "guitar-classic", 
 		"clarinet","pop","sax","female","toy-piano","viola","zap"};
-	public static final String[] MIDI_NAME = {"C  ", "C#", "D  ", "D#", "E  ", "F  ", "F#", "G  ", "G#", "A  ", "A#", "B  "};
+	public static final String[] MIDI_NAME = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
 }

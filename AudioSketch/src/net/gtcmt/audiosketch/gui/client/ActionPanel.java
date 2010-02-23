@@ -25,8 +25,6 @@ import net.gtcmt.audiosketch.p5.util.P5Constants;
 public class ActionPanel extends JPanel {
 
 	private static final long serialVersionUID = -7169118764234746765L;
-	private JButton removeButton;
-	private Box box;
 	public JCheckBox playButton;
 	public JCheckBox editButton;
 	public JCheckBox effectButton;
@@ -35,23 +33,24 @@ public class ActionPanel extends JPanel {
 	
 	public ActionPanel(AudioSketchMainFrame mainFrame) {
 		this.mainFrame = mainFrame;
+		Box vBox = Box.createVerticalBox();
 		Box hBox = Box.createHorizontalBox();
 
-		createModeButtons();
-		add(box);
-		createBarAction();
-		add(box);
-		createRemoveButton();
-
-		hBox.add(removeButton);
-		add(hBox);
+		
+		vBox.add(createModeButtons());
+		
+		hBox.add(createBarAction());
+		hBox.add(createRemoveButton());
+		vBox.add(hBox);
+		
+		add(vBox);
 	}
 
 	/**
 	 * Create remove sound object button
 	 */
-	private void createRemoveButton() {
-		removeButton = new JButton("Remove");
+	private JButton createRemoveButton() {
+		JButton removeButton = new JButton("Remove");
 		removeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(playButton.isSelected() || editButton.isSelected()) 	//If play mode or edit mode
@@ -60,10 +59,15 @@ public class ActionPanel extends JPanel {
 					mainFrame.getClient().sendData(new AudioSketchData(MsgType.REMOVE_EFFECT, new RemoveEffectData(), mainFrame.getUserName()));
 			}
 		});
+		return removeButton;
 	}
 
-	private void createBarAction() {
-		box = Box.createHorizontalBox();
+	/**
+	 * Create drop down menu to choose playback bar type
+	 * @return
+	 */
+	private Box createBarAction() {
+		Box box = Box.createHorizontalBox();
 
 		barMode = new JComboBox(P5Constants.BAR_TYPE);
 		barMode.setSelectedIndex(0);
@@ -76,10 +80,11 @@ public class ActionPanel extends JPanel {
 		});
 
 		box.add(barMode);
+		return box;
 	}
 
-	private void createModeButtons() {
-		box = Box.createHorizontalBox();
+	private Box createModeButtons() {
+		Box box = Box.createHorizontalBox();
 
 		playButton = new JCheckBox();
 		playButton.setSelected(true);
@@ -119,9 +124,12 @@ public class ActionPanel extends JPanel {
 				}
 			}
 		});
+		
 		box.add(effectButton);
 		label = new JLabel("Effect");
 		box.add(label);
+		
+		return box;
 	}
 	
 	/**
@@ -147,21 +155,6 @@ public class ActionPanel extends JPanel {
 	}
 
 	/*------------------- Getter/Setter ----------------*/
-	public JButton getRemoveButton() {
-		return removeButton;
-	}
-
-	public void setRemoveButton(JButton removeButton) {
-		this.removeButton = removeButton;
-	}
-
-	public Box getBox() {
-		return box;
-	}
-
-	public void setBox(Box box) {
-		this.box = box;
-	}
 
 	public JCheckBox getPlayButton() {
 		return playButton;

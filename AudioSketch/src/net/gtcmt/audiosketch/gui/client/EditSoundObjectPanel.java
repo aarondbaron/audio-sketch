@@ -15,7 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import net.gtcmt.audiosketch.gui.util.GUIConstants;
 import net.gtcmt.audiosketch.network.client.Client;
 import net.gtcmt.audiosketch.network.data.AudioSketchData;
 import net.gtcmt.audiosketch.network.data.SoundObjectData;
@@ -65,45 +64,28 @@ public class EditSoundObjectPanel extends JPanel {
 		sndType = SndType.BUZZ;
 		
 		Box vBox = Box.createVerticalBox();
-		Box hBox = Box.createHorizontalBox();
-
-		//Shape and color combo box are created and added
-		createObjectStateChooser(hBox);
-		hBox.setPreferredSize(new Dimension(GUIConstants.EDITPANEL_WIDTH, 25));
-		vBox.add(hBox);
 		
 		//Create object window
 		objectWindow = new ObjectWindow(this);
 		JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(GUIConstants.EDITPANEL_WIDTH, GUIConstants.EDITPANEL_HEIGHT-50));
 		panel.add(objectWindow);
 		vBox.add(panel);
-		
-		//Rigid area
-		vBox.add(Box.createRigidArea(new Dimension(0, 5)));
 
-		//Create and add config panel
-		hBox = Box.createHorizontalBox();
-		createConfigLabel(hBox);
-		hBox.setPreferredSize(new Dimension(GUIConstants.EDITPANEL_WIDTH, 20));
-		vBox.add(hBox);
-		
-		hBox = Box.createHorizontalBox();
-		createConfig(hBox);
-		hBox.setPreferredSize(new Dimension(GUIConstants.EDITPANEL_WIDTH, 25));
-		vBox.add(hBox);
+		vBox.add(createObjectStateChooser());		
+		vBox.add(createSoundConfig());
+		vBox.add(createButtons());
 		
 		//Add the whole thing to panel
 		add(vBox);
-		repaint();
-		validate();
 	}
 	
 	/**
 	 * Shape chooser is a drop down menu  that allows user to select 
 	 * what kind of shape to use.
 	 */
-	private void createObjectStateChooser(Box hBox){
+	private Box createObjectStateChooser(){
+		Box hBox = Box.createHorizontalBox();
+		
 		JLabel label = new JLabel("Color:");
 		hBox.add(label);
 		
@@ -117,6 +99,8 @@ public class EditSoundObjectPanel extends JPanel {
 		});
 		hBox.add(colorChooser);
 		
+		hBox.add(Box.createHorizontalGlue());
+		
 		label = new JLabel("Shape:");
 		hBox.add(label);
 		
@@ -129,33 +113,27 @@ public class EditSoundObjectPanel extends JPanel {
 			}
 		});
 		hBox.add(shapeChooser);
+		
+		return hBox;
 	}
 
 	/**
 	 * Labels for configuration panel
 	 */
-	private void createConfigLabel(Box hBox){
-		JLabel label = new JLabel("Midi Note:");
+	private Box createSoundConfig(){
+		Box hBox = Box.createHorizontalBox();
+		JLabel label = new JLabel("Pitch:");
 		hBox.add(label);
-		hBox.add(Box.createRigidArea(new Dimension(10, 20)));
-		label = new JLabel("Instrument:");
-		hBox.add(label);
-		hBox.add(Box.createRigidArea(new Dimension(160, 20)));
-	}
-	
-	/**
-	 * Configuration panels. Things like midi note, sound name, play, and add button are created here
-	 */
-	private void createConfig(Box hBox){
+		
 		String[] midiNote = new String[SndConstants.MAX_MIDI-SndConstants.MIN_MIDI+1];
 		for(int i=SndConstants.MIN_MIDI; i<=SndConstants.MAX_MIDI;i++){
-			midiNote[i-SndConstants.MIN_MIDI] = SndConstants.MIDI_NAME[(i-SndConstants.MIN_MIDI)%12] +" "+ String.valueOf(i);
+			midiNote[i-SndConstants.MIN_MIDI] = SndConstants.MIDI_NAME[(i-SndConstants.MIN_MIDI)%12] +"-"+ String.valueOf(i);
 		}
 		
 		//Midi note combo box
 		midiNoteChooser = new JComboBox(midiNote);
 		midiNoteChooser.setSelectedIndex(57);
-		midiNoteChooser.setPreferredSize(new Dimension(60, 25));
+		midiNoteChooser.setPreferredSize(new Dimension(85, 25));
 		midiNoteChooser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					JComboBox box = (JComboBox) e.getSource();
@@ -164,9 +142,14 @@ public class EditSoundObjectPanel extends JPanel {
 		});		
 		hBox.add(midiNoteChooser);
 		
+		hBox.add(Box.createRigidArea(new Dimension(10,0)));
+		
+		label = new JLabel("Instrument:");
+		hBox.add(label);
+		
 		//Sound name combo box
 		soundChooser = new JComboBox(SndConstants.SOUND_NAME);
-		soundChooser.setPreferredSize(new Dimension(70, 25));
+		soundChooser.setPreferredSize(new Dimension(100, 25));
 		soundChooser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					JComboBox box = (JComboBox) e.getSource();
@@ -174,6 +157,18 @@ public class EditSoundObjectPanel extends JPanel {
 			}
 		});
 		hBox.add(soundChooser);
+		
+		hBox.add(Box.createHorizontalGlue());
+		
+		return hBox;
+	}
+	
+	/**
+	 * Configuration panels. Things like midi note, sound name, play, and add button are created here
+	 */
+	private Box createButtons(){
+		Box hBox = Box.createHorizontalBox();
+		hBox.add(Box.createHorizontalGlue());
 		
 		//Preview sound
 		playButton = new JButton("Play");
@@ -200,7 +195,7 @@ public class EditSoundObjectPanel extends JPanel {
 		
 		//Add button to add it to musical window
 		addButton = new JButton("Add");
-		hBox.setPreferredSize(new Dimension(GUIConstants.EDITPANEL_WIDTH, 30));
+		//hBox.setPreferredSize(new Dimension(GUIConstants.EDITPANEL_WIDTH, 30));
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Send message to server
@@ -212,6 +207,8 @@ public class EditSoundObjectPanel extends JPanel {
 			}
 		});
 		hBox.add(addButton);
+		
+		return hBox;
 	}
 	
 	/*---------------------- Getter/Setter -------------------*/

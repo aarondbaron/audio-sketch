@@ -2,18 +2,16 @@ package net.gtcmt.audiosketch.gui.util;
 
 public class GUIConstants {
 
-	public static final int WINDOW_WIDTH = 510;
-	public static final int WINDOW_HEIGHT = 605;
-	public static final int FRAME_WIDTH = 860;
-	public static final int FRAME_HEIGHT = 700;
-	public static final int EDITPANEL_WIDTH = 310;
-	public static final int EDITPANEL_HEIGHT = 310;
-	public static final int CHAT_WIDTH = 300;
+	public static final int WINDOW_WIDTH = 800;
+	public static final int WINDOW_HEIGHT = 600;
+	public static final int FRAME_WIDTH = 1150;
+	public static final int FRAME_HEIGHT = 630;
+	public static final int EDITPANEL_WIDTH = 300;
+	public static final int EDITPANEL_HEIGHT = 300;
+	public static final int ACTIONPANEL_WIDTH = 300;
+	public static final int ACTIONPANEL_HEIGHT = 200;
 	
-	//Chat window
-	public static final int SCROLL_HEIGHT=300;
-	public static final int TEXT_HEIGHT=30;
-	public static final int ROW = 100;
-	public static final int COLUM = 100;
 	
+	//Edit Object panel
+	public static final int EDITAREA_HEIGHT = 50;
 }

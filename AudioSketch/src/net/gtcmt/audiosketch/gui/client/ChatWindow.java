@@ -26,9 +26,17 @@ import net.gtcmt.audiosketch.network.data.AudioSketchData;
 import net.gtcmt.audiosketch.network.data.ChatData;
 import net.gtcmt.audiosketch.network.util.MsgType;
 
+/**
+ * Displaying and sending message across network.
+ * @author akito
+ * @deprecated
+ */
 public class ChatWindow extends JPanel {
 
 	private static final long serialVersionUID = -8842476654319423858L;
+	private static final int CHAT_WIDTH = 300;
+	private static final int SCROLL_HEIGHT=300;
+	private static final int TEXT_HEIGHT=30;
 	private AudioSketchMainFrame mainFrame;
 	private JScrollPane scrollPane;
 	public JTextPane textArea;
@@ -51,9 +59,9 @@ public class ChatWindow extends JPanel {
 		setTextArea();
 		scrollPane = new JScrollPane(textArea);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setPreferredSize(new Dimension(GUIConstants.CHAT_WIDTH, GUIConstants.SCROLL_HEIGHT));
+		scrollPane.setPreferredSize(new Dimension(CHAT_WIDTH, SCROLL_HEIGHT));
 		Box box = Box.createVerticalBox();
-		box.setPreferredSize(new Dimension(GUIConstants.EDITPANEL_WIDTH, GUIConstants.SCROLL_HEIGHT));
+		box.setPreferredSize(new Dimension(GUIConstants.EDITPANEL_WIDTH, SCROLL_HEIGHT));
 		
 		box.add(scrollPane);
 	
@@ -83,7 +91,7 @@ public class ChatWindow extends JPanel {
 	 */
 	private void setTextField(){
 		textField = new JTextField(500);
-		textField.setPreferredSize(new Dimension(GUIConstants.EDITPANEL_WIDTH, GUIConstants.TEXT_HEIGHT));
+		textField.setPreferredSize(new Dimension(GUIConstants.EDITPANEL_WIDTH, TEXT_HEIGHT));
 		textField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chatAction();
