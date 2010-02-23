@@ -17,6 +17,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
 import net.gtcmt.audiosketch.network.server.ServerNetwork;
+import net.gtcmt.audiosketch.util.LogMessage;
 
 /**
  * Log window is singleton class in order to log
@@ -92,13 +93,18 @@ public class LogWindow extends JFrame{
 	}
 	
 	public void append(Color c, String s) { // better implementation--uses StyleContext
-		StyleContext sc = StyleContext.getDefaultStyleContext();
-		AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+		if(s != null){
+			StyleContext sc = StyleContext.getDefaultStyleContext();
+			AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 
-		int len = textArea.getDocument().getLength(); // same value as getText().length();
-		textArea.setCaretPosition(len);  // place caret at the end (with no selection)
-		textArea.setCharacterAttributes(aset, false);
-		textArea.replaceSelection(s); // there is no selection, so inserts at caret
+			int len = textArea.getDocument().getLength(); // same value as getText().length();
+			textArea.setCaretPosition(len);  // place caret at the end (with no selection)
+			textArea.setCharacterAttributes(aset, false);
+			textArea.replaceSelection(s); // there is no selection, so inserts at caret
+		}
+		else{
+			LogMessage.err("String is null");
+		}
 	}
 	
 	public static LogWindow getLogWindow(){

@@ -41,6 +41,7 @@ public class AudioSketchProtocol {
 	//TODO: think about what needs to get stored on server side to make things easier for clients
 	public void processClientInput(AudioSketchData asData, ClientMessageHandler clientHandler) {
 		clientHandler.getServer().broadCastEvent(asData);
+		LogMessage.serverInfo("Broadcasting message");
 	}
 	
 	//TODO synch
