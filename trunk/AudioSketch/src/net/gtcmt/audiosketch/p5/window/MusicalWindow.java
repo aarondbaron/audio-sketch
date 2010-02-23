@@ -36,7 +36,6 @@ import net.gtcmt.audiosketch.sound.util.SndConstants.EffectType;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PFont;
-import ddf.minim.EffectsChain;
 
 /**
  * This is the main window where all the action user makes happen such
@@ -173,10 +172,7 @@ public class MusicalWindow extends PApplet {
 	 */
 	//TODO effect box is broken
 	private synchronized void addEffects(LinkedList<SoundObject>soundObject, LinkedList<EffectBox> effectBox){
-		EffectsChain chain = new EffectsChain();
-		for(int i=0;i<effectBox.size();i++)
-			if(effectBox.get(i).bound(soundObject.getLast()))	
-				chain.add(effectBox.get(i).effect());
+		//TODO implement or junk this method
 	}
 
 	/**

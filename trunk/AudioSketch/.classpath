@@ -3,15 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/Jar/core.jar"/>
-	<classpathentry kind="lib" path="lib/Jar/jl1.0.jar"/>
-	<classpathentry kind="lib" path="lib/Jar/jsminim.jar"/>
-	<classpathentry kind="lib" path="lib/Jar/minim-spi.jar"/>
-	<classpathentry kind="lib" path="lib/Jar/minim.jar"/>
-	<classpathentry kind="lib" path="lib/Jar/mp3spi1.9.4.jar"/>
-	<classpathentry kind="lib" path="lib/Jar/tritonus_aos.jar"/>
-	<classpathentry kind="lib" path="lib/Jar/tritonus_share.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/oscP5.jar"/>
-	<classpathentry kind="lib" path="lib/Jar/OpenCV.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/motej-library-0.9.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/bluecove-2.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/slf4j-api-1.5.10.jar"/>

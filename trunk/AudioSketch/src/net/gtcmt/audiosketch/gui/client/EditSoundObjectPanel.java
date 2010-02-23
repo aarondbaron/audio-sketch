@@ -20,22 +20,15 @@ import net.gtcmt.audiosketch.network.client.Client;
 import net.gtcmt.audiosketch.network.data.AudioSketchData;
 import net.gtcmt.audiosketch.network.data.SoundObjectData;
 import net.gtcmt.audiosketch.network.util.MsgType;
+import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
-import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectColorType;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectShapeType;
 import net.gtcmt.audiosketch.p5.window.ObjectWindow;
-import net.gtcmt.audiosketch.sound.synth.Blip;
-import net.gtcmt.audiosketch.sound.synth.Buzz;
-import net.gtcmt.audiosketch.sound.synth.InharmonicBell;
-import net.gtcmt.audiosketch.sound.synth.RandomSig;
-import net.gtcmt.audiosketch.sound.synth.Ring;
-import net.gtcmt.audiosketch.sound.synth.Shir;
 import net.gtcmt.audiosketch.sound.util.AudioControl;
 import net.gtcmt.audiosketch.sound.util.SndConstants;
 import net.gtcmt.audiosketch.sound.util.SndConstants.SndType;
-import ddf.minim.Minim;
 
 /**
  * This panel allows you to edit shape of sound object.

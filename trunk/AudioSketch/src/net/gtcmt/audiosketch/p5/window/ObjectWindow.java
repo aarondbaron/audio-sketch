@@ -9,8 +9,6 @@ import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.util.Constants;
 import processing.core.PApplet;
 import processing.core.PShape;
-import ddf.minim.AudioOutput;
-import ddf.minim.Minim;
 
 public class ObjectWindow  extends PApplet {
 
