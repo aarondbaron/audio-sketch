@@ -10,10 +10,13 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import net.gtcmt.audiosketch.network.client.Client;
+import net.gtcmt.audiosketch.network.server.ServerNetwork;
+import net.gtcmt.audiosketch.util.LogMessage;
 
 /**
  * Welcome panel is shown when the application starts up.
@@ -26,24 +29,21 @@ public class WelcomePanel extends JFrame {
 	private static final long serialVersionUID = -3481428634705195152L;
 	private String userName="Anonymous";		//user name
 	private JTextField text;					//User name field
+	private JTextField ipAddress;
 	private boolean isNameEntered;
-
+	private Client client;
 
 	public WelcomePanel(){
 
 		isNameEntered = false;
 		
-		JPanel panel = new JPanel();
-		
 		Box vBox = Box.createVerticalBox();
-		Box hBox = Box.createHorizontalBox();
-		hBox.setPreferredSize(new Dimension(300, 30));
 		
 		JLabel label = new JLabel("Welcome to MCollab!!!");
 		vBox.add(label);
-		label = new JLabel("Type in your name to get started.");
-		vBox.add(label);
 		
+		Box hBox = Box.createHorizontalBox();
+		hBox.add(new JLabel("  User Name:  "));
 		//initialize and add text box
 		text = new JTextField(userName, 50);
 		text.setPreferredSize(new Dimension(100, 30));
@@ -52,7 +52,21 @@ public class WelcomePanel extends JFrame {
 				action();
 			}
 		});
+		
 		hBox.add(text);
+		vBox.add(hBox);
+		
+		hBox = Box.createHorizontalBox();
+		hBox.add(new JLabel("  IP Address:  "));
+		ipAddress = new JTextField("localhost", 50);
+		ipAddress.setPreferredSize(new Dimension(100, 30));
+		ipAddress.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				action();
+			}
+		});
+		hBox.add(ipAddress );
+		vBox.add(hBox);
 		
 		//Initialize and add button
 		JButton button = new JButton("Start");
@@ -61,17 +75,17 @@ public class WelcomePanel extends JFrame {
 				action();
 			}
 		});
+		
+		hBox = Box.createHorizontalBox();
+		hBox.add(Box.createHorizontalGlue());
 		hBox.add(button);
-		panel.add(hBox);
+		vBox.add(hBox);
 		
 		//Add them all up in a frame
-		vBox.add(panel);
-		panel = new JPanel();
-		panel.add(vBox);
-		add(panel);
+		add(vBox);
 		
 		//Configure Frame
-		setSize(300, 100);
+		setSize(300, 125);
 		setLocation(200, 200);
 		setVisible(true);
 	}
@@ -96,9 +110,28 @@ public class WelcomePanel extends JFrame {
 	 * Action commited when button or enter key is pressed
 	 */
 	private void action(){
-		userName = text.getText();
-		dispose();
-		isNameEntered = true;
+		if(client == null || !client.isConnected()){
+			if(ipAddress.getText() == "" || ipAddress.getText() == null){
+				LogMessage.err("IP Address field is empty");
+				return;
+			}
+			else if(!ipAddress.getText().matches("^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$") 
+					&& !ipAddress.getText().equalsIgnoreCase("localhost")){
+				LogMessage.err("Invalid ip address");
+				return;
+			}
+			if(text.getText() == "" || text.getText() == null){
+				LogMessage.err("Name field is empty");
+				return;
+			}
+
+			//Initialize client network
+			client = new Client(ipAddress.getText(), ServerNetwork.DEFAULT_PORT);
+			client.start();
+			userName = text.getText();
+			dispose();
+			isNameEntered = true;
+		}
 	}
 	
 	/**
@@ -120,5 +153,13 @@ public class WelcomePanel extends JFrame {
 			}
 		});
 		panel.validate();
+	}
+	
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 }

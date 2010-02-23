@@ -5,7 +5,6 @@ import net.gtcmt.audiosketch.gui.client.WelcomePanel;
 import net.gtcmt.audiosketch.network.client.Client;
 import net.gtcmt.audiosketch.network.data.AudioSketchData;
 import net.gtcmt.audiosketch.network.data.LoginData;
-import net.gtcmt.audiosketch.network.server.ServerNetwork;
 import net.gtcmt.audiosketch.network.util.MsgType;
 import net.gtcmt.audiosketch.sound.util.AudioControl;
 import net.gtcmt.audiosketch.util.LogMessage;
@@ -17,20 +16,14 @@ import net.gtcmt.audiosketch.util.LogMessage;
  */
 public class AudioSketchClientApp {
 
-	private static final long serialVersionUID = 1341314636999597438L;
-	private static String ADDRESS="localhost";	//set server address
-	public Client client;						// client network 
+	private static final long serialVersionUID = 1341314636999597438L; 
 
 	/**
 	 * Constructor for starting the application
 	 * @param userName			user name who uses the app
 	 */
-	public AudioSketchClientApp(String userName) {
-		
-		//Initialize client network
-		client = new Client(ADDRESS, ServerNetwork.DEFAULT_PORT);
-		client.start();
-		
+	public AudioSketchClientApp(String userName, Client client) {
+			
 		//Get p5 to init
 		AudioControl.getAudioCtrl();
 		
@@ -68,6 +61,6 @@ public class AudioSketchClientApp {
 		} 
 		
 		//Start the main app after name is typed in
-		new AudioSketchClientApp(panel.getUserName());
+		new AudioSketchClientApp(panel.getUserName(), panel.getClient());
 	}
 }
