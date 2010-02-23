@@ -43,7 +43,7 @@ public class ObjectWindow  extends PApplet {
 	 * Set up p5 canvas
 	 */
 	public void setup(){
-		this.size(GUIConstants.EDITPANEL_WIDTH-50, GUIConstants.EDITPANEL_HEIGHT-50);
+		this.size(GUIConstants.EDITPANEL_WIDTH, GUIConstants.EDITPANEL_HEIGHT-GUIConstants.EDITAREA_HEIGHT);
 		this.smooth();
 	}
 

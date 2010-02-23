@@ -28,12 +28,18 @@ public class AudioSketchMainFrame extends JFrame {
 
 	private static final long serialVersionUID = -454422848366277633L;
 	private String userName;
-	private ChatWindow chat;
 	private ActionPanel actionPanel;
 	private MusicalWindow musicalWindow;
 	private EditSoundObjectPanel  editPanel;
 	protected Client client;
 	
+	/**
+	 * Constructor for starting audience view
+	 * @param client
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	public AudioSketchMainFrame(Client client) throws UnknownHostException, IOException, InterruptedException{
 		super("Audience View");
 		
@@ -69,7 +75,7 @@ public class AudioSketchMainFrame extends JFrame {
 	}
 	
 	/**
-	 * Constructor for starting main gui panel
+	 * Constructor for starting main client gui panel
 	 * @param app
 	 * @throws UnknownHostException
 	 * @throws IOException
@@ -105,8 +111,8 @@ public class AudioSketchMainFrame extends JFrame {
 		setSize(GUIConstants.FRAME_WIDTH, GUIConstants.FRAME_HEIGHT);
 		setLocation(0, 0);
 		setVisible(true);
-		repaint();
 		validate();
+		repaint();
 	}
 	
 	/**
@@ -117,7 +123,6 @@ public class AudioSketchMainFrame extends JFrame {
 	 * @throws InterruptedException
 	 */
 	private void setupGUI() throws UnknownHostException, IOException, InterruptedException {
-		JPanel mainPanel = new JPanel();
 		Box hBox = Box.createHorizontalBox();
 		Box vBox = Box.createVerticalBox();
 		
@@ -125,41 +130,25 @@ public class AudioSketchMainFrame extends JFrame {
 		musicalWindow = new MusicalWindow(this);
 		JPanel panel = new JPanel();
 		panel.add(musicalWindow);
-		vBox.add(panel);
-		
-		//Horizontal separator
-		vBox.add(new JSeparator(SwingConstants.HORIZONTAL));
-		
-		//Action Panel
-		actionPanel = new ActionPanel(this);
-		panel = new JPanel();
-		panel.add(actionPanel);
-		vBox.add(panel);	
-		hBox.add(vBox);
-		
+		hBox.add(panel);
+						
 		//Vertical seperator
 		hBox.add(new JSeparator(SwingConstants.VERTICAL));
 		
 		//Object Editing Panel
 		editPanel = new EditSoundObjectPanel(this);
-		panel = new JPanel();
-		panel.add(editPanel);
-		vBox = Box.createVerticalBox();
-		vBox.add(panel);
+		vBox.add(editPanel);
 		
 		//Horizontal seperator
 		vBox.add(new JSeparator(SwingConstants.HORIZONTAL));
-		
-		//Chat Panel
-		chat = new ChatWindow(this);
-		panel = new JPanel();
-		panel.add(chat);
-		vBox.add(panel);
+
+		//Action Panel
+		actionPanel = new ActionPanel(this);
+		vBox.add(actionPanel);	
 
 		//Add to frame
 		hBox.add(vBox);		
-		mainPanel.add(hBox);
-		add(mainPanel);
+		add(hBox);
 	}
 	
 	
@@ -172,9 +161,6 @@ public class AudioSketchMainFrame extends JFrame {
 		
 		//Object Editing Panel
 		editPanel = new EditSoundObjectPanel(this);
-		
-		//Chat Panel
-		chat = new ChatWindow(this);
 
 	}
 	
@@ -190,14 +176,6 @@ public class AudioSketchMainFrame extends JFrame {
 
 	public void setMusicalWindow(MusicalWindow musicalWindow) {
 		this.musicalWindow = musicalWindow;
-	}
-	
-	public ChatWindow getChatWindow() {
-		return chat;
-	}
-
-	public void setChatWindow(ChatWindow chat) {
-		this.chat = chat;
 	}
 	
 	public Client getClient() {

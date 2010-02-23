@@ -7,6 +7,7 @@ import net.gtcmt.audiosketch.network.data.AudioSketchData;
 import net.gtcmt.audiosketch.network.data.LoginData;
 import net.gtcmt.audiosketch.network.server.ServerNetwork;
 import net.gtcmt.audiosketch.network.util.MsgType;
+import net.gtcmt.audiosketch.sound.util.AudioControl;
 import net.gtcmt.audiosketch.util.LogMessage;
 
 /**
@@ -29,6 +30,9 @@ public class AudioSketchClientApp {
 		//Initialize client network
 		client = new Client(ADDRESS, ServerNetwork.DEFAULT_PORT);
 		client.start();
+		
+		//Get p5 to init
+		AudioControl.getAudioCtrl();
 		
 		AudioSketchMainFrame mainFrame = null;
 		//Initialize gui
