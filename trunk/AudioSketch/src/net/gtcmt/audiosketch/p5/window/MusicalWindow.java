@@ -303,7 +303,8 @@ public class MusicalWindow extends PApplet {
 				
 				//Check for collision
 				for(int j=0;j<soundObject.size();j++){
-					Collision.collideCircle(soundObject.get(j), playBackBar.get(i));
+					Collision.collideBar(soundObject.get(j), playBackBar.get(i));
+					//Collision.collideClockBar(soundObject.get(j), playBackBar.get(i));
 				}
 				
 				if((playBackBar.get(i).getPosX() < 0 && playBackBar.get(i).getPosY() < 0) 

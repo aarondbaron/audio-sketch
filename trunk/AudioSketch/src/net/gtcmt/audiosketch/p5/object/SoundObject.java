@@ -33,6 +33,8 @@ public class SoundObject {
 	private boolean isCollide;
 	private boolean getFrame;
 	private long frame=0;
+	private float updateStep=(float)0.0;
+	//private float updateStep2=(float)0.0;
 	//private
 	//sound name, pitch, filter type, cutoff, q, center freq, gain, effect type, effect on/off
 	
@@ -106,20 +108,67 @@ public class SoundObject {
 	public void draw(PApplet p5){
 		p5.pushMatrix();
 		p5.translate(objPos.getPosX(), objPos.getPosY());
-		rotate(p5);
+		//rotateAndJitter(p5);		
+
+		
 		p5.strokeWeight(5);
 		p5.fill(0, 0, 0, 0);
 		p5.stroke(color[0], color[1], color[2], 200);
 		p5.shapeMode(PConstants.CENTER);
 		p5.shape(image, 0, 0, objSize.getWidth(), objSize.getHeight());
+		
+		
+		//setup for spawnMultiple
+		float rotateRate = (float).007;
+		float translateParam = (float) 5;
+		float sfactorParam = (float) (1.0 + .01);
+		int numShapes = 10;
+		spawnMultiple(p5,numShapes,rotateRate, translateParam,sfactorParam);
+		
+		
 		p5.popMatrix();
+	}
+
+	private void spawnMultiple(PApplet p5, float numShapes, float rotateRate, float translateParam, float sfactorParam) {
+		// TODO Auto-generated method stub
+		
+		if(isCollide){
+			if(getFrame){
+				frame = p5.frameCount;
+				getFrame=false;
+			}
+			//image.setVisible(false);
+			
+			//float theta = (p5.frameCount*2) % MAX_DEGREE;
+			//float size = (float) (2.0 - Math.abs((double) (((p5.frameCount-frame)*2) % MAX_DEGREE) / (MAX_DEGREE/2)));
+			//p5.rotate((float) Math.toRadians(theta));
+			
+			updateStep = updateStep + rotateRate;
+			
+			//updateStep2= updateStep2+ translateRate;
+			
+
+			for (int i=0; i<numShapes;i++){
+				
+				p5.rotate(updateStep);
+				p5.translate((float) (translateParam*Math.cos(updateStep)),(float) (translateParam*Math.cos(updateStep)));
+				p5.scale((float)(sfactorParam), (float)(sfactorParam));
+				//p5.scale((float)(sfactorParam*Math.cos(updateStep)+.00000001), (float)(sfactorParam*Math.cos(updateStep)+.00000001));
+				p5.shape(image, 0, 0, objSize.getWidth(), objSize.getHeight());
+
+			}
+
+			float timeOutMS=1000;
+			timeOut(p5,timeOutMS);
+		}
+		
 	}
 
 	/**
 	 * Rotate sound object
 	 * @param p5
 	 */
-	private void rotate(PApplet p5){
+	private void rotateAndJitter(PApplet p5){
 		//TODO isCollider no longer relevant?
 		if(isCollide){
 			if(getFrame){
@@ -131,17 +180,21 @@ public class SoundObject {
 			p5.rotate((float) Math.toRadians(theta));
 			float sfactor=(float).1;
 			p5.scale((float)(Math.random()*sfactor+1), (float)(Math.random()*sfactor+1));
-			timeOutRotate(p5);
+			timeOut(p5, (float) (500) );
 		}
 	}
+	
+	
 	
 	/**
 	 * Amount of time sound object will rotate
 	 * @param p5
+	 * @param timeOutMS 
 	 */
-	private void timeOutRotate(PApplet p5){
-		if(System.currentTimeMillis()  - startTime > 500){
+	private void timeOut(PApplet p5, float timeOutMS){
+		if(System.currentTimeMillis()  - startTime > timeOutMS){
 			isCollide = false;
+			//image.setVisible(true);
 		}
 	}
 
