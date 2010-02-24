@@ -1,5 +1,10 @@
 package net.gtcmt.audiosketch.p5.object.playbar;
 
+import java.util.LinkedList;
+
+import net.gtcmt.audiosketch.p5.action.Collision;
+import net.gtcmt.audiosketch.p5.object.SoundObject;
+import net.gtcmt.audiosketch.p5.util.P5Math;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
 import processing.core.PApplet;
@@ -19,6 +24,24 @@ public class RadialBar extends PlayBackBar {
 		p5.fill(0, 0, 0, 0);
 		p5.ellipse(playbarPos.getPosX(), playbarPos.getPosY(), playbarSize.getWidth(), playbarSize.getHeight());
 		playbarSize.setSize(((int) (playbarSize.getWidth()+speed)), ((int) (playbarSize.getHeight()+speed)));
+	}
+
+	@Override
+	public boolean checkState(LinkedList<SoundObject> soundObject) {
+		//Check for collision
+		for(int j=0;j<soundObject.size();j++){
+			Collision.collideCircle(soundObject.get(j), this);
+		}
+		
+		// remove the radial playBar when it is out of the window
+		if(getWidth()/2 > (P5Math.compareDist(this.getInitX(), this.getInitY(), p5.width, p5.height) + 100)) {
+			for(int j=0;j<soundObject.size();j++){
+				soundObject.get(j).removeCollideState(this);
+			}
+			return true;
+		}
+		
+		return false;
 	}
 
 }
