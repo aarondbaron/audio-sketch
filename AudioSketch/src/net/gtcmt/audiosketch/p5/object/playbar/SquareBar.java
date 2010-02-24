@@ -30,7 +30,7 @@ public class SquareBar extends PlayBackBar {
 		}
 		
 		p5.strokeWeight(10);
-		p5.stroke(255, strokeParam, 255, 200);
+		p5.stroke(255-strokeParam, strokeParam, 255, 200);
 		p5.fill(0, 0, 0, 0);
 		p5.rect(playbarPos.getPosX(), playbarPos.getPosY(), playbarSize.getWidth(), playbarSize.getHeight());
 		playbarSize.setSize(((int) (playbarSize.getWidth()+speed)), ((int) (playbarSize.getHeight()+speed)));

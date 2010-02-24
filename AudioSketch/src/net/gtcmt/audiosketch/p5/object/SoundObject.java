@@ -147,12 +147,13 @@ public class SoundObject {
 			
 			//updateStep2= updateStep2+ translateRate;
 			
-
+			
 			for (int i=0; i<numShapes;i++){
 				
 				p5.rotate(updateStep);
 				p5.translate((float) (translateParam*Math.cos(updateStep)),(float) (translateParam*Math.cos(updateStep)));
 				p5.scale((float)(sfactorParam), (float)(sfactorParam));
+				//p5.stroke(color[0] , color[1], color[2], 200);
 				//p5.scale((float)(sfactorParam*Math.cos(updateStep)+.00000001), (float)(sfactorParam*Math.cos(updateStep)+.00000001));
 				p5.shape(image, 0, 0, objSize.getWidth(), objSize.getHeight());
 

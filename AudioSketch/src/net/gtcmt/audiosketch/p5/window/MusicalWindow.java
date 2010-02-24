@@ -267,6 +267,15 @@ public class MusicalWindow extends PApplet {
 					Collision.collideSquare(soundObject.get(j), playBackBar.get(i));
 				}
 				
+				// remove the radial playBar when it is out of the window
+				/*if(playBackBar.get(i).getWidth()/2 > (P5Math.compareDist(playBackBar.get(i).getInitX(), playBackBar.get(i).getInitY(), this.width, this.height) + 100)) {
+					for(int j=0;j<soundObject.size();j++){
+						soundObject.get(j).removeCollideState(playBackBar.get(i));
+					}
+					playBackBar.remove(i);
+				}*/
+				
+				//this would be for SquareBar2 but keep for now
 				if(playBackBar.get(i).getWidth() > this.width/2 && playBackBar.get(i).getWidth() > this.height/2){
 					//playBackBar.remove(i);
 					//int x  = playBackBar.get(i).getInitX();
@@ -285,6 +294,7 @@ public class MusicalWindow extends PApplet {
 					//playBackBar.get(i).setWidth(0);
 					//playBackBar.get(i).setHeight(0);
 				}
+				
 				break;
 				
 			case CLOCKBAR:

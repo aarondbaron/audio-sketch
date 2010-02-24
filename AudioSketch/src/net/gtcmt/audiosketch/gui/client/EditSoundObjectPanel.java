@@ -101,7 +101,7 @@ public class EditSoundObjectPanel extends JPanel {
 		label = new JLabel("Shape:");
 		hBox.add(label);
 		
-		shapeChooser = new JComboBox(P5Constants.SHAPE_LIST);
+		shapeChooser = new JComboBox(P5Constants.SHAPE_NAME);
 		shapeChooser.setSelectedIndex(0);
 		shapeChooser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
