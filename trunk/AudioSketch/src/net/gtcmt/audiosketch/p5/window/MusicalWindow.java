@@ -8,7 +8,6 @@ import java.util.Random;
 
 import net.gtcmt.audiosketch.gui.client.AudioSketchMainFrame;
 import net.gtcmt.audiosketch.gui.util.GUIConstants;
-import net.gtcmt.audiosketch.p5.action.Collision;
 import net.gtcmt.audiosketch.p5.action.MouseAction;
 import net.gtcmt.audiosketch.p5.object.EffectBox;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
@@ -20,7 +19,6 @@ import net.gtcmt.audiosketch.p5.object.playbar.Radial2Bar;
 import net.gtcmt.audiosketch.p5.object.playbar.RadialBar;
 import net.gtcmt.audiosketch.p5.object.playbar.SquareBar;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
-import net.gtcmt.audiosketch.p5.util.P5Math;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectColorType;
@@ -213,151 +211,10 @@ public class MusicalWindow extends PApplet {
 	 */
 	private synchronized void playBar(){
 		//Go through each play bar
-		for(int i=0;i<playBackBar.size();i++){
+		for(int i=0;i<playBackBar.size();i++){			
 			playBackBar.get(i).draw();
-			switch(playBackBar.get(i).getPlaybackType()){
-			case RADIAL:
-
-				//Check for collision
-				for(int j=0;j<soundObject.size();j++){
-					Collision.collideCircle(soundObject.get(j), playBackBar.get(i));
-				}
-				
-				// remove the radial playBar when it is out of the window
-				if(playBackBar.get(i).getWidth()/2 > (P5Math.compareDist(playBackBar.get(i).getInitX(), playBackBar.get(i).getInitY(), this.width, this.height) + 100)) {
-					for(int j=0;j<soundObject.size();j++){
-						soundObject.get(j).removeCollideState(playBackBar.get(i));
-					}
-					playBackBar.remove(i);
-				}
-
-				break;
-			case RADIAL2:
-				
-				//Check for collision
-				for(int j=0;j<soundObject.size();j++){
-					Collision.collideCircle(soundObject.get(j), playBackBar.get(i));
-				}
-				
-				if(playBackBar.get(i).getWidth() > this.width/2 && playBackBar.get(i).getWidth() > this.height/2){
-					//playBackBar.remove(i);
-					//int x  = playBackBar.get(i).getInitX();
-					//int y = playBackBar.get(i).getInitY();
-					//playBackBar.get(i).setPosX(x);
-					//playBackBar.get(i).setPosX(y);
-					playBackBar.get(i).setSize(0, 0); // reset the circle
-					
-					//go to each sound object in play bar
-					for(int j=0; j<soundObject.size();j++){
-						if(soundObject.get(j).getCollideState(playBackBar.get(i))){
-							soundObject.get(j).setCollideState(playBackBar.get(i), false);
-						}
-					}
-					
-					//playBackBar.get(i).setWidth(0);
-					//playBackBar.get(i).setHeight(0);
-				}
-				break;
-				
-			case SQUAREBAR:
-				
-				//Check for collision
-				//need a 
-				for(int j=0;j<soundObject.size();j++){
-					Collision.collideSquare(soundObject.get(j), playBackBar.get(i));
-				}
-				
-				// remove the radial playBar when it is out of the window
-				/*if(playBackBar.get(i).getWidth()/2 > (P5Math.compareDist(playBackBar.get(i).getInitX(), playBackBar.get(i).getInitY(), this.width, this.height) + 100)) {
-					for(int j=0;j<soundObject.size();j++){
-						soundObject.get(j).removeCollideState(playBackBar.get(i));
-					}
-					playBackBar.remove(i);
-				}*/
-				
-				//this would be for SquareBar2 but keep for now
-				if(playBackBar.get(i).getWidth() > this.width/2 && playBackBar.get(i).getWidth() > this.height/2){
-					//playBackBar.remove(i);
-					//int x  = playBackBar.get(i).getInitX();
-					//int y = playBackBar.get(i).getInitY();
-					//playBackBar.get(i).setPosX(x);
-					//playBackBar.get(i).setPosX(y);
-					playBackBar.get(i).setSize(0, 0); // reset the circle
-					
-					//go to each sound object in play bar
-					for(int j=0; j<soundObject.size();j++){
-						if(soundObject.get(j).getCollideState(playBackBar.get(i))){
-							soundObject.get(j).setCollideState(playBackBar.get(i), false);
-						}
-					}
-					
-					//playBackBar.get(i).setWidth(0);
-					//playBackBar.get(i).setHeight(0);
-				}
-				
-				break;
-				
-			case CLOCKBAR:
-
-				//Check for collision
-				for(int j=0;j<soundObject.size();j++){
-					Collision.collideClockBar(soundObject.get(j), playBackBar.get(i));
-				}
-				
-				//go to each sound object in play bar
-				for(int j=0; j<soundObject.size();j++){
-					if(soundObject.get(j).getCollideState(playBackBar.get(i))){
-						soundObject.get(j).setCollideState(playBackBar.get(i), false);
-					}
-				}
-
-
-				break;
-				
-			case BAR2:
-				//Check for collision
-				for(int j=0;j<soundObject.size();j++){
-					Collision.collideBar(soundObject.get(j), playBackBar.get(i));
-				}
-
-				if((playBackBar.get(i).getPosX() < 0 && playBackBar.get(i).getPosY() < 0) 
-						|| (playBackBar.get(i).getPosX() < 0 && playBackBar.get(i).getPosY() > this.height) 
-						|| (playBackBar.get(i).getPosX() > this.width && playBackBar.get(i).getPosY() < 0) 
-						|| (playBackBar.get(i).getPosX() > this.width && playBackBar.get(i).getPosY() > this.height)
-						|| (playBackBar.get(i).getPosX() < -(P5Constants.BAR_WIDTH)) || (playBackBar.get(i).getPosX() > this.width+P5Constants.BAR_WIDTH)
-						|| (playBackBar.get(i).getPosY() < -(P5Constants.BAR_WIDTH)) || (playBackBar.get(i).getPosY() > this.height+P5Constants.BAR_WIDTH)) {
-					//playBackBar.remove(i);
-					int x = playBackBar.get(i).getInitX();
-					int y = playBackBar.get(i).getInitY();
-					playBackBar.get(i).setPosX(0);
-					playBackBar.get(i).setPosY(0);
-					
-					//Boolean b = false;
-					//playBackBar.get(i).setTrigState(i, b);// i put this here so it will change the trigger state object, when it resets in the previous line
-					
-					System.out.println("x and y : " + x + "," + y);
-					//playBackBar.get(i).setSize(0, 0);
-				}
-				break;
-			case BAR:
-				
-				//Check for collision
-				for(int j=0;j<soundObject.size();j++){
-					Collision.collideBar(soundObject.get(j), playBackBar.get(i));
-					//Collision.collideClockBar(soundObject.get(j), playBackBar.get(i));
-				}
-				
-				if((playBackBar.get(i).getPosX() < 0 && playBackBar.get(i).getPosY() < 0) 
-						|| (playBackBar.get(i).getPosX() < 0 && playBackBar.get(i).getPosY() > this.height) 
-						|| (playBackBar.get(i).getPosX() > this.width && playBackBar.get(i).getPosY() < 0) 
-						|| (playBackBar.get(i).getPosX() > this.width && playBackBar.get(i).getPosY() > this.height)
-						|| (playBackBar.get(i).getPosX() < -(P5Constants.BAR_WIDTH)) || (playBackBar.get(i).getPosX() > this.width+P5Constants.BAR_WIDTH)
-						|| (playBackBar.get(i).getPosY() < -(P5Constants.BAR_WIDTH)) || (playBackBar.get(i).getPosY() > this.height+P5Constants.BAR_WIDTH)) {
-					for(int j=0;j<soundObject.size();j++){
-						soundObject.get(j).removeCollideState(playBackBar.get(i));
-					}
-					playBackBar.remove(i);
-				}
+			if(playBackBar.get(i).checkState(soundObject)){
+				playBackBar.remove(i);
 			}
 		}
 	}
