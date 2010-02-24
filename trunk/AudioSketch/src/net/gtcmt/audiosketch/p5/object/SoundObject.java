@@ -1,13 +1,12 @@
 package net.gtcmt.audiosketch.p5.object;
 
-import java.util.Hashtable;
+import java.util.LinkedList;
 
 import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectColorType;
-//import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectShapeType;
 import net.gtcmt.audiosketch.sound.util.AudioControl;
 import net.gtcmt.audiosketch.sound.util.SndConstants.SndType;
 import net.gtcmt.audiosketch.util.Constants;
@@ -29,11 +28,11 @@ public class SoundObject {
 	private int midiNote;
 	private SndType sndType;
 	private PShape image;
-	private Hashtable<PlayBackBar, Boolean> collideState;	//collide state for each playback
+	private LinkedList<Boolean> collideState;	//collide state for each playback
 	private boolean isCollide;
 	private boolean getFrame;
 	private long frame=0;
-	private float updateStep=(float)0.0;
+	private float updateStep=0.0f;
 	//private float updateStep2=(float)0.0;
 	//private
 	//sound name, pitch, filter type, cutoff, q, center freq, gain, effect type, effect on/off
@@ -59,7 +58,7 @@ public class SoundObject {
 		this.sndType = sndType;
 		this.isCollide = false;
 		this.getFrame = false;
-		this.collideState = new Hashtable<PlayBackBar, Boolean>();
+		this.collideState = new LinkedList<Boolean>();
 		this.image = p.loadShape(Constants.SOUND_OBJECT_PATH+this.shape);
 		this.image.disableStyle();
 	}
@@ -130,7 +129,6 @@ public class SoundObject {
 	}
 
 	private void spawnMultiple(PApplet p5, float numShapes, float rotateRate, float translateParam, float sfactorParam) {
-		// TODO Auto-generated method stub
 		
 		if(isCollide){
 			if(getFrame){
@@ -261,25 +259,24 @@ public class SoundObject {
 		this.startTime = startTime;
 	}
 	
-	public Hashtable<PlayBackBar, Boolean> getCollideState() {
+	public LinkedList<Boolean> getCollideState() {
 		return collideState;
 	}
 	
-	public void putCollideState(PlayBackBar playBar, boolean collideState){
-		this.collideState.put(playBar, collideState);
+	public void addCollideState(boolean collideState){
+		this.collideState.add(collideState);
 	}
 	
-	public boolean getCollideState(PlayBackBar playBar){
-		return this.collideState.get(playBar);
+	public boolean getCollideState(int index){
+		return this.collideState.get(index);
 	}
 	
-	public void removeCollideState(PlayBackBar playBar) {
-		this.collideState.remove(playBar);
+	public void removeCollideState(int index) {
+		this.collideState.remove(index);
 	}
 
-	public void setCollideState(PlayBackBar playBar, boolean bool) {
-		this.collideState.remove(playBar);
-		this.collideState.put(playBar, bool);
+	public void setCollideState(int index, boolean bool) {
+		this.collideState.set(index, bool);
 	}
 
 	public SndType getSndType() {

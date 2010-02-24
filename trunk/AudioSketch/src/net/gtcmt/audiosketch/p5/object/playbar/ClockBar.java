@@ -113,17 +113,17 @@ public class ClockBar extends PlayBackBar{
 	}
 
 	@Override
-	public boolean checkState(LinkedList<SoundObject> soundObject) {
+	public boolean checkState(LinkedList<SoundObject> soundObject, int index) {
 
 		//Check for collision
 		for(int j=0;j<soundObject.size();j++){
-			Collision.collideClockBar(soundObject.get(j), this);
+			Collision.collideClockBar(soundObject.get(j), this, index);
 		}
 		
 		//go to each sound object in play bar
 		for(int j=0; j<soundObject.size();j++){
-			if(soundObject.get(j).getCollideState(this)){
-				soundObject.get(j).setCollideState(this, false);
+			if(soundObject.get(j).getCollideState(index)){
+				soundObject.get(j).setCollideState(index, false);
 			}
 		}
 		return false;

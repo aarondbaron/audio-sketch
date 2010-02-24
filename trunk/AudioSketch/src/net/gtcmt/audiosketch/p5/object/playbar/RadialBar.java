@@ -11,10 +11,11 @@ import processing.core.PApplet;
 
 public class RadialBar extends PlayBackBar {
 
+	private float boundVal;
 	public RadialBar(P5Points2D objPos, float speed, float angle,
 			PlayBackType pbType, PApplet p) {
 		super(objPos, speed, angle, pbType, p);
-		// TODO Auto-generated constructor stub
+		boundVal = P5Math.compareDist(this.getInitX(), this.getInitY(), p5.width, p5.height);
 	}
 
 	@Override
@@ -27,16 +28,16 @@ public class RadialBar extends PlayBackBar {
 	}
 
 	@Override
-	public boolean checkState(LinkedList<SoundObject> soundObject) {
+	public boolean checkState(LinkedList<SoundObject> soundObject, int index) {
 		//Check for collision
 		for(int j=0;j<soundObject.size();j++){
-			Collision.collideCircle(soundObject.get(j), this);
+			Collision.collideCircle(soundObject.get(j), this, index);
 		}
 		
 		// remove the radial playBar when it is out of the window
-		if(getWidth()/2 > (P5Math.compareDist(this.getInitX(), this.getInitY(), p5.width, p5.height) + 100)) {
+		if(getWidth()>>1 > boundVal + 100) {
 			for(int j=0;j<soundObject.size();j++){
-				soundObject.get(j).removeCollideState(this);
+				soundObject.get(j).removeCollideState(index);
 			}
 			return true;
 		}

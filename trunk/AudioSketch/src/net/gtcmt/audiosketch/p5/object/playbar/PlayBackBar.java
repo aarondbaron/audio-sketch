@@ -1,6 +1,5 @@
 package net.gtcmt.audiosketch.p5.object.playbar;
 
-import java.awt.print.Paper;
 import java.util.LinkedList;
 
 import net.gtcmt.audiosketch.p5.object.SoundObject;
@@ -63,6 +62,7 @@ public abstract class PlayBackBar {
 		switch(pbType){
 		case BAR: case BAR2:
 			this.playbarSize = new P5Size2D(P5Constants.BAR_WIDTH,10);
+			break;
 		case RADIAL:	 case RADIAL2: case SQUAREBAR: default:
 			this.playbarSize = new P5Size2D(0, 0);
 			break;	
@@ -83,8 +83,17 @@ public abstract class PlayBackBar {
 	 * plays playback bar
 	 * @return true if playback is ready to be removed
 	 */
-	public abstract boolean checkState(LinkedList<SoundObject> soundObject);
+	public abstract boolean checkState(LinkedList<SoundObject> soundObject, int index);
 
+	/**
+	 * Factory method for creating playbar
+	 * @param barType
+	 * @param mousePnt
+	 * @param speed
+	 * @param angle
+	 * @param p5
+	 * @return
+	 */
 	public static PlayBackBar createPlayBar(PlayBackType barType, P5Points2D mousePnt, float speed, float angle, PApplet p5){
 		switch(barType)
 		{

@@ -44,10 +44,10 @@ public class Bar2 extends PlayBackBar{
 	}
 
 	@Override
-	public boolean checkState(LinkedList<SoundObject> soundObject) {
+	public boolean checkState(LinkedList<SoundObject> soundObject, int index) {
 		//Check for collision
 		for(int j=0;j<soundObject.size();j++){
-			Collision.collideBar(soundObject.get(j), this);
+			Collision.collideBar(soundObject.get(j), this, index);
 		}
 
 		if((this.getPosX() < 0 && this.getPosY() < 0) 
