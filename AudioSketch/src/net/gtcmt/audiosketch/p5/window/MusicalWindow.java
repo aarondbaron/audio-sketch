@@ -8,14 +8,6 @@ import java.util.Random;
 
 import net.gtcmt.audiosketch.gui.client.AudioSketchMainFrame;
 import net.gtcmt.audiosketch.gui.util.GUIConstants;
-import net.gtcmt.audiosketch.network.client.Client;
-import net.gtcmt.audiosketch.network.data.AudioEffectData;
-import net.gtcmt.audiosketch.network.data.AudioSketchData;
-import net.gtcmt.audiosketch.network.data.PlaybackData;
-import net.gtcmt.audiosketch.network.data.RelocationData;
-import net.gtcmt.audiosketch.network.data.SoundObjectData;
-import net.gtcmt.audiosketch.network.data.UserData;
-import net.gtcmt.audiosketch.network.util.MsgType;
 import net.gtcmt.audiosketch.p5.action.Collision;
 import net.gtcmt.audiosketch.p5.action.MouseAction;
 import net.gtcmt.audiosketch.p5.object.EffectBox;
@@ -30,12 +22,14 @@ import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Math;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
+import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectColorType;
+import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectShapeType;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
 import net.gtcmt.audiosketch.sound.util.SndConstants;
 import net.gtcmt.audiosketch.sound.util.SndConstants.EffectType;
+import net.gtcmt.audiosketch.sound.util.SndConstants.SndType;
 import processing.core.PApplet;
 import processing.core.PConstants;
-import processing.core.PFont;
 
 /**
  * This is the main window where all the action user makes happen such
@@ -56,17 +50,8 @@ public class MusicalWindow extends PApplet {
 	private LinkedList<SoundObject> soundObject;
 	private LinkedList<PlayBackBar> playBackBar;		
 	private MouseAction action;
-	private LinkedList<String> players;
-	private LinkedList<Integer> playerID;
-	private LinkedList<Integer> playerTimeOut;
-	private LinkedList<String> users;
-	private LinkedList<Integer> nameID;
-	private LinkedList<String> effUsers;
-	private LinkedList<Integer> effNameID;
-	private LinkedList<Integer> effTimeOut;
 	private LinkedList<EffectBox> effectBox; 
 	private int[] shuffle;
-	private PFont font;
 	private Random rgen;
 	private int incr=0;	
 	private EffectType effType;
@@ -82,7 +67,7 @@ public class MusicalWindow extends PApplet {
 	 * @throws UnknownHostException 
 	 * @throws InterruptedException 
 	 */
-	public MusicalWindow(AudioSketchMainFrame mainFrame) throws UnknownHostException, IOException, InterruptedException {
+	public MusicalWindow(AudioSketchMainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 		
 		//set initial effect type
@@ -94,14 +79,6 @@ public class MusicalWindow extends PApplet {
 		//Initialize collections
 		soundObject = new LinkedList<SoundObject>();
 		playBackBar = new LinkedList<PlayBackBar>();
-		players = new LinkedList<String>();
-		playerID = new LinkedList<Integer>();
-		playerTimeOut = new LinkedList<Integer>();
-		users = new LinkedList<String>();
-		nameID = new LinkedList<Integer>();
-		effUsers = new LinkedList<String>();
-		effNameID = new LinkedList<Integer>();
-		effTimeOut = new LinkedList<Integer>();
 		effectBox = new LinkedList<EffectBox>();
 		shuffle = new int[SndConstants.NUM_EFFECT];
 		
@@ -123,7 +100,6 @@ public class MusicalWindow extends PApplet {
 		size(GUIConstants.WINDOW_WIDTH, GUIConstants.WINDOW_HEIGHT);
 		smooth();
 		action = new MouseAction(soundObject, this);
-		font = this.createFont("skia", 14);
 	}
 
 	/**
@@ -145,34 +121,14 @@ public class MusicalWindow extends PApplet {
 		super.stop();
 	}
 
-	/*----------------------- Methods that correspond to server message -----------------------------*/
-	/**
-	 * Checks the message received from server and decides whether 
-	 * to add new SoundObject in LinkedList.
-	 * @param data data received from server in string format
-	 */
-	public synchronized void addSoundObject(SoundObjectData data){
-		//Add new soundObject to Musical Window
-		if(data != null){
-			soundObject.add(new SoundObject(data.getObjPos(), data.getObjSize(), data.getColorType(), 
-					data.getShapeType(), data.getMidiNote(), data.getSndType(), this));
-			action.addActionObject(soundObject.getLast());
-			addEffects(soundObject, effectBox);
-			//TODO before adding playback bar check collision state and pass in appropriate boolean
-			for(int i=0;i<playBackBar.size();i++) {
-				soundObject.getLast().putCollideState(playBackBar.get(i), false);
-			}
+	/*----------------------- SoundObject methods -----------------------------*/
+	public void addSoundObject(ObjectShapeType shape,ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, int midiNote) {
+		soundObject.add(new SoundObject(objPos, objSize, color, shape, midiNote, sndType, this));
+		action.addActionObject(soundObject.getLast());
+		//TODO before adding playback bar check collision state and pass in appropriate boolean
+		for(int i=0;i<playBackBar.size();i++) {
+			soundObject.getLast().putCollideState(playBackBar.get(i), false);
 		}
-	}
-
-	/**
-	 * Adds new Effects for newly added sound object
-	 * @param soundObject
-	 * @param effectBox
-	 */
-	//TODO effect box is broken
-	private synchronized void addEffects(LinkedList<SoundObject>soundObject, LinkedList<EffectBox> effectBox){
-		//TODO implement or junk this method
 	}
 
 	/**
@@ -184,7 +140,7 @@ public class MusicalWindow extends PApplet {
 			soundObject.removeLast();	
 		}
 	}
-	/*----------------------- SoundObject drawing -----------------------------*/
+	
 	/**
 	 * Handles drawing object in p5 window
 	 */
@@ -193,6 +149,7 @@ public class MusicalWindow extends PApplet {
 			soundObject.get(i).draw(this);
 		}
 	}
+	
 	/*----------------------- PlayBack Mode -----------------------------*/
 	/**
 	 * Allows user to trigger play back bar when playButton is selected
@@ -201,8 +158,6 @@ public class MusicalWindow extends PApplet {
 		if(mainFrame.getActionPanel().getPlayButton().isSelected()) {
 			trigPlayBackBar();
 		}
-		displayName();
-		timeOutName();
 	}
 
 	/**
@@ -224,9 +179,7 @@ public class MusicalWindow extends PApplet {
 				float speed = (float) Math.sqrt(Math.pow(mouseX-xPos, 2)+Math.pow(mouseY-yPos, 2))/P5Constants.MAX_TRIG_DISTANCE;
 				float angle = (float) Math.atan2(mouseY-yPos, mouseX-xPos);
 
-				getClient().sendData(new AudioSketchData(MsgType.PLAY_BAR, new PlaybackData(PlayBackType.values()[getPlayBarIndex()], 
-						new P5Points2D(xPos, yPos), speed, angle), mainFrame.getUserName(), playBackBar.size()));
-
+				addPlayBackBar(PlayBackType.values()[getPlayBarIndex()], new P5Points2D(xPos, yPos), speed, angle);
 				mouseReleased = false;
 				mouseDragged = false;
 			}
@@ -237,40 +190,18 @@ public class MusicalWindow extends PApplet {
 	 * Adds play back bar upon receiving message from server
 	 * @param data data sent from server
 	 */
-	public synchronized void addPlayBackBar(PlaybackData data, UserData userData) {
-		if(data != null){
-			switch(data.getPlaybackType())
-			{
-			case RADIAL:
-				playBackBar.add(new RadialBar(data.getMousePoints(), data.getPlaybackSpeed(), data.getAngle(), 
-						data.getPlaybackType(), this));
-				break;
-				
-			case RADIAL2:
-				playBackBar.add(new Radial2Bar(data.getMousePoints(), data.getPlaybackSpeed(), data.getAngle(), 
-						data.getPlaybackType(), this));
-				break;
-				
-			case CLOCKBAR:
-				playBackBar.add(new ClockBar(data.getMousePoints(), data.getPlaybackSpeed(), data.getAngle(), 
-						data.getPlaybackType(), this));
-				break;
-				
-			case BAR:
-				playBackBar.add(new Bar(data.getMousePoints(), data.getPlaybackSpeed(), data.getAngle(), 
-						data.getPlaybackType(), this));
-				break;
-				
-			case BAR2:
-				playBackBar.add(new Bar2(data.getMousePoints(), data.getPlaybackSpeed(), data.getAngle(), 
-						data.getPlaybackType(), this));
-				break;
-			}
-			
-			for(int j=0;j<soundObject.size();j++){
-				soundObject.get(j).putCollideState(playBackBar.getLast(), false);
-			}
-			addName(userData);
+	public synchronized void addPlayBackBar(PlayBackType playType, P5Points2D mousePnt,  float speed, float angle) {
+		switch(playType)
+		{
+		case RADIAL:		playBackBar.add(new RadialBar(mousePnt, speed, angle, playType, this));	break;
+		case RADIAL2: 	playBackBar.add(new Radial2Bar(mousePnt, speed, angle, playType, this)); break;
+		case CLOCKBAR:	playBackBar.add(new ClockBar(mousePnt, speed, angle, playType, this));	break;
+		case BAR:		playBackBar.add(new Bar(mousePnt, speed, angle, playType, this));			break;
+		case BAR2:		playBackBar.add(new Bar2(mousePnt, speed, angle, playType, this));		break;
+		}
+
+		for(int j=0;j<soundObject.size();j++){
+			soundObject.get(j).putCollideState(playBackBar.getLast(), false);
 		}
 	}
 
@@ -390,52 +321,12 @@ public class MusicalWindow extends PApplet {
 		}
 	}
 
-	/**
-	 * Adds name of the user and play back bar id
-	 * @param name name of user
-	 * @param id id of play back bar
-	 */
-	private synchronized void addName(UserData data){
-		players.add(data.getUserName());
-		playerID.add(data.getUserID());
-		playerTimeOut.add(this.millis());
-	}
-
-	/**
-	 * displays user name who triggered play back bar
-	 */
-	private synchronized void displayName(){
-		for(int i=0;i<playerID.size();i++){
-			for(int j=0;j<playBackBar.size();j++){
-				if(playerID.get(i) == j){
-					this.textFont(font);
-					this.fill(255, 255, 255, 200);
-					text(players.get(i), playBackBar.get(j).getInitX(), playBackBar.get(j).getInitY());
-				}
-			}	
-		}
-	}
-
-	/**
-	 * removes name of user who triggered play back bar
-	 */
-	private synchronized void timeOutName(){
-		for(int i=0;i<playerID.size();i++){
-			if(this.millis() - playerTimeOut.get(i) > 2000){
-				players.remove(i);
-				playerID.remove(i);
-				playerTimeOut.remove(i);
-			}
-		}
-	}
 	/*----------------------- Edit Mode -----------------------------*/
 	/**
 	 * Actions related to editing position of soundObjects are 
 	 * put into this method.
 	 */
 	private synchronized void editMode(){
-		drawName();
-		removeName();
 		if(mainFrame.getActionPanel().getEditButton().isSelected()){
 			sendName();
 			action.detectObjectArea();
@@ -448,17 +339,9 @@ public class MusicalWindow extends PApplet {
 				mouseDragged = false;
 		}
 	}
-
-	/**
-	 * Moves soundObject upon receiving message from server
-	 * @param data data sent from server
-	 */
-	public synchronized void moveObject(RelocationData data){
-		if(data != null){
-			soundObject.get(data.getObjectIndex()).setPosX(data.getPosX());
-			soundObject.get(data.getObjectIndex()).setPosY(data.getPosY());
-			reInsertEffect(data.getObjectIndex());
-		}
+	
+	public synchronized void moveObject(int index, int posX, int posY){
+		soundObject.get(index).setPos(posX,posY);
 	}
 
 	/**
@@ -476,57 +359,6 @@ public class MusicalWindow extends PApplet {
 			}
 		}
 */	}
-
-	/**
-	 * Adds name to linked list that was returned from server
-	 * @param data
-	 */
-	//TODO can we remove this?
-/*	private synchronized void addName(String[] data){
-		if(data.length > 2){
-			users.add(data[1]);
-			nameID.add(Integer.parseInt(data[2]));
-		}
-	}
-*/
-	/**
-	 * Draws name on the musical window if any of the users are dragging the soundObject
-	 */
-	private synchronized void drawName(){
-		for(int i=0;i<nameID.size();i++){
-			for(int j=0;j<soundObject.size();j++){
-				if(nameID.get(i) == j) {
-					this.textFont(font);
-					this.fill(255, 255, 255, 200);
-					if(soundObject.get(j).getPosX()+(soundObject.get(j).getWidth()/2) > this.width-80)
-						text(users.get(i), this.width-80, soundObject.get(j).getPosY()-(soundObject.get(j).getHeight()/2));
-					else if(soundObject.get(j).getPosY()-(soundObject.get(j).getHeight()/2) < 20)
-						text(users.get(i), soundObject.get(j).getPosX()+(soundObject.get(j).getWidth()/2), 20);
-					else
-						text(users.get(i), soundObject.get(j).getPosX()+(soundObject.get(j).getWidth()/2), soundObject.get(j).getPosY()-(soundObject.get(j).getHeight()/2));
-				}		
-			}
-		}
-	}
-
-	/**
-	 * Removes name of the user when user finishes moving the soundObject.
-	 * It also reinserts the effect chain for the play back.
-	 */
-	private synchronized void removeName(){
-		for(int i=nameID.size()-1;i>=0;i--){
-			for(int j=0;j<soundObject.size();j++){
-				if(nameID.get(i) == j) {
-					if(!action.getMousePressed().get(j)){
-						reInsertEffect(i);
-						users.remove(i);
-						nameID.remove(i);
-						break;
-					}
-				}
-			}	
-		}
-	}
 
 	/**
 	 * Reinserts effect into specified soundObject
@@ -548,10 +380,17 @@ public class MusicalWindow extends PApplet {
 		if(mainFrame.getActionPanel().effectButton.isSelected()){
 			drawPrevBoxThenSend();	
 		}
-		displayEffName();
-		timeOutEffName();
 	}
 
+	/**
+	 * Draws and maintains effect box on musical window
+	 */
+	private synchronized void drawEffectBox(){
+		for(int i=0;i<effectBox.size();i++){
+			effectBox.get(i).draw();
+		}
+	}
+	
 	/**
 	 * Draws Box according to mouse action
 	 * Only the drawer of the box can see this.
@@ -583,9 +422,7 @@ public class MusicalWindow extends PApplet {
 				effType = EffectType.values()[shuffle[incr++]];
 			}
 			
-			//Broadcast message
-			getClient().sendData(new AudioSketchData(MsgType.EFFECT_BOX, new AudioEffectData(effType, new P5Points2D(xPos, yPos), 
-					new P5Size2D(mouseX-xPos, mouseY-yPos)), mainFrame.getUserName(), effectBox.size()));
+			addEffectBox(effType, new P5Points2D(xPos, yPos), new P5Size2D(mouseX-xPos, mouseY-yPos));
 			
 			mouseReleased = false;
 			mouseDragged = false;
@@ -593,25 +430,13 @@ public class MusicalWindow extends PApplet {
 	}
 
 	/**
-	 * Draws and maintains effect box on musical window
-	 */
-	private synchronized void drawEffectBox(){
-		for(int i=0;i<effectBox.size();i++){
-			effectBox.get(i).draw();
-		}
-	}
-
-	/**
 	 * Adds effect box upon receiving message from server
 	 * @param data data sent from server
 	 */
-	public synchronized void addEffectBox(AudioEffectData data, UserData userData){
-		if(data != null){
-			effectBox.add(new EffectBox(data.getBoxPos(),data.getBoxSize(),data.getEffType(),this));
-			addEffName(userData);
-			for(int i=0;i<soundObject.size();i++){
-				reInsertEffect(i);
-			}
+	public synchronized void addEffectBox(EffectType effType, P5Points2D pnts, P5Size2D size){
+		effectBox.add(new EffectBox(pnts, size, effType, this));
+		for(int i=0;i<soundObject.size();i++){
+			reInsertEffect(i);
 		}
 	}
 
@@ -622,45 +447,6 @@ public class MusicalWindow extends PApplet {
 		effectBox.removeLast();
 		for(int i=0;i<soundObject.size();i++)
 			reInsertEffect(i);
-	}
-
-	/**
-	 * Adds name of the user who added effect box in musical window
-	 * @param name name of the user
-	 * @param id id of effect box. Usually the last element in the linked list
-	 */
-	private synchronized void addEffName(UserData data){
-		effUsers.add(data.getUserName());
-		effNameID.add(data.getUserID());
-		effTimeOut.add(this.millis());
-	}
-
-	/**
-	 * draws name of user who added effect box in musical window
-	 */
-	private synchronized void displayEffName(){
-		for(int i=0;i<effNameID.size();i++){
-			for(int j=0;j<effectBox.size();j++){
-				if(effNameID.get(i) == j){
-					this.textFont(font);
-					this.fill(255, 255, 255, 200);
-					text(effUsers.get(i), effectBox.get(j).getPosX()+5, effectBox.get(j).getPosY()+ effectBox.get(j).getHeight() - 20);
-				}
-			}	
-		}
-	}
-
-	/**
-	 * Removes name of user after displaying 2 second 
-	 */
-	private synchronized void timeOutEffName(){
-		for(int i=0;i<effNameID.size();i++){
-			if(this.millis() - effTimeOut.get(i) > 2000){
-				effUsers.remove(i);
-				effNameID.remove(i);
-				effTimeOut.remove(i);
-			}
-		}
 	}
 
 	/**
@@ -738,10 +524,6 @@ public class MusicalWindow extends PApplet {
 
 	public void setMainFrame(AudioSketchMainFrame mainFrame) {
 		this.mainFrame = mainFrame;
-	}
-	
-	public Client getClient(){
-		return mainFrame.getClient();
 	}
 	
 	public int getPlayBarIndex(){

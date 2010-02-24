@@ -12,12 +12,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import net.gtcmt.audiosketch.gui.util.GUIConstants;
-import net.gtcmt.audiosketch.network.client.Client;
-import net.gtcmt.audiosketch.network.data.AudioSketchData;
-import net.gtcmt.audiosketch.network.data.QuitData;
-import net.gtcmt.audiosketch.network.util.MsgType;
 import net.gtcmt.audiosketch.p5.window.MusicalWindow;
-import net.gtcmt.audiosketch.util.LogMessage;
 
 /**
  * Put together all the gui elements
@@ -31,7 +26,6 @@ public class AudioSketchMainFrame extends JFrame {
 	private ActionPanel actionPanel;
 	private MusicalWindow musicalWindow;
 	private EditSoundObjectPanel  editPanel;
-	protected Client client;
 	
 	/**
 	 * Constructor for starting audience view
@@ -40,10 +34,9 @@ public class AudioSketchMainFrame extends JFrame {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public AudioSketchMainFrame(Client client) throws UnknownHostException, IOException, InterruptedException{
+	public AudioSketchMainFrame() {
 		super("Audience View");
 		
-		this.client = client;
 		this.userName = "Audience";
 		
 		initGUI();
@@ -54,11 +47,6 @@ public class AudioSketchMainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent evt){
-				try {
-					close();
-				} catch (IOException e) {
-					LogMessage.javaErr(e);
-				}
 				System.exit(0);
 			}
 		});
@@ -81,10 +69,9 @@ public class AudioSketchMainFrame extends JFrame {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public AudioSketchMainFrame(Client client, String userName) throws UnknownHostException, IOException, InterruptedException{
+	public AudioSketchMainFrame(String userName) {
 		super("Audio Sketch");
 		
-		this.client = client;
 		this.userName = userName;
 		
 		//set up gui
@@ -98,11 +85,6 @@ public class AudioSketchMainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent evt){
-				try {
-					close();
-				} catch (IOException e) {
-					LogMessage.javaErr(e);
-				}
 				System.exit(0);
 			}
 		});
@@ -122,7 +104,7 @@ public class AudioSketchMainFrame extends JFrame {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	private void setupGUI() throws UnknownHostException, IOException, InterruptedException {
+	private void setupGUI() {
 		Box hBox = Box.createHorizontalBox();
 		Box vBox = Box.createVerticalBox();
 		
@@ -152,23 +134,15 @@ public class AudioSketchMainFrame extends JFrame {
 	}
 	
 	
-	private void initGUI() throws UnknownHostException, IOException, InterruptedException {		
+	private void initGUI() {		
 		//Main Window
-		musicalWindow = new MusicalWindow(this);
-		
+		musicalWindow = new MusicalWindow(this);		
 		//Action Panel
 		actionPanel = new ActionPanel(this);
-		
 		//Object Editing Panel
 		editPanel = new EditSoundObjectPanel(this);
-
 	}
 	
-	private void close() throws IOException{
-		client.sendData(new AudioSketchData(MsgType.QUIT, new QuitData(), userName,0));
-		client.shutdown();
-	}
-
 	/*----------------- Getter/Setter ----------------*/
 	public MusicalWindow getMusicalWindow() {
 		return musicalWindow;
@@ -176,14 +150,6 @@ public class AudioSketchMainFrame extends JFrame {
 
 	public void setMusicalWindow(MusicalWindow musicalWindow) {
 		this.musicalWindow = musicalWindow;
-	}
-	
-	public Client getClient() {
-		return client;
-	}
-
-	public void setClient(Client client) {
-		this.client = client;
 	}
 
 	public String getUserName() {

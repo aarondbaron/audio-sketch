@@ -162,6 +162,11 @@ public class SoundObject {
 		this.objPos.setPosY(posY);
 	}
 
+	public void setPos(int posX, int posY) {
+		objPos.setPosX(posX);
+		objPos.setPosY(posY);
+	}
+	
 	public int getWidth() {
 		return objSize.getWidth();
 	}

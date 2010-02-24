@@ -25,7 +25,7 @@ public class ObjectWindow  extends PApplet {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public ObjectWindow(EditSoundObjectPanel editPanel) throws UnknownHostException, IOException, InterruptedException{
+	public ObjectWindow(EditSoundObjectPanel editPanel) {
 		this.editPanel = editPanel;
 
 		//Create shapes
