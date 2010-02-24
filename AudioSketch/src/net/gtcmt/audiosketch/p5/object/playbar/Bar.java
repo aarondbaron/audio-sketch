@@ -42,10 +42,10 @@ public class Bar extends PlayBackBar{
 	}
 
 	@Override
-	public boolean checkState(LinkedList<SoundObject> soundObject) {
+	public boolean checkState(LinkedList<SoundObject> soundObject, int index) {
 		//Check for collision
 		for(int j=0;j<soundObject.size();j++){
-			Collision.collideBar(soundObject.get(j), this);
+			Collision.collideBar(soundObject.get(j), this, index);
 		}
 		
 		if((this.getPosX() < 0 && this.getPosY() < 0) 
@@ -55,7 +55,7 @@ public class Bar extends PlayBackBar{
 				|| (this.getPosX() < -(P5Constants.BAR_WIDTH)) || (this.getPosX() > p5.width+P5Constants.BAR_WIDTH)
 				|| (this.getPosY() < -(P5Constants.BAR_WIDTH)) || (this.getPosY() > p5.height+P5Constants.BAR_WIDTH)) {
 			for(int j=0;j<soundObject.size();j++){
-				soundObject.get(j).removeCollideState(this);
+				soundObject.get(j).removeCollideState(index);
 			}
 			return true;
 		}

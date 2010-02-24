@@ -41,11 +41,11 @@ public class SquareBar extends PlayBackBar {
 	}
 
 	@Override
-	public boolean checkState(LinkedList<SoundObject> soundObject) {
+	public boolean checkState(LinkedList<SoundObject> soundObject, int index) {
 		//Check for collision
 		//need a 
 		for(int j=0;j<soundObject.size();j++){
-			Collision.collideSquare(soundObject.get(j), this);
+			Collision.collideSquare(soundObject.get(j), this, index);
 		}
 		
 		if(this.getWidth() > p5.width>>1 && this.getWidth() > p5.height>>1){
@@ -58,8 +58,8 @@ public class SquareBar extends PlayBackBar {
 			
 			//go to each sound object in play bar
 			for(int j=0; j<soundObject.size();j++){
-				if(soundObject.get(j).getCollideState(this)){
-					soundObject.get(j).setCollideState(this, false);
+				if(soundObject.get(j).getCollideState(index)){
+					soundObject.get(j).setCollideState(index, false);
 				}
 			}
 			

@@ -11,18 +11,11 @@ import net.gtcmt.audiosketch.gui.util.GUIConstants;
 import net.gtcmt.audiosketch.p5.action.MouseAction;
 import net.gtcmt.audiosketch.p5.object.EffectBox;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
-import net.gtcmt.audiosketch.p5.object.playbar.Bar;
-import net.gtcmt.audiosketch.p5.object.playbar.Bar2;
-import net.gtcmt.audiosketch.p5.object.playbar.ClockBar;
 import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
-import net.gtcmt.audiosketch.p5.object.playbar.Radial2Bar;
-import net.gtcmt.audiosketch.p5.object.playbar.RadialBar;
-import net.gtcmt.audiosketch.p5.object.playbar.SquareBar;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectColorType;
-//import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectShapeType;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
 import net.gtcmt.audiosketch.sound.util.SndConstants;
 import net.gtcmt.audiosketch.sound.util.SndConstants.EffectType;
@@ -41,8 +34,6 @@ public class MusicalWindow extends PApplet {
 
 	private static final long serialVersionUID = 2781100810368642853L;
 	//Mouse actions
-	private boolean mouseClicked;
-	private boolean mouseReleased;
 	private boolean mouseDragged;
 	private int xPos;
 	private int yPos;
@@ -80,9 +71,7 @@ public class MusicalWindow extends PApplet {
 		playBackBar = new LinkedList<PlayBackBar>();
 		effectBox = new LinkedList<EffectBox>();
 		shuffle = new int[SndConstants.NUM_EFFECT];
-		
-		mouseClicked=false;
-		mouseReleased=false;
+	
 		mouseDragged=false;
 		xPos=0;
 		yPos=0;
@@ -106,24 +95,22 @@ public class MusicalWindow extends PApplet {
 	 */
 	public void draw() {
 		background(0);
-		
 		synchronized (lockObject) {
 			drawSoundObject();
 			drawEffectBox();
 			playBar();
-			playMode();
 			editMode();
 			effectMode();
 		}
 	}
-
+	
 	/*----------------------- SoundObject methods -----------------------------*/
 	public void addSoundObject(int shape,ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, int midiNote) {
 		soundObject.add(new SoundObject(objPos, objSize, color, shape, midiNote, sndType, this));
 		action.addActionObject(soundObject.getLast());
 		//TODO before adding playback bar check collision state and pass in appropriate boolean
 		for(int i=0;i<playBackBar.size();i++) {
-			soundObject.getLast().putCollideState(playBackBar.get(i), false);
+			soundObject.getLast().addCollideState(false);
 		}
 	}
 
@@ -148,37 +135,19 @@ public class MusicalWindow extends PApplet {
 	
 	/*----------------------- PlayBack Mode -----------------------------*/
 	/**
-	 * Allows user to trigger play back bar when playButton is selected
-	 */
-	private synchronized void playMode(){
-		if(mainFrame.getActionPanel().getPlayButton().isSelected()) {
-			trigPlayBackBar();
-		}
-	}
-
-	/**
 	 * Sends play back info to server when user clicks and releases mouse.
 	 */
 	private synchronized void trigPlayBackBar(){
 		if(playBackBar.size() <= PlayBackBar.MAX_TRIG){
-			if(mouseClicked){ //Store mouse click position
-				xPos = mouseX;
-				yPos = mouseY;
-				mouseClicked = false;
+			if(mouseX - xPos == 0 && mouseY - yPos == 0){
+				xPos -= 1;
 			}
+			//Calculate speed and angle from mouse actions
+			float speed = (float) Math.sqrt(Math.pow(mouseX-xPos, 2)+Math.pow(mouseY-yPos, 2))/P5Constants.MAX_TRIG_DISTANCE;
+			float angle = (float) Math.atan2(mouseY-yPos, mouseX-xPos);
 
-			if(mouseReleased){
-				if(mouseX - xPos == 0 && mouseY - yPos == 0){
-					xPos -= 1;
-				}
-				//Calculate speed and angle from mouse actions
-				float speed = (float) Math.sqrt(Math.pow(mouseX-xPos, 2)+Math.pow(mouseY-yPos, 2))/P5Constants.MAX_TRIG_DISTANCE;
-				float angle = (float) Math.atan2(mouseY-yPos, mouseX-xPos);
-
-				addPlayBackBar(PlayBackType.values()[getPlayBarIndex()], new P5Points2D(xPos, yPos), speed, angle);
-				mouseReleased = false;
-				mouseDragged = false;
-			}
+			addPlayBackBar(PlayBackType.values()[getPlayBarIndex()], new P5Points2D(xPos, yPos), speed, angle);
+			mouseDragged = false;
 		}
 	}
 
@@ -189,7 +158,7 @@ public class MusicalWindow extends PApplet {
 	public synchronized void addPlayBackBar(PlayBackType playType, P5Points2D mousePnt,  float speed, float angle) {
 		playBackBar.add(PlayBackBar.createPlayBar(playType, mousePnt, speed, angle, this));
 		for(int j=0;j<soundObject.size();j++){
-			soundObject.get(j).putCollideState(playBackBar.getLast(), false);
+			soundObject.get(j).addCollideState(false);
 		}
 	}
 
@@ -201,7 +170,7 @@ public class MusicalWindow extends PApplet {
 		//Go through each play bar
 		for(int i=0;i<playBackBar.size();i++){			
 			playBackBar.get(i).draw();
-			if(playBackBar.get(i).checkState(soundObject)){
+			if(playBackBar.get(i).checkState(soundObject, i)){
 				playBackBar.remove(i);
 			}
 		}
@@ -218,8 +187,6 @@ public class MusicalWindow extends PApplet {
 			action.mousePressed();
 			action.mouseDragged();
 			action.mouseReleased();
-			if(mouseReleased)
-				mouseReleased = false;
 			if(mouseDragged)
 				mouseDragged = false;
 		}
@@ -235,7 +202,7 @@ public class MusicalWindow extends PApplet {
 	 */
 	private synchronized void effectMode(){
 		if(mainFrame.getActionPanel().effectButton.isSelected()){
-			drawPrevBoxThenSend();	
+			drawPreviewEffectBox();	
 		}
 	}
 
@@ -252,46 +219,30 @@ public class MusicalWindow extends PApplet {
 	 * Draws Box according to mouse action
 	 * Only the drawer of the box can see this.
 	 */
-	private synchronized void drawPrevBoxThenSend(){
-		//TODO combine this if statement to one method
-		if(mouseClicked){ //Get mouse click position
-			xPos = mouseX;
-			yPos = mouseY;
-			mouseClicked = false;
-		}
+	private synchronized void drawPreviewEffectBox(){
 		if(mouseDragged){
 			this.stroke(255, 255, 255, 200);
 			this.noFill();
 			this.rectMode(PConstants.CORNER);
 			this.rect(xPos, yPos, mouseX-xPos, mouseY-yPos);
-		}
-		if(mouseReleased){
-			if(mouseX - xPos == 0 || mouseY - yPos == 0){
-				xPos += 1; yPos +=1;
-			}
-			//Shuffle effect
-			//TODO instead of shuffling. Can we come up with something else?
-			if(incr > SndConstants.NUM_EFFECT){
-				shuffleEffect();
-				incr = 0;
-			}
-			else{
-				effType = EffectType.values()[shuffle[incr++]];
-			}
-			
-			addEffectBox(effType, new P5Points2D(xPos, yPos), new P5Size2D(mouseX-xPos, mouseY-yPos));
-			
-			mouseReleased = false;
-			mouseDragged = false;
-		}
+		}	
 	}
 
 	/**
 	 * Adds effect box upon receiving message from server
 	 * @param data data sent from server
 	 */
-	public synchronized void addEffectBox(EffectType effType, P5Points2D pnts, P5Size2D size){
-		effectBox.add(new EffectBox(pnts, size, effType, this));
+	public synchronized void addEffectBox(){
+		if(incr > SndConstants.NUM_EFFECT) {	//Shuffle effect
+			shuffleEffect();
+			incr = 0;
+		}
+		else {
+			effType = EffectType.values()[shuffle[incr++]];
+		}
+		
+		effectBox.add(new EffectBox(new P5Points2D(mouseX, mouseY), new P5Size2D(mouseX-xPos, mouseY-yPos), effType, this));
+		mouseDragged = false;
 	}
 
 	/**
@@ -317,15 +268,16 @@ public class MusicalWindow extends PApplet {
 	}
 	/*----------------------- Mouse Action -----------------------------*/
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		super.mousePressed(arg0);
-		mouseClicked = true;
-	}
-	@Override
 	public void mouseReleased(MouseEvent arg0) {
+		if(mainFrame.getActionPanel().getPlayButton().isSelected()) {
+			trigPlayBackBar();
+		}
+		else if(mainFrame.getActionPanel().getEffectButton().isSelected()){
+			addEffectBox();
+		}
 		super.mouseReleased(arg0);
-		mouseReleased = true;
 	}
+	
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 		mouseDragged = true;
@@ -333,11 +285,12 @@ public class MusicalWindow extends PApplet {
 	}
 	
 	@Override
-	public void mouseClicked() {
-
+	public void mousePressed() {
+		//Store click position
+		xPos = mouseX;
+		yPos = mouseY;
 		super.mouseClicked();
 	}
-	
 	/*------------------ Getter/Setter --------------------*/
 	public Object getLockObject() {
 		return lockObject;

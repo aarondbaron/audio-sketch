@@ -12,8 +12,8 @@ public class Collision {
 	/**
 	 * Detects collision for Radial time line. When collision happens initiate action.
 	 */
-	public static void collideCircle(SoundObject soundObject, PlayBackBar playBar){
-		if(!soundObject.getCollideState(playBar)) {
+	public static void collideCircle(SoundObject soundObject, PlayBackBar playBar, int index){
+		if(!soundObject.getCollideState(index)) {
 			float objectX = (soundObject.getPosX()) - playBar.getPosX();
 			float objectY = (soundObject.getPosY()) - playBar.getPosY();
 
@@ -22,7 +22,7 @@ public class Collision {
 
 			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
 				AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) (Math.random()*.01 +1));
-				soundObject.setCollideState(playBar, true);
+				soundObject.setCollideState(index, true);
 				soundObject.setCollide(true);
 				soundObject.setGetFrame(true);
 				soundObject.setStartTime(System.currentTimeMillis());		
@@ -30,8 +30,8 @@ public class Collision {
 		}
 	}
 	
-	public static void collideClockBar(SoundObject soundObject, PlayBackBar playBar){
-		if(!soundObject.getCollideState(playBar)) {
+	public static void collideClockBar(SoundObject soundObject, PlayBackBar playBar, int index){
+		if(!soundObject.getCollideState(index)) {
 			
 			ClockBar temp= (ClockBar) playBar;//is this necessary?
 			int pBarX = playBar.getPosX();
@@ -70,7 +70,7 @@ public class Collision {
 					}*/
 					AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) Math.random()*2);
 					//soundObject.play();
-					soundObject.setCollideState(playBar, true);
+					soundObject.setCollideState(index, true);
 					soundObject.setCollide(true);
 					soundObject.setGetFrame(true);
 					soundObject.setStartTime(System.currentTimeMillis());		
@@ -149,7 +149,7 @@ public class Collision {
 	 * Detects collision for time line bar. When collision happens initiate action.
 	 */
 	//TODO Akito come up with better collision algorithm
-	public static void collideBar(SoundObject soundObject, PlayBackBar playBar){
+	public static void collideBar(SoundObject soundObject, PlayBackBar playBar, int index){
 		
 
 		/*
@@ -185,7 +185,7 @@ public class Collision {
 		
 		
 		//this works ok, but it only triggers on a particular part of the object.
-		if(!soundObject.getCollideState(playBar)){	//TODO this will not work
+		if(!soundObject.getCollideState(index)){	//TODO this will not work
 			float objectX = (float) ((soundObject.getPosX()+(soundObject.getWidth()/2)) 
 					- (playBar.getPosX()+(Math.cos(playBar.getAngle()+Math.PI)*(P5Constants.COLLISION_AREA/2))));
 			float objectY = (float) ((soundObject.getPosY()+(soundObject.getHeight()/2)) 
@@ -197,7 +197,7 @@ public class Collision {
 			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
 				AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) Math.random()*2);
 				//soundObject.play();
-				soundObject.setCollideState(playBar, true);
+				soundObject.setCollideState(index, true);
 				soundObject.setCollide(true);
 				soundObject.setGetFrame(true);
 				soundObject.setStartTime(System.currentTimeMillis());
@@ -209,12 +209,11 @@ public class Collision {
 		
 	}
 
-	public static void collideSquare(SoundObject soundObject,
-			PlayBackBar playBar) {
+	public static void collideSquare(SoundObject soundObject, PlayBackBar playBar, int index) {
 		// TODO need to make this correct..it functions like colide circle now
 		//
 		
-		if(!soundObject.getCollideState(playBar)) {
+		if(!soundObject.getCollideState(index)) {
 			float objectX = (soundObject.getPosX()) - playBar.getPosX();
 			float objectY = (soundObject.getPosY()) - playBar.getPosY();
 
@@ -223,12 +222,11 @@ public class Collision {
 
 			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
 				AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) (Math.random()*.01 +1));
-				soundObject.setCollideState(playBar, true);
+				soundObject.setCollideState(index, true);
 				soundObject.setCollide(true);
 				soundObject.setGetFrame(true);
 				soundObject.setStartTime(System.currentTimeMillis());		
 			}
 		}
-		
 	}
 }
