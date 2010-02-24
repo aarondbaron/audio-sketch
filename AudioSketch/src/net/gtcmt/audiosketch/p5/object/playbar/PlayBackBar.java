@@ -1,5 +1,6 @@
 package net.gtcmt.audiosketch.p5.object.playbar;
 
+import java.awt.print.Paper;
 import java.util.LinkedList;
 
 import net.gtcmt.audiosketch.p5.object.SoundObject;
@@ -60,28 +61,14 @@ public abstract class PlayBackBar {
 		this.playbackType = pbType;
 		
 		switch(pbType){
-		case BAR:
+		case BAR: case BAR2:
 			this.playbarSize = new P5Size2D(P5Constants.BAR_WIDTH,10);
-			break;
-		case BAR2:
-			this.playbarSize = new P5Size2D(P5Constants.BAR_WIDTH,10);
-			break;
-		case RADIAL:
-			this.playbarSize = new P5Size2D(0, 0);
-			break;
-		case RADIAL2:
-			this.playbarSize = new P5Size2D(0, 0);
-			break;		
-		case SQUAREBAR:
+		case RADIAL:	 case RADIAL2: case SQUAREBAR: default:
 			this.playbarSize = new P5Size2D(0, 0);
 			break;	
 		case CLOCKBAR:
 			this.playbarSize = new P5Size2D(p5.mouseX, p5.mouseY);
 			break;
-			
-
-		default:
-			this.playbarSize = new P5Size2D(0, 0);
 		}
 		
 		collisionArea = P5Constants.COLLISION_AREA;
@@ -97,6 +84,19 @@ public abstract class PlayBackBar {
 	 * @return true if playback is ready to be removed
 	 */
 	public abstract boolean checkState(LinkedList<SoundObject> soundObject);
+
+	public static PlayBackBar createPlayBar(PlayBackType barType, P5Points2D mousePnt, float speed, float angle, PApplet p5){
+		switch(barType)
+		{
+		case RADIAL:		return new RadialBar(mousePnt, speed, angle, barType, p5);
+		case RADIAL2: 	return new Radial2Bar(mousePnt, speed, angle, barType, p5); 	
+		case SQUAREBAR: 	return new SquareBar(mousePnt, speed, angle, barType, p5);
+		case CLOCKBAR:	return new ClockBar(mousePnt, speed, angle, barType, p5);	
+		case BAR:		return new Bar(mousePnt, speed, angle, barType, p5);	
+		case BAR2:		return new Bar2(mousePnt, speed, angle, barType, p5);
+		default: 		return new RadialBar(mousePnt, speed, angle, barType, p5);
+		}
+	}
 	
 	/*------------------- Getter/Setter ------------------*/
 	public PlayBackType getPlaybackType() {

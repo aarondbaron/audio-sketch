@@ -105,8 +105,9 @@ public class MusicalWindow extends PApplet {
 	 * Main method where p5 is active
 	 */
 	public void draw() {
+		background(0);
+		
 		synchronized (lockObject) {
-			background(0);
 			drawSoundObject();
 			drawEffectBox();
 			playBar();
@@ -116,12 +117,8 @@ public class MusicalWindow extends PApplet {
 		}
 	}
 
-	public void stop() {
-		super.stop();
-	}
-
 	/*----------------------- SoundObject methods -----------------------------*/
-	public void addSoundObject(ObjectShapeType shape,ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, int midiNote) {
+	public void addSoundObject(ObjectShapeType shape, ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, int midiNote) {
 		soundObject.add(new SoundObject(objPos, objSize, color, shape, midiNote, sndType, this));
 		action.addActionObject(soundObject.getLast());
 		//TODO before adding playback bar check collision state and pass in appropriate boolean
@@ -190,16 +187,7 @@ public class MusicalWindow extends PApplet {
 	 * @param data data sent from server
 	 */
 	public synchronized void addPlayBackBar(PlayBackType playType, P5Points2D mousePnt,  float speed, float angle) {
-		switch(playType)
-		{
-		case RADIAL:		playBackBar.add(new RadialBar(mousePnt, speed, angle, playType, this));	break;
-		case RADIAL2: 	playBackBar.add(new Radial2Bar(mousePnt, speed, angle, playType, this)); break;
-		case SQUAREBAR: 	playBackBar.add(new SquareBar(mousePnt, speed, angle, playType, this)); break;
-		case CLOCKBAR:	playBackBar.add(new ClockBar(mousePnt, speed, angle, playType, this));	break;
-		case BAR:		playBackBar.add(new Bar(mousePnt, speed, angle, playType, this));			break;
-		case BAR2:		playBackBar.add(new Bar2(mousePnt, speed, angle, playType, this));		break;
-		}
-
+		playBackBar.add(PlayBackBar.createPlayBar(playType, mousePnt, speed, angle, this));
 		for(int j=0;j<soundObject.size();j++){
 			soundObject.get(j).putCollideState(playBackBar.getLast(), false);
 		}
@@ -226,7 +214,6 @@ public class MusicalWindow extends PApplet {
 	 */
 	private synchronized void editMode(){
 		if(mainFrame.getActionPanel().getEditButton().isSelected()){
-			sendName();
 			action.detectObjectArea();
 			action.mousePressed();
 			action.mouseDragged();
@@ -242,34 +229,6 @@ public class MusicalWindow extends PApplet {
 		soundObject.get(index).setPos(posX,posY);
 	}
 
-	/**
-	 * Sends name of the user who is moving the ball to the server
-	 */
-	//TODO think about sending name
-	private synchronized void sendName(){
-/*		for(int i=0;i<soundObject.size();i++){
-			if(mouseClicked){
-				if(action.getMousePressed().get(i)) {
-					getClient().write(MsgType.USER_NAME.toString()+AudioSketchProtocol.SPLITTER+
-							mainFrame.getUserName()+AudioSketchProtocol.SPLITTER+i+AudioSketchProtocol.TERMINATOR);
-					mouseClicked = false;
-				}
-			}
-		}
-*/	}
-
-	/**
-	 * Reinserts effect into specified soundObject
-	 * @param id id of soundObject in LinkedList
-	 */
-	//TODO effect box is broken
-	private synchronized void reInsertEffect(int id){
-		/*EffectsChain chain = new EffectsChain();
-		for(int i=0;i<effectBox.size();i++)
-			if(effectBox.get(i).bound(soundObject.get(id)))
-				chain.add(effectBox.get(i).effect());
-				*/
-	}
 	/*----------------------- Effect Mode -----------------------------*/
 	/**
 	 * Allows users to draw effect box when effectButton is selected
@@ -333,9 +292,6 @@ public class MusicalWindow extends PApplet {
 	 */
 	public synchronized void addEffectBox(EffectType effType, P5Points2D pnts, P5Size2D size){
 		effectBox.add(new EffectBox(pnts, size, effType, this));
-		for(int i=0;i<soundObject.size();i++){
-			reInsertEffect(i);
-		}
 	}
 
 	/**
@@ -343,8 +299,6 @@ public class MusicalWindow extends PApplet {
 	 */
 	public synchronized void removeEffectBox(){
 		effectBox.removeLast();
-		for(int i=0;i<soundObject.size();i++)
-			reInsertEffect(i);
 	}
 
 	/**
@@ -382,29 +336,6 @@ public class MusicalWindow extends PApplet {
 	public void mouseClicked() {
 
 		super.mouseClicked();
-	}
-	/*---------------------- Key Action -----------------------------*/
-	@Override
-	public void keyReleased() {
-		if(soundObject.size() > 0){
-//			soundObject.get(0).play();
-//			soundObject.get(0).setCollide(true);
-//			soundObject.get(0).setGetFrame(true);
-//			soundObject.get(0).startTime = millis();
-		}
-		super.keyReleased();
-	}
-	
-	@Override
-	public void keyPressed() {
-		if(soundObject.size() > 0){
-//			soundObject.get(0).play();
-//			soundObject.get(0).setCollide(true);
-//			soundObject.get(0).setGetFrame(true);
-//			soundObject.get(0).startTime = millis();
-		}
-		super.keyPressed();
-		
 	}
 	
 	/*------------------ Getter/Setter --------------------*/

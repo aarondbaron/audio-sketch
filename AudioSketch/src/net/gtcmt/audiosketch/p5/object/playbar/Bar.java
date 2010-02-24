@@ -15,13 +15,10 @@ public class Bar extends PlayBackBar{
 	public Bar(P5Points2D objPos, float speed, float angle,
 			PlayBackType pbType, PApplet p) {
 		super(objPos, speed, angle, pbType, p);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void draw() {
-		// TODO Auto-generated method stub
-		
 		p5.pushMatrix();	
 		p5.translate(playbarPos.getPosX(), playbarPos.getPosY());
 		p5.rotate((float) (angle+P5Constants.NINETY));
