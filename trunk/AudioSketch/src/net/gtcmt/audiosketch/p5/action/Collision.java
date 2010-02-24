@@ -1,7 +1,6 @@
 package net.gtcmt.audiosketch.p5.action;
 
 import net.gtcmt.audiosketch.p5.object.SoundObject;
-import net.gtcmt.audiosketch.p5.object.playbar.Bar;
 import net.gtcmt.audiosketch.p5.object.playbar.ClockBar;
 import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
