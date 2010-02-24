@@ -208,4 +208,27 @@ public class Collision {
 		
 		
 	}
+
+	public static void collideSquare(SoundObject soundObject,
+			PlayBackBar playBar) {
+		// TODO need to make this correct..it functions like colide circle now
+		//
+		
+		if(!soundObject.getCollideState(playBar)) {
+			float objectX = (soundObject.getPosX()) - playBar.getPosX();
+			float objectY = (soundObject.getPosY()) - playBar.getPosY();
+
+			float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.getWidth()/3, 2)
+					+Math.pow(soundObject.getHeight()/3, 2)))+(playBar.getWidth()/2));
+
+			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
+				AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) (Math.random()*.01 +1));
+				soundObject.setCollideState(playBar, true);
+				soundObject.setCollide(true);
+				soundObject.setGetFrame(true);
+				soundObject.setStartTime(System.currentTimeMillis());		
+			}
+		}
+		
+	}
 }
