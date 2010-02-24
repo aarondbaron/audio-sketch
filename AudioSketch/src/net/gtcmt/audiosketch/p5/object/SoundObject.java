@@ -7,7 +7,7 @@ import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectColorType;
-import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectShapeType;
+//import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectShapeType;
 import net.gtcmt.audiosketch.sound.util.AudioControl;
 import net.gtcmt.audiosketch.sound.util.SndConstants.SndType;
 import net.gtcmt.audiosketch.util.Constants;
@@ -50,11 +50,11 @@ public class SoundObject {
 	 * @param colorSet Color of the object
 	 * @param p
 	 */
-	public SoundObject(P5Points2D objPos, P5Size2D objSize, ObjectColorType color, ObjectShapeType shape, int midiNote, SndType sndType, PApplet p){
+	public SoundObject(P5Points2D objPos, P5Size2D objSize, ObjectColorType color, int shape, int midiNote, SndType sndType, PApplet p){
 		this.objPos = objPos;
 		this.objSize = objSize;
 		this.color = chooseColor(color);
-		this.shape = P5Constants.SHAPE_NAME[shape.ordinal()];
+		this.shape = P5Constants.SHAPE_NAME[shape];//P5Constants.SHAPE_NAME[shape.ordinal()];
 		this.midiNote = midiNote;
 		this.sndType = sndType;
 		this.isCollide = false;

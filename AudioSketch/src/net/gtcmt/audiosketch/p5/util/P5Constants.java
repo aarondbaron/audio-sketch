@@ -32,10 +32,8 @@ public class P5Constants {
 	public static String[] children = dir.list(filter);		
 	public static String[] SHAPE_NAME = children;
 	public static int NUM_SHAPE = children.length;
+
 	
-	public enum ObjectShapeType{
-		GEAR, TRIANGLE, STAR, 
-	}
 	
 	public enum ObjectColorType{
 		WHITE, BLUE, GREEN, YELLOW, ORANGE
