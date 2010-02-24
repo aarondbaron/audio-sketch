@@ -1,5 +1,9 @@
 package net.gtcmt.audiosketch.p5.object.playbar;
 
+import java.util.LinkedList;
+
+import net.gtcmt.audiosketch.p5.action.Collision;
+import net.gtcmt.audiosketch.p5.object.SoundObject;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
@@ -38,6 +42,27 @@ public class Bar extends PlayBackBar{
 		playbarPos.setPosY((int) (playbarPos.getPosY()+speed*Math.sin(angle)));
 		collisionArea += speed*2;
 		
+	}
+
+	@Override
+	public boolean checkState(LinkedList<SoundObject> soundObject) {
+		//Check for collision
+		for(int j=0;j<soundObject.size();j++){
+			Collision.collideBar(soundObject.get(j), this);
+		}
+		
+		if((this.getPosX() < 0 && this.getPosY() < 0) 
+				|| (this.getPosX() < 0 && this.getPosY() > p5.height) 
+				|| (this.getPosX() > p5.width && this.getPosY() < 0) 
+				|| (this.getPosX() > p5.width && this.getPosY() > p5.height)
+				|| (this.getPosX() < -(P5Constants.BAR_WIDTH)) || (this.getPosX() > p5.width+P5Constants.BAR_WIDTH)
+				|| (this.getPosY() < -(P5Constants.BAR_WIDTH)) || (this.getPosY() > p5.height+P5Constants.BAR_WIDTH)) {
+			for(int j=0;j<soundObject.size();j++){
+				soundObject.get(j).removeCollideState(this);
+			}
+			return true;
+		}
+		return false;
 	}
 
 }

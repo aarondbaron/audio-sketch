@@ -1,11 +1,13 @@
 package net.gtcmt.audiosketch.p5.object.playbar;
 
+import java.util.LinkedList;
+
+import net.gtcmt.audiosketch.p5.object.SoundObject;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
 import processing.core.PApplet;
-import processing.core.PConstants;
 
 /**
  * Handles play back bar within musical window.
@@ -89,70 +91,13 @@ public abstract class PlayBackBar {
 	 * Draws and animates time line bar
 	 */
 	public abstract void draw();
-/*	{		
-		switch(playbackType){
-		case RADIAL:
-			p5.strokeWeight(10);
-			p5.stroke(255, 255, 255, 200);
-			p5.fill(0, 0, 0, 0);
-			p5.ellipse(playbarPos.getPosX(), playbarPos.getPosY(), playbarSize.getWidth(), playbarSize.getHeight());
-			playbarSize.setSize(((int) (playbarSize.getWidth()+speed)), ((int) (playbarSize.getHeight()+speed)));
-			break;
-			
-		case RADIAL2:
-			p5.strokeWeight(10);
-			p5.stroke(255, 25, 255, 200);
-			p5.fill(0, 0, 0, 0);
-			p5.ellipse(playbarPos.getPosX(), playbarPos.getPosY(), playbarSize.getWidth(), playbarSize.getHeight());
-			playbarSize.setSize(((int) (playbarSize.getWidth()+speed)), ((int) (playbarSize.getHeight()+speed)));
-			break;
-			
-		case BAR2:
-			p5.pushMatrix();	
-			p5.translate(playbarPos.getPosX(), playbarPos.getPosY());
-			p5.rotate((float) (angle+P5Constants.NINETY));
-			p5.rectMode(PConstants.CENTER);
-			p5.noStroke();
-			p5.fill(255, 255, 250, 200);
-			p5.rect(0, 0, playbarSize.getWidth(), playbarSize.getHeight());
-			p5.popMatrix();
-			
-			p5.pushMatrix(); //Used for collision detection
-			p5.translate(initPlaybarPos.getPosX()+(float)(Math.cos(angle+Math.PI)*(P5Constants.COLLISION_AREA/2)), initPlaybarPos.getPosY()+(float) (Math.sin(angle+Math.PI)*(P5Constants.COLLISION_AREA/2)));	
-			p5.noStroke();
-			p5.noFill();
-			p5.scale(collisionArea/P5Constants.COLLISION_AREA, collisionArea/P5Constants.COLLISION_AREA);
-			p5.ellipse(0, 0, P5Constants.COLLISION_AREA, P5Constants.COLLISION_AREA);
-			p5.popMatrix();
-			playbarPos.setPosX((int) (playbarPos.getPosX()+speed*Math.cos(angle)));
-			playbarPos.setPosY((int) (playbarPos.getPosY()+speed*Math.sin(angle)));
-			collisionArea += speed*2;
-			break;
-			
-		case BAR:
-			p5.pushMatrix();	
-			p5.translate(playbarPos.getPosX(), playbarPos.getPosY());
-			p5.rotate((float) (angle+P5Constants.NINETY));
-			p5.rectMode(PConstants.CENTER);
-			p5.noStroke();
-			p5.fill(255, 255, 255, 200);
-			p5.rect(0, 0, playbarSize.getWidth(), playbarSize.getHeight());
-			p5.popMatrix();
-			
-			p5.pushMatrix(); //Used for collision detection
-			p5.translate(initPlaybarPos.getPosX()+(float)(Math.cos(angle+Math.PI)*(P5Constants.COLLISION_AREA/2)), initPlaybarPos.getPosY()+(float) (Math.sin(angle+Math.PI)*(P5Constants.COLLISION_AREA/2)));	
-			p5.noStroke();
-			p5.noFill();
-			p5.scale(collisionArea/P5Constants.COLLISION_AREA, collisionArea/P5Constants.COLLISION_AREA);
-			p5.ellipse(0, 0, P5Constants.COLLISION_AREA, P5Constants.COLLISION_AREA);
-			p5.popMatrix();
-			playbarPos.setPosX((int) (playbarPos.getPosX()+speed*Math.cos(angle)));
-			playbarPos.setPosY((int) (playbarPos.getPosY()+speed*Math.sin(angle)));
-			collisionArea += speed*2;
-			
-		}
-	}
-*/
+	
+	/**
+	 * plays playback bar
+	 * @return true if playback is ready to be removed
+	 */
+	public abstract boolean checkState(LinkedList<SoundObject> soundObject);
+	
 	/*------------------- Getter/Setter ------------------*/
 	public PlayBackType getPlaybackType() {
 		return playbackType;
