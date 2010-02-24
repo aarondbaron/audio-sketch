@@ -15,10 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import net.gtcmt.audiosketch.network.client.Client;
-import net.gtcmt.audiosketch.network.data.AudioSketchData;
-import net.gtcmt.audiosketch.network.data.SoundObjectData;
-import net.gtcmt.audiosketch.network.util.MsgType;
+import net.gtcmt.audiosketch.gui.util.GUIConstants;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
@@ -57,7 +54,7 @@ public class EditSoundObjectPanel extends JPanel {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public EditSoundObjectPanel(AudioSketchMainFrame mainFrame) throws UnknownHostException, IOException, InterruptedException {
+	public EditSoundObjectPanel(AudioSketchMainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 		objectColor = ObjectColorType.WHITE;
 		objectShape = ObjectShapeType.GEAR;
@@ -195,15 +192,14 @@ public class EditSoundObjectPanel extends JPanel {
 		
 		//Add button to add it to musical window
 		addButton = new JButton("Add");
-		//hBox.setPreferredSize(new Dimension(GUIConstants.EDITPANEL_WIDTH, 30));
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Send message to server
-				getClient().sendData(new AudioSketchData(MsgType.ADD_OBJECT, 
-						new SoundObjectData(objectShape, objectColor, sndType, 
-						new P5Points2D((int) (Math.random()*500), (int) (Math.random()*500)), 
-						new P5Size2D(objectWindow.getObjectWidth(), objectWindow.getObjectHeight()), midiIndex), 
-						mainFrame.getUserName(), 0));
+				synchronized (mainFrame.getMusicalWindow().getLockObject()) {
+					mainFrame.getMusicalWindow().addSoundObject(objectShape, objectColor, sndType, 
+							new P5Points2D((int) (Math.random()*GUIConstants.WINDOW_WIDTH), (int) (Math.random()*GUIConstants.WINDOW_HEIGHT)), 
+							new P5Size2D(objectWindow.getObjectWidth(), objectWindow.getObjectHeight()), midiIndex);
+				}
 			}
 		});
 		hBox.add(addButton);
@@ -238,10 +234,6 @@ public class EditSoundObjectPanel extends JPanel {
 
 	public void setObjectColor(ObjectColorType objectColor) {
 		this.objectColor = objectColor;
-	}
-
-	public Client getClient() {
-		return mainFrame.getClient();
 	}
 
 	/**

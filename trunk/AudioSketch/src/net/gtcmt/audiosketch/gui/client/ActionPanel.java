@@ -16,10 +16,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import net.gtcmt.audiosketch.network.data.AudioSketchData;
-import net.gtcmt.audiosketch.network.data.RemoveEffectData;
-import net.gtcmt.audiosketch.network.data.RemoveObjectData;
-import net.gtcmt.audiosketch.network.util.MsgType;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 
 public class ActionPanel extends JPanel {
@@ -35,7 +31,6 @@ public class ActionPanel extends JPanel {
 		this.mainFrame = mainFrame;
 		Box vBox = Box.createVerticalBox();
 		Box hBox = Box.createHorizontalBox();
-
 		
 		vBox.add(createModeButtons());
 		
@@ -47,16 +42,20 @@ public class ActionPanel extends JPanel {
 	}
 
 	/**
-	 * Create remove sound object button
+	 * Create remove sound object button.
 	 */
 	private JButton createRemoveButton() {
 		JButton removeButton = new JButton("Remove");
 		removeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(playButton.isSelected() || editButton.isSelected()) 	//If play mode or edit mode
-					mainFrame.getClient().sendData(new AudioSketchData(MsgType.REMOVE_OBJECT, new RemoveObjectData(), mainFrame.getUserName()));
-				if(effectButton.isSelected()) 	//if effectButton is selected
-					mainFrame.getClient().sendData(new AudioSketchData(MsgType.REMOVE_EFFECT, new RemoveEffectData(), mainFrame.getUserName()));
+				synchronized (mainFrame.getMusicalWindow().getLockObject()) {
+					if(playButton.isSelected() || editButton.isSelected()){
+						mainFrame.getMusicalWindow().remove();
+					}
+					else if(effectButton.isSelected()){
+						mainFrame.getMusicalWindow().removeEffectBox();
+					}
+				}
 			}
 		});
 		return removeButton;

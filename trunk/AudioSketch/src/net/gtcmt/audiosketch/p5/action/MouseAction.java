@@ -2,12 +2,7 @@ package net.gtcmt.audiosketch.p5.action;
 
 import java.util.LinkedList;
 
-import net.gtcmt.audiosketch.network.client.Client;
-import net.gtcmt.audiosketch.network.data.AudioSketchData;
-import net.gtcmt.audiosketch.network.data.RelocationData;
-import net.gtcmt.audiosketch.network.util.MsgType;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
-import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.window.MusicalWindow;
 
 /**
@@ -97,10 +92,7 @@ public class MouseAction {
 					moveY.set(i, moveY.get(i) + (mwp5.mouseY - mwp5.pmouseY));
 				}
 				
-				//Broadcast action
-				getClient().sendData(new AudioSketchData(MsgType.MOVE_OBJECT, 
-						new RelocationData(i,new P5Points2D(moveX.get(i).intValue(),moveY.get(i).intValue())), 
-						mwp5.getUserName(), 0));
+				mwp5.moveObject(i, moveX.get(i).intValue(), moveY.get(i).intValue());
 			}
 		}
 	}
@@ -163,9 +155,5 @@ public class MouseAction {
 
 	public void setMoveY(LinkedList<Integer> moveY) {
 		this.moveY = moveY;
-	}
-	
-	public Client getClient(){
-		return mwp5.getClient();
 	}
 }
