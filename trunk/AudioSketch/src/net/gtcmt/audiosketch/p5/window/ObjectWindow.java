@@ -1,5 +1,7 @@
 package net.gtcmt.audiosketch.p5.window;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
@@ -27,13 +29,40 @@ public class ObjectWindow  extends PApplet {
 	 */
 	public ObjectWindow(EditSoundObjectPanel editPanel) {
 		this.editPanel = editPanel;
+		
+		/*//read all .svg files in the Sound object path
+		File dir = new File(Constants.SOUND_OBJECT_PATH);
+		//String[] children = dir.list();
+		FilenameFilter filter = new FilenameFilter() {
+		    public boolean accept(File dir, String name) {
+		        return name.endsWith(".svg");
+		    }
+		};
+		String[] children = dir.list(filter);
+		*/	
 
 		//Create shapes
 		shape = new PShape[P5Constants.NUM_SHAPE];
 		for(int i=0;i<shape.length;i++){
+			//shape[i] = this.loadShape(Constants.SOUND_OBJECT_PATH+children[i]);
 			shape[i] = this.loadShape(Constants.SOUND_OBJECT_PATH+P5Constants.SHAPE_NAME[i]);
 			shape[i].disableStyle();
+			
 		}
+		
+
+		
+
+		/*if (children == null) {
+		    // Either dir does not exist or is not a directory
+		} else {
+		    for (int j=0; j<children.length; j++) {
+		        // Get filename of file or directory
+		        String filename = children[j];
+		        System.out.println(filename);
+		    }
+		}*/
+		
 		
 		objectWidth = 100;
 		objectHeight = 100;

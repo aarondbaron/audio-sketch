@@ -1,5 +1,10 @@
 package net.gtcmt.audiosketch.p5.util;
 
+import java.io.File;
+import java.io.FilenameFilter;
+
+import net.gtcmt.audiosketch.util.Constants;
+
 public class P5Constants {
 
 	//Playback bar 
@@ -16,13 +21,25 @@ public class P5Constants {
 	public static final int COLLISION_AREA=80000;
 	
 	//Sound object
-	public static final int NUM_SHAPE = 3;
-	public static final String[] SHAPE_NAME = {"Gear.svg","Triangle.svg","Star.svg"};
+	
+	//read all .svg files in the Sound object path
+	public static File dir = new File(Constants.SOUND_OBJECT_PATH);
+	//String[] children = dir.list();
+	public static FilenameFilter filter = new FilenameFilter() {
+	    public boolean accept(File dir, String name) {
+	        return name.endsWith(".svg");
+	    }
+	};
+	public static String[] children = dir.list(filter);		
+	public static String[] SHAPE_NAME = children;//{"Gear.svg","Triangle.svg","Star.svg"};
+	public static int NUM_SHAPE = children.length;
 	
 	public enum ObjectShapeType{
-		GEAR, TRIANGLE, STAR
+		GEAR, TRIANGLE, STAR, 
 	}
-	public static final String[] SHAPE_LIST = { "Gear", "Triangle", "Star" }; 
+	//public static final String[] SHAPE_LIST = { "Gear", "Triangle", "Star" }; 
+	
+	
 	
 	public enum ObjectColorType{
 		WHITE, BLUE, GREEN, YELLOW, ORANGE

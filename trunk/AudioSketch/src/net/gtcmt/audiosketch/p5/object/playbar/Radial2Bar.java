@@ -16,7 +16,7 @@ public class Radial2Bar extends PlayBackBar{
 	public void draw() {
 		// TODO Auto-generated method stub	
 		p5.strokeWeight(10);
-		p5.stroke(255, 255, 255, 200);
+		p5.stroke(255, 25, 255, 200);
 		p5.fill(0, 0, 0, 0);
 		p5.ellipse(playbarPos.getPosX(), playbarPos.getPosY(), playbarSize.getWidth(), playbarSize.getHeight());
 		playbarSize.setSize(((int) (playbarSize.getWidth()+speed)), ((int) (playbarSize.getHeight()+speed)));
