@@ -18,6 +18,7 @@ import net.gtcmt.audiosketch.p5.object.playbar.ClockBar;
 import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
 import net.gtcmt.audiosketch.p5.object.playbar.Radial2Bar;
 import net.gtcmt.audiosketch.p5.object.playbar.RadialBar;
+import net.gtcmt.audiosketch.p5.object.playbar.SquareBar;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Math;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
@@ -195,6 +196,7 @@ public class MusicalWindow extends PApplet {
 		{
 		case RADIAL:		playBackBar.add(new RadialBar(mousePnt, speed, angle, playType, this));	break;
 		case RADIAL2: 	playBackBar.add(new Radial2Bar(mousePnt, speed, angle, playType, this)); break;
+		case SQUAREBAR: 	playBackBar.add(new SquareBar(mousePnt, speed, angle, playType, this)); break;
 		case CLOCKBAR:	playBackBar.add(new ClockBar(mousePnt, speed, angle, playType, this));	break;
 		case BAR:		playBackBar.add(new Bar(mousePnt, speed, angle, playType, this));			break;
 		case BAR2:		playBackBar.add(new Bar2(mousePnt, speed, angle, playType, this));		break;
@@ -235,6 +237,34 @@ public class MusicalWindow extends PApplet {
 				//Check for collision
 				for(int j=0;j<soundObject.size();j++){
 					Collision.collideCircle(soundObject.get(j), playBackBar.get(i));
+				}
+				
+				if(playBackBar.get(i).getWidth() > this.width/2 && playBackBar.get(i).getWidth() > this.height/2){
+					//playBackBar.remove(i);
+					//int x  = playBackBar.get(i).getInitX();
+					//int y = playBackBar.get(i).getInitY();
+					//playBackBar.get(i).setPosX(x);
+					//playBackBar.get(i).setPosX(y);
+					playBackBar.get(i).setSize(0, 0); // reset the circle
+					
+					//go to each sound object in play bar
+					for(int j=0; j<soundObject.size();j++){
+						if(soundObject.get(j).getCollideState(playBackBar.get(i))){
+							soundObject.get(j).setCollideState(playBackBar.get(i), false);
+						}
+					}
+					
+					//playBackBar.get(i).setWidth(0);
+					//playBackBar.get(i).setHeight(0);
+				}
+				break;
+				
+			case SQUAREBAR:
+				
+				//Check for collision
+				//need a 
+				for(int j=0;j<soundObject.size();j++){
+					Collision.collideSquare(soundObject.get(j), playBackBar.get(i));
 				}
 				
 				if(playBackBar.get(i).getWidth() > this.width/2 && playBackBar.get(i).getWidth() > this.height/2){
