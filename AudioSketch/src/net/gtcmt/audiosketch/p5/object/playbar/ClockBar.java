@@ -1,5 +1,9 @@
 package net.gtcmt.audiosketch.p5.object.playbar;
 
+import java.util.LinkedList;
+
+import net.gtcmt.audiosketch.p5.action.Collision;
+import net.gtcmt.audiosketch.p5.object.SoundObject;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
 import processing.core.PApplet;
@@ -107,8 +111,21 @@ public class ClockBar extends PlayBackBar{
 
 
 	}
-	
-	
-	
 
+	@Override
+	public boolean checkState(LinkedList<SoundObject> soundObject) {
+
+		//Check for collision
+		for(int j=0;j<soundObject.size();j++){
+			Collision.collideClockBar(soundObject.get(j), this);
+		}
+		
+		//go to each sound object in play bar
+		for(int j=0; j<soundObject.size();j++){
+			if(soundObject.get(j).getCollideState(this)){
+				soundObject.get(j).setCollideState(this, false);
+			}
+		}
+		return false;
+	}
 }
