@@ -1,31 +1,21 @@
 package net.gtcmt.audiosketch;
 
-import java.awt.Cursor;
-import java.awt.DisplayMode;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Toolkit;
-import java.awt.image.MemoryImageSource;
-
 import net.gtcmt.audiosketch.gui.client.AudioSketchMainFrame;
-import net.gtcmt.audiosketch.gui.util.GUIConstants;
 
 public class AudioSketchApp extends AudioSketchMainFrame {
 
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = -6059710804291109079L;
+
 	public AudioSketchApp() {
-		super();
+		super("Audio Sketch");
 	}
 	
 	public static void main(String[] args) {
 
-		AudioSketchApp audioSketch = new AudioSketchApp();
+		/*AudioSketchApp audioSketch =*/ new AudioSketchApp();
 		
 		//Make cursor invisible
-		int[] pixels = new int[16 * 16];
+/*		int[] pixels = new int[16 * 16];
 		Image image = Toolkit.getDefaultToolkit().createImage(
 		        new MemoryImageSource(16, 16, pixels, 0, 16));
 		Cursor transparentCursor =
@@ -38,5 +28,6 @@ public class AudioSketchApp extends AudioSketchMainFrame {
 
 		dev.setFullScreenWindow(audioSketch);
 		if(dev.isDisplayChangeSupported()) dev.setDisplayMode(mode);
+	*/
 	}
 }
