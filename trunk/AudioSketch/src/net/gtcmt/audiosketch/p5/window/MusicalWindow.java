@@ -22,7 +22,7 @@ import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectColorType;
-import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectShapeType;
+//import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectShapeType;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
 import net.gtcmt.audiosketch.sound.util.SndConstants;
 import net.gtcmt.audiosketch.sound.util.SndConstants.EffectType;
@@ -118,7 +118,7 @@ public class MusicalWindow extends PApplet {
 	}
 
 	/*----------------------- SoundObject methods -----------------------------*/
-	public void addSoundObject(ObjectShapeType shape, ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, int midiNote) {
+	public void addSoundObject(int shape,ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, int midiNote) {
 		soundObject.add(new SoundObject(objPos, objSize, color, shape, midiNote, sndType, this));
 		action.addActionObject(soundObject.getLast());
 		//TODO before adding playback bar check collision state and pass in appropriate boolean

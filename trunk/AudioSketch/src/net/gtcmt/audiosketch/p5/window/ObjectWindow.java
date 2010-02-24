@@ -82,7 +82,7 @@ public class ObjectWindow  extends PApplet {
 		reSizeObject();
 		
 		this.shapeMode(PApplet.CORNER);
-		this.shape(shape[editPanel.getObjectShape().ordinal()], (width/2)-(objectWidth/2), 
+		this.shape(shape[editPanel.getObjectShape()], (width/2)-(objectWidth/2), 
 				(height/2)-(objectHeight/2), objectWidth, objectHeight);
 	}
 

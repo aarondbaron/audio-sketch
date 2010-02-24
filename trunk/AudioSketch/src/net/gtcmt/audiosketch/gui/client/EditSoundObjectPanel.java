@@ -20,7 +20,7 @@ import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectColorType;
-import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectShapeType;
+//import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectShapeType;
 import net.gtcmt.audiosketch.p5.window.ObjectWindow;
 import net.gtcmt.audiosketch.sound.util.AudioControl;
 import net.gtcmt.audiosketch.sound.util.SndConstants;
@@ -38,7 +38,7 @@ public class EditSoundObjectPanel extends JPanel {
 	private JComboBox shapeChooser;			// Choose shape of sound object
 	private JComboBox midiNoteChooser;		// Choose midi note of synth sound
 	private JComboBox soundChooser;			// Choose synth sound
-	private ObjectShapeType objectShape;			// Sound object type
+	private int objectShapeID;			// Sound object type  ObjectShapeType no more
 	private ObjectColorType objectColor;			// Sound object color
 	private int midiIndex;					// midi note index obtained from combo box
 	private SndType sndType;					// sound type Index obtained from combo box
@@ -57,7 +57,7 @@ public class EditSoundObjectPanel extends JPanel {
 	public EditSoundObjectPanel(AudioSketchMainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 		objectColor = ObjectColorType.WHITE;
-		objectShape = ObjectShapeType.GEAR;
+		objectShapeID = 0;//P5Constants.SHAPE_NAME[0];// ObjectShapeType.GEAR;
 		sndType = SndType.BUZZ;
 		
 		Box vBox = Box.createVerticalBox();
@@ -106,7 +106,8 @@ public class EditSoundObjectPanel extends JPanel {
 		shapeChooser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					JComboBox box = (JComboBox) e.getSource();
-					objectShape = ObjectShapeType.values()[box.getSelectedIndex()];
+					//objectShape = ObjectShapeType.values()[box.getSelectedIndex()];
+					objectShapeID = box.getSelectedIndex();//P5Constants.SHAPE_NAME[box.getSelectedIndex()];
 			}
 		});
 		hBox.add(shapeChooser);
@@ -196,7 +197,7 @@ public class EditSoundObjectPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				//Send message to server
 				synchronized (mainFrame.getMusicalWindow().getLockObject()) {
-					mainFrame.getMusicalWindow().addSoundObject(objectShape, objectColor, sndType, 
+					mainFrame.getMusicalWindow().addSoundObject(objectShapeID, objectColor, sndType, 
 							new P5Points2D((int) (Math.random()*GUIConstants.WINDOW_WIDTH), (int) (Math.random()*GUIConstants.WINDOW_HEIGHT)), 
 							new P5Size2D(objectWindow.getObjectWidth(), objectWindow.getObjectHeight()), midiIndex);
 				}
@@ -220,12 +221,12 @@ public class EditSoundObjectPanel extends JPanel {
 		return objectWindow;
 	}
 
-	public ObjectShapeType getObjectShape() {
-		return objectShape;
+	public int getObjectShape() {
+		return objectShapeID;
 	}
 
-	public void setObjectShape(ObjectShapeType objectShape) {
-		this.objectShape = objectShape;
+	public void setObjectShape(int objectShape) {
+		this.objectShapeID = objectShape;
 	}
 
 	public ObjectColorType getObjectColor() {
