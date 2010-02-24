@@ -1,6 +1,7 @@
 package net.gtcmt.audiosketch.p5.action;
 
 import net.gtcmt.audiosketch.p5.object.SoundObject;
+import net.gtcmt.audiosketch.p5.object.playbar.Bar;
 import net.gtcmt.audiosketch.p5.object.playbar.ClockBar;
 import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
@@ -52,7 +53,7 @@ public class Collision {
 				//System.out.println(ang);
 				int p2X = (int) Math.round((Math.cos(ang+Math.PI/2)*len) + pBarX);//the Math.PI is necessary but shoudl be fixed so you dotn have to do this
 				int p2Y = (int) Math.round((Math.sin(ang+Math.PI/2)*len) + pBarY);
-				System.out.println("p2X: " + p2X + " p2Y: " + p2Y + "...pBarX: " + pBarX + " pBarY: " + pBarY );//what are coordinates
+				//System.out.println("p2X: " + p2X + " p2Y: " + p2Y + "...pBarX: " + pBarX + " pBarY: " + pBarY );//what are coordinates
 				//System.out.println(Math.sqrt(  Math.pow(pBarX-p2X,2) + Math.pow(pBarY-p2Y,2)));//just a length check
 				
 				float[] iSectPoints = sphere_line_iSect(p2X, p2Y, pBarX, pBarY, sobjX, sobjY, soundObject.getWidth());
@@ -117,7 +118,7 @@ public class Collision {
 			float mu = -b/(2*a) ;
 			points[1] = x1 + mu*(x2-x1);
 			points[2] = y1 + mu*(y2-y1);
-			System.out.println("i: "+ i);
+			//System.out.println("i: "+ i);
 			return(points);
 			
 
@@ -132,12 +133,12 @@ public class Collision {
 			mu = (float)(-b - Math.sqrt(b*b - 4*a*c )) / (2*a);
 			points[3] = x1 + mu*(x2-x1);
 			points[4] = y1 + mu*(y2-y1);
-			System.out.println("i: "+ i);
+			//System.out.println("i: "+ i);
 			
-			System.out.println("point1: "+ points[1]);
-			System.out.println("point2: "+ points[2]);
-			System.out.println("point3: "+ points[3]);
-			System.out.println("point4: "+ points[4]);
+			//System.out.println("point1: "+ points[1]);
+			//System.out.println("point2: "+ points[2]);
+			//System.out.println("point3: "+ points[3]);
+			//System.out.println("point4: "+ points[4]);
 			
 			return(points);
 
@@ -149,6 +150,41 @@ public class Collision {
 	 */
 	//TODO Akito come up with better collision algorithm
 	public static void collideBar(SoundObject soundObject, PlayBackBar playBar){
+		
+
+		/*
+		int pBarX = playBar.getPosX();
+		int pBarY = playBar.getPosY();
+		int sobjX=soundObject.getPosX();
+		int sobjY=soundObject.getPosY();	
+		int p2X = (int) Math.round((Math.cos(playBar.getAngle()+Math.PI/2)*1) + pBarX);//the Math.PI is necessary but shoudl be fixed so you dotn have to do this
+		int p2Y = (int) Math.round((Math.sin(playBar.getAngle()+Math.PI/2)*1) + pBarY);
+		
+
+		
+		
+		float[] iSectPoints = sphere_line_iSect(p2X, p2Y, pBarX, pBarY, sobjX, sobjY, soundObject.getWidth());
+		//System.out.println("iSectPoints[0]: "+ iSectPoints[0]);
+
+
+		if (iSectPoints[0]>0) {
+			//for(int i = 0; i<iSectPoints.length;i++){
+				//System.out.println("iSectPoints[" + i + "]: "+ iSectPoints[i]);
+
+			//}
+			AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) Math.random()*2);
+			//soundObject.play();
+			soundObject.setCollideState(playBar, true);
+			soundObject.setCollide(true);
+			soundObject.setGetFrame(true);
+			soundObject.setStartTime(System.currentTimeMillis());		
+		}
+		*/
+		
+		
+		
+		
+		//this works ok, but it only triggers on a particular part of the object.
 		if(!soundObject.getCollideState(playBar)){	//TODO this will not work
 			float objectX = (float) ((soundObject.getPosX()+(soundObject.getWidth()/2)) 
 					- (playBar.getPosX()+(Math.cos(playBar.getAngle()+Math.PI)*(P5Constants.COLLISION_AREA/2))));
@@ -167,5 +203,9 @@ public class Collision {
 				soundObject.setStartTime(System.currentTimeMillis());
 			}
 		}
+		
+		
+		
+		
 	}
 }
