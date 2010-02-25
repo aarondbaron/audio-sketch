@@ -121,7 +121,7 @@ public class SoundObject {
 		float rotateRate = (float).007;
 		float translateParam = (float) 5;
 		float sfactorParam = (float) (1.0 + .01);
-		int numShapes = 10;
+		int numShapes = 7;
 		spawnMultiple(p5,numShapes,rotateRate, translateParam,sfactorParam);
 		
 		
