@@ -33,6 +33,12 @@ public class SoundObject {
 	private boolean getFrame;
 	private long frame=0;
 	private float updateStep=0.0f;
+	private float updateStep2=0.0f;
+
+	int numberOfShapes=7;
+	float[] vinity;
+	float[] vinitx;
+	
 	//private float updateStep2=(float)0.0;
 	//private
 	//sound name, pitch, filter type, cutoff, q, center freq, gain, effect type, effect on/off
@@ -61,6 +67,20 @@ public class SoundObject {
 		this.collideState = new LinkedList<Boolean>();
 		this.image = p.loadShape(Constants.SOUND_OBJECT_PATH+this.shape);
 		this.image.disableStyle();
+		
+		vinity = new float[numberOfShapes];
+		vinitx = new float[numberOfShapes];
+		float s=200;
+		for (int i=0;i<vinity.length;i++) {
+			vinity[i]=(float)(-s*(2*Math.random()-1)); 
+			//System.out.println(vinity[i]);
+		}
+
+		for (int i=0;i<vinitx.length;i++) {
+			vinitx[i]=(float)(-s*(2*Math.random()-1)); 
+			//System.out.println(vinitx[i]);
+		}
+		
 	}
 
 	/**
@@ -116,13 +136,17 @@ public class SoundObject {
 		p5.shapeMode(PConstants.CENTER);
 		p5.shape(image, 0, 0, objSize.getWidth(), objSize.getHeight());
 		
+		//setup for explodeMultple
+		//float explodeRate=.1f;
+		//explodeMultiple(p5, numberOfShapes,explodeRate);
 		
 		//setup for spawnMultiple
-		float rotateRate = (float).007;
-		float translateParam = (float) 5;
-		float sfactorParam = (float) (1.0 + .01);
-		int numShapes = 7;
+		float rotateRate = .007f;
+		float translateParam =  5.0f;
+		float sfactorParam =  (1.0f + .01f);
+		int numShapes = numberOfShapes;
 		spawnMultiple(p5,numShapes,rotateRate, translateParam,sfactorParam);
+
 		
 		
 		p5.popMatrix();
@@ -158,7 +182,7 @@ public class SoundObject {
 			}
 
 			float timeOutMS=1000;
-			timeOut(p5,timeOutMS);
+			timeOut(p5,timeOutMS, false);
 		}
 		
 	}
@@ -179,8 +203,52 @@ public class SoundObject {
 			p5.rotate((float) Math.toRadians(theta));
 			float sfactor=(float).1;
 			p5.scale((float)(Math.random()*sfactor+1), (float)(Math.random()*sfactor+1));
-			timeOut(p5, (float) (500) );
+			timeOut(p5, 500f,false );
 		}
+	}
+	
+	
+private void explodeMultiple(PApplet p5, float numShapes, float rate) {
+		
+		if(isCollide){
+			if(getFrame){
+				frame = p5.frameCount;
+				getFrame=false;
+			}
+			//image.setVisible(false);
+			
+			//float theta = (p5.frameCount*2) % MAX_DEGREE;
+			//float size = (float) (2.0 - Math.abs((double) (((p5.frameCount-frame)*2) % MAX_DEGREE) / (MAX_DEGREE/2)));
+			//p5.rotate((float) Math.toRadians(theta));
+			
+			updateStep2 = updateStep2 + rate;
+			
+			float cosup=(float)Math.cos(updateStep2);
+			
+			//updateStep2= updateStep2+ translateRate;
+			float accel=(float)9.8;
+			
+			for (int i=0; i<numShapes;i++){
+				
+				p5.pushMatrix();
+				
+				//System.out.println(vinitx[i]*updateStep);
+				//System.out.println(-Math.abs(vinity[i])*updateStep+.5f*accel*updateStep*updateStep);
+				//p5.translate(vinitx[i]*updateStep2, -Math.abs(vinity[i])*updateStep2+.5f*accel*updateStep2*updateStep2 );
+				p5.translate(vinitx[i]*cosup, -Math.abs(vinity[i])*cosup+.5f*accel*cosup*cosup );
+				
+				//p5.scale((float)(sfactorParam), (float)(sfactorParam));
+				//p5.stroke(color[0] , color[1], color[2], 200);
+				p5.scale( .3f, .3f);
+				p5.shape(image, 0, 0, objSize.getWidth(), objSize.getHeight());
+				p5.popMatrix();
+
+			}
+
+			float timeOutMS=2000;
+			timeOut(p5,timeOutMS, true);
+		}
+		
 	}
 	
 	
@@ -190,10 +258,25 @@ public class SoundObject {
 	 * @param p5
 	 * @param timeOutMS 
 	 */
-	private void timeOut(PApplet p5, float timeOutMS){
+	private void timeOut(PApplet p5, float timeOutMS, boolean bval){
 		if(System.currentTimeMillis()  - startTime > timeOutMS){
 			isCollide = false;
 			//image.setVisible(true);
+			
+			if(bval){
+				for (int i=0;i<vinity.length;i++) {
+					vinity[i]=(float)(-70*(2*Math.random()-1)); 
+					//System.out.println(vinity[i]);
+				}
+
+				for (int i=0;i<vinitx.length;i++) {
+					vinitx[i]=(float)(-70*(2*Math.random()-1)); 
+					//System.out.println(vinitx[i]);
+				}
+				//updateStep2=0.0f;
+			}
+			
+			
 		}
 	}
 
