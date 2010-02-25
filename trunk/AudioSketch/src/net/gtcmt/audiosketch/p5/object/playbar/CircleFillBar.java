@@ -74,9 +74,12 @@ public class CircleFillBar extends PlayBackBar{
 		else{
 			time2=System.currentTimeMillis()-time1;
 		}
-		
+		int w=p5.mouseX;
+		int h=p5.mouseY;
 		//float speed = (float) Math.sqrt(Math.pow(p5.mouseX-xPos, 2)+Math.pow(mouseY-yPos, 2))/P5Constants.MAX_TRIG_DISTANCE;
-		p5.ellipse(playbarPos.getPosX(), playbarPos.getPosY(), p5.mouseX, p5.mouseY);
+		p5.ellipse(playbarPos.getPosX(), playbarPos.getPosY(), w, h);
+		this.setWidth(w);
+		this.setWidth(h);
 		
 	}
 
