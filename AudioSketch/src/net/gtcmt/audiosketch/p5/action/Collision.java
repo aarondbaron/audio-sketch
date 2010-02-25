@@ -1,6 +1,7 @@
 package net.gtcmt.audiosketch.p5.action;
 
 import net.gtcmt.audiosketch.p5.object.SoundObject;
+import net.gtcmt.audiosketch.p5.object.playbar.CircleFillBar;
 import net.gtcmt.audiosketch.p5.object.playbar.ClockBar;
 import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
@@ -230,23 +231,26 @@ public class Collision {
 	}
 	
 	
-	public static void collideCircleFillBar(SoundObject soundObject, PlayBackBar playBar, int index) {
+	public static void collideCircleFillBar(SoundObject soundObject, PlayBackBar playBackBar, int index) {
 		// TODO need to make this correct..it functions like colide circle now
 		//
+		CircleFillBar playBar=(CircleFillBar)playBackBar;
+		if(playBar.bang){
 
-		if(!soundObject.getCollideState(index)) {
-			float objectX = (soundObject.getPosX()) - playBar.getPosX();
-			float objectY = (soundObject.getPosY()) - playBar.getPosY();
+			if(!soundObject.getCollideState(index)) {
+				float objectX = (soundObject.getPosX()) - playBar.getPosX();
+				float objectY = (soundObject.getPosY()) - playBar.getPosY();
 
-			float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.getWidth()/3, 2)
-					+Math.pow(soundObject.getHeight()/3, 2)))+(playBar.getWidth()/2));
+				float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.getWidth()/3, 2)
+						+Math.pow(soundObject.getHeight()/3, 2)))+(playBar.getWidth()/2));
 
-			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
-				AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) (Math.random()*.01 +1));
-				soundObject.setCollideState(index, true);
-				soundObject.setCollide(true);
-				soundObject.setGetFrame(true);
-				soundObject.setStartTime(System.currentTimeMillis());		
+				if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
+					AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) (Math.random()*.01 +1));
+					soundObject.setCollideState(index, true);
+					soundObject.setCollide(true);
+					soundObject.setGetFrame(true);
+					soundObject.setStartTime(System.currentTimeMillis());		
+				}
 			}
 		}
 		

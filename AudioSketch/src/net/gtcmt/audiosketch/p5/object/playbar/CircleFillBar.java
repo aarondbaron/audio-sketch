@@ -2,6 +2,7 @@ package net.gtcmt.audiosketch.p5.object.playbar;
 
 import java.util.LinkedList;
 
+import net.gtcmt.audiosketch.p5.action.Collision;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
@@ -13,6 +14,8 @@ public class CircleFillBar extends PlayBackBar{
 	long time1 = System.currentTimeMillis();;
 	long time2=0;
 	long timeOutMS=250;
+	
+	public boolean bang = false;
 
 	public CircleFillBar(P5Points2D objPos, float speed, float angle,
 			PlayBackType pbType, PApplet p) {
@@ -23,8 +26,23 @@ public class CircleFillBar extends PlayBackBar{
 
 	@Override
 	public boolean checkState(LinkedList<SoundObject> soundObject, int index) {
-		// TODO Auto-generated method stub
+		//Check for collision
+		for(int j=0;j<soundObject.size();j++){
+			Collision.collideCircleFillBar(soundObject.get(j), this, index);
+		}
+		
+		if(this.getWidth() > p5.width>>1 &&this.getWidth() > p5.height>>1){			
+			//go to each sound object in play bar
+			for(int j=0; j<soundObject.size();j++){
+				if(soundObject.get(j).getCollideState(index)){
+					soundObject.get(j).setCollideState(index, false);
+				}
+			}			
+		}
+	
+		//TODO implement removing
 		return false;
+		
 	}
 
 	@Override
@@ -37,18 +55,19 @@ public class CircleFillBar extends PlayBackBar{
 		if(System.currentTimeMillis()  - time1 > timeOutMS){
 			p5.fill(255, 25, 255, 200);
 			//image.setVisible(true);
+			this.bang=true;
 			
 		}
 		else{
 			p5.fill(0, 0, 0, 0);
 		}
 		
-		
-		   // ... the code being measured ...
+	
 		time2 = System.currentTimeMillis() - time1;
 		if(time2>1000)
 		{
 			p5.fill(255, 25, 255, 200);
+			this.bang=false;
 			//System.out.println(time2);
 			time1=System.currentTimeMillis();
 		}
