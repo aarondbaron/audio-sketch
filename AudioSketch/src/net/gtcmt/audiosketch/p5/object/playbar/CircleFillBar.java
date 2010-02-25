@@ -37,6 +37,7 @@ public class CircleFillBar extends PlayBackBar{
 		if(System.currentTimeMillis()  - time1 > timeOutMS){
 			p5.fill(255, 25, 255, 200);
 			//image.setVisible(true);
+			
 		}
 		else{
 			p5.fill(0, 0, 0, 0);
@@ -48,8 +49,8 @@ public class CircleFillBar extends PlayBackBar{
 		if(time2>1000)
 		{
 			p5.fill(255, 25, 255, 200);
-			System.out.println(time2);
-			//time1=System.currentTimeMillis();
+			//System.out.println(time2);
+			time1=System.currentTimeMillis();
 		}
 		else{
 			time2=System.currentTimeMillis()-time1;
