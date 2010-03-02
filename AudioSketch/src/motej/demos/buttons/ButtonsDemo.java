@@ -30,63 +30,62 @@ import org.slf4j.LoggerFactory;
  */
 public class ButtonsDemo {
 	
+	private static final int NUM_DEVICE = 2;
+
 	private static Logger log = LoggerFactory.getLogger(ButtonsDemo.class);
 	
 	private static boolean buttonARelease;
 
 	public static void main(String[] args) {
-		SimpleMoteFinder simpleMoteFinder = new SimpleMoteFinder();
-		Mote mote = simpleMoteFinder.findMote();
+		SimpleMoteFinder simpleMoteFinder = null;
+		Mote[] mote = new Mote[NUM_DEVICE];
 		
-		mote.addCoreButtonListener(new CoreButtonListener() {
+		for(int i=0;i<NUM_DEVICE;i++){
+			simpleMoteFinder = new SimpleMoteFinder();
+			mote[i] = simpleMoteFinder.findMote();
 
-			public void buttonPressed(CoreButtonEvent evt) {
-				if (evt.isButtonAPressed()) {
-					System.out.println("Button A pressed!");
-					//setButtonARelease(false);
-					//System.out.println("button A NOT released");
+			mote[i].addCoreButtonListener(new CoreButtonListener() {
+
+				public void buttonPressed(CoreButtonEvent evt) {
+					if (evt.isButtonAPressed()) {
+						System.out.println("Button A pressed!");
+						//setButtonARelease(false);
+						//System.out.println("button A NOT released");
+					}
+					if (evt.isButtonBPressed()) {
+						System.out.println("Button B pressed!");
+					}
+					if(evt.isButtonHomePressed()){
+						System.out.println( "Home pressed!");
+
+					}
+
+					if(evt.isButtonPlusPressed()){
+						System.out.println( "Plus pressed!");
+
+					}
+					if (evt.isNoButtonPressed()) {
+						System.out.println("No button pressed.");
+						//System.out.println(evt.BUTTON_A);
+						//int thing = evt.getButton();
+						//System.out.println("thing is " +thing);
+
+
+					}
 				}
-				if (evt.isButtonBPressed()) {
-					System.out.println("Button B pressed!");
-				}
-				if(evt.isButtonHomePressed()){
-					System.out.println( "Home pressed!");
-
-				}
-
-				if(evt.isButtonPlusPressed()){
-					System.out.println( "Plus pressed!");
-
-				}
-				if (evt.isNoButtonPressed()) {
-					System.out.println("No button pressed.");
-					//System.out.println(evt.BUTTON_A);
-					//int thing = evt.getButton();
-					//System.out.println("thing is " +thing);
 
 
-				}
-				if(isButtonARelease()) {
-					setButtonARelease(true);
-					System.out.println("button A released state");
-
-				}
-			}
-
-
-		});
-		
+			});
+		}
 		try {
 			Thread.sleep(90000l);
 		} catch (InterruptedException ex) {
 			log.error(ex.getMessage(), ex);
 		} finally {
-			mote.disconnect();
+			for(int i=0;i<NUM_DEVICE;i++){
+				mote[i].disconnect();
+			}
 		}
-	}
-
-	public static void setButtonARelease(boolean buttonARelease) {
-		buttonARelease = buttonARelease;
 	}
 
 	public static boolean isButtonARelease() {

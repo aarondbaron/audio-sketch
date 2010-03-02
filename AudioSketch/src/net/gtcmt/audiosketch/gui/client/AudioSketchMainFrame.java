@@ -13,6 +13,7 @@ import javax.swing.SwingConstants;
 
 import net.gtcmt.audiosketch.gui.util.GUIConstants;
 import net.gtcmt.audiosketch.p5.window.MusicalWindow;
+import net.gtcmt.audiosketch.wii.MoteConnector;
 
 /**
  * Put together all the gui elements
@@ -95,6 +96,15 @@ public class AudioSketchMainFrame extends JFrame {
 		setVisible(true);
 		validate();
 		repaint();
+
+		//musicalWindow.remove();
+		//musicalWindow.addSoundObject(shape, color, sndType, objPos, objSize, midiNote)
+		//musicalWindow.addSoundObject(shape, color, sndType, objPos, objSize, midiNote)
+		//musicalWindow.moveObject(index, posX, posY)
+		//TODO initialize object signal filtering before MoteConnector
+		//Connect to wiimote
+		
+		new MoteConnector(musicalWindow);
 	}
 	
 	/**
