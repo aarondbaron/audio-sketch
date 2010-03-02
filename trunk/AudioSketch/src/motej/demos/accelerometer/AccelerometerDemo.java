@@ -16,7 +16,6 @@
 package motej.demos.accelerometer;
 
 import motej.Mote;
-import motej.demos.common.SimpleMoteFinder;
 import motej.event.AccelerometerEvent;
 import motej.event.AccelerometerListener;
 import motej.request.ReportModeRequest;
@@ -26,10 +25,14 @@ import motej.request.ReportModeRequest;
  * <p>
  * @author <a href="mailto:vfritzsch@users.sourceforge.net">Volker Fritzsch</a>
  */
+
+
 public class AccelerometerDemo {
 
+	private static Mote mote;
+	
 	public static void main(String[] args) throws InterruptedException {
-		AccelerometerListener<Mote> listener = new AccelerometerListener<Mote>() {
+		final AccelerometerListener<Mote> listener = new AccelerometerListener<Mote>() {
 		
 			public void accelerometerChanged(AccelerometerEvent<Mote> evt) {
 				System.out.println(evt.getX() + " : " + evt.getY() + " : " + evt.getZ());
@@ -37,10 +40,15 @@ public class AccelerometerDemo {
 		
 		};
 		
-		SimpleMoteFinder simpleMoteFinder = new SimpleMoteFinder();
-		Mote mote = simpleMoteFinder.findMote();
-		mote.addAccelerometerListener(listener);
-		mote.setReportMode(ReportModeRequest.DATA_REPORT_0x31);
+		Thread connectThread = new Thread("connect: 001A19C10D31"){
+			public void run(){
+				mote = new Mote("001A19C10D31");
+				mote.addAccelerometerListener(listener);
+				mote.setReportMode(ReportModeRequest.DATA_REPORT_0x31);
+			};
+		};
+		
+		connectThread.start();
 		
 		Thread.sleep(60000l);
 		

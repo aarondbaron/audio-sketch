@@ -1,11 +1,11 @@
 package motej.demos.common;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import motej.Mote;
 import motej.MoteFinder;
 import motej.MoteFinderListener;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SimpleMoteFinder implements MoteFinderListener {
 
