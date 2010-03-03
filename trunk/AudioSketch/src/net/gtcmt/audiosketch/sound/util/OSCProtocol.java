@@ -3,7 +3,7 @@ package net.gtcmt.audiosketch.sound.util;
 public class OSCProtocol {
 
 	public enum OSCMsgType {
-		TRIGGER, SCRUB, SND_OBJ_PROP, PLAY_BAR_PROP,
+		TRIGGER, SCRUB, SND_OBJ_PROP, PLAY_BAR_PROP, FILE
 	}
 	
 	public enum TrigType {
