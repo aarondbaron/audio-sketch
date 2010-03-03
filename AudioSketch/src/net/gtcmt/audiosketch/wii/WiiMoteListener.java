@@ -26,7 +26,7 @@ public class WiiMoteListener {
 			}		
 		};
 		
-		shake = new ShakeWii(mwp5,buttonState);
+		shake = new ShakeWii(mwp5,this);
 		accelListener = new AccelerometerListener<Mote>() {
 			public void accelerometerChanged(AccelerometerEvent<Mote> evt) {
 				//System.out.println(evt.getX() + " : " + evt.getY() + " : " + evt.getZ());

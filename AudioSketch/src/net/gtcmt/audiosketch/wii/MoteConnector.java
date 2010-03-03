@@ -12,10 +12,11 @@ public class MoteConnector implements MoteFinderListener {
 	private MoteFinder finder;
 	private Mote mote;
 	private Object lock;
-	
+	private WiiMoteListener moteListener;
+
 	public MoteConnector(MusicalWindow mwp5){
 		lock = new Object();
-		WiiMoteListener moteListener = new WiiMoteListener(mwp5);
+		moteListener = new WiiMoteListener(mwp5);
 		Mote mote = findMote();
 		mote.addAccelerometerListener(moteListener.getAccelListener());		
 		mote.addCoreButtonListener(moteListener.getButtonListener());
@@ -46,5 +47,10 @@ public class MoteConnector implements MoteFinderListener {
 			LogMessage.err(ex.getMessage());
 		}
 		return mote;
+	}
+	
+	
+	public WiiMoteListener getMoteListener() {
+		return moteListener;
 	}
 }

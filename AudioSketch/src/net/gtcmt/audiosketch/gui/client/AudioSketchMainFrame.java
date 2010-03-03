@@ -29,6 +29,7 @@ public class AudioSketchMainFrame extends JFrame {
 	private ActionPanel actionPanel;
 	private MusicalWindow musicalWindow;
 	private EditSoundObjectPanel  editPanel;
+	private MoteConnector connector;
 	
 	private TableMessageRouter tableMessageRouter; 
 	
@@ -109,7 +110,8 @@ public class AudioSketchMainFrame extends JFrame {
 		//TODO initialize object signal filtering before MoteConnector
 		//Connect to wiimote
 		
-		new MoteConnector(musicalWindow);
+		connector = new MoteConnector(musicalWindow);
+		musicalWindow.initPointer(connector.getMoteListener());
 	}
 	
 	/**

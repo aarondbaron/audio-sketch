@@ -43,7 +43,7 @@ public class IrCameraDemo {
 		mote.enableIrCamera();
 		mote.setReportMode(ReportModeRequest.DATA_REPORT_0x36);
 		
-		Thread.sleep(60000l);
+		Thread.sleep(600000l);
 		
 		mote.setReportMode(ReportModeRequest.DATA_REPORT_0x30);
 		mote.disableIrCamera();
