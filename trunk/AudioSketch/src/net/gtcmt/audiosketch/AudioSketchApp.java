@@ -1,4 +1,4 @@
-package net.gtcmt.audiosketch;
+   package net.gtcmt.audiosketch;
 
 import net.gtcmt.audiosketch.gui.client.AudioSketchMainFrame;
 

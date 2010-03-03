@@ -15,6 +15,8 @@ import net.gtcmt.audiosketch.gui.util.GUIConstants;
 import net.gtcmt.audiosketch.p5.window.MusicalWindow;
 import net.gtcmt.audiosketch.wii.MoteConnector;
 
+import net.gtcmt.audiosketch.p5.object.TableMessageRouter;
+
 /**
  * Put together all the gui elements
  * @author akito
@@ -27,6 +29,8 @@ public class AudioSketchMainFrame extends JFrame {
 	private ActionPanel actionPanel;
 	private MusicalWindow musicalWindow;
 	private EditSoundObjectPanel  editPanel;
+	
+	private TableMessageRouter tableMessageRouter; 
 	
 	/**
 	 * Constructor for starting audience view
@@ -97,6 +101,7 @@ public class AudioSketchMainFrame extends JFrame {
 		validate();
 		repaint();
 
+		this.tableMessageRouter=new TableMessageRouter(musicalWindow);
 		//musicalWindow.remove();
 		//musicalWindow.addSoundObject(shape, color, sndType, objPos, objSize, midiNote)
 		//musicalWindow.addSoundObject(shape, color, sndType, objPos, objSize, midiNote)
