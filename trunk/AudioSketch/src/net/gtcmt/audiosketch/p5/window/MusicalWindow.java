@@ -20,6 +20,8 @@ import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
 import net.gtcmt.audiosketch.sound.util.SndConstants;
 import net.gtcmt.audiosketch.sound.util.SndConstants.EffectType;
 import net.gtcmt.audiosketch.sound.util.SndConstants.SndType;
+import net.gtcmt.audiosketch.wii.IRDisplay;
+import net.gtcmt.audiosketch.wii.WiiMoteListener;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -47,6 +49,7 @@ public class MusicalWindow extends PApplet {
 	private EffectType effType;
 	private Object lockObject;
 	private AudioSketchMainFrame mainFrame;
+	private IRDisplay irDisplay;
 	
 	/**
 	 * Constructor for MusicalWindow
@@ -95,6 +98,7 @@ public class MusicalWindow extends PApplet {
 	 */
 	public void draw() {
 		background(0);
+		drawPointer();
 		synchronized (lockObject) {
 			drawSoundObject();
 			drawEffectBox();
@@ -286,6 +290,18 @@ public class MusicalWindow extends PApplet {
 			int temp = shuffle[i];
 			shuffle[i] = shuffle[randomPosition];
 			shuffle[randomPosition] = temp;
+		}
+	}
+	
+	/*---------------------- Wii mote stuff ----------------------------*/
+
+	public void initPointer(WiiMoteListener moteListener) {
+		irDisplay = new IRDisplay(this, moteListener);
+	}
+	
+	public void drawPointer(){
+		if(irDisplay != null){
+			irDisplay.draw();
 		}
 	}
 	/*----------------------- Mouse Action -----------------------------*/

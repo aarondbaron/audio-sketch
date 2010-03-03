@@ -2,10 +2,13 @@ package net.gtcmt.audiosketch.wii;
 
 import motej.event.CoreButtonEvent;
 import net.gtcmt.audiosketch.gui.util.GUIConstants;
+import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
+import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
 import net.gtcmt.audiosketch.p5.window.MusicalWindow;
 import net.gtcmt.audiosketch.util.LogMessage;
+import net.gtcmt.audiosketch.wii.util.WiiConstant;
 
 public class ShakeWii {
 
@@ -15,17 +18,17 @@ public class ShakeWii {
 	private int deltaX;
 	private int deltaY;
 	private int deltaZ;
-	private static final int THRESHOLD = 2;
+	private static final int THRESHOLD = 10;
 	private static final long UPDATE_TIME = 400;
 	private long curTime;
 	private boolean trig;
 	private MusicalWindow mwp5;
-	private int buttonState;
+	private WiiMoteListener listener;
 	private float dotProduct;
 	
-	public ShakeWii(MusicalWindow mwp5, int buttonState){
+	public ShakeWii(MusicalWindow mwp5, WiiMoteListener listener){
 		this.mwp5 = mwp5;
-		this.buttonState = buttonState;
+		this.listener = listener;
 		prevX = prevY = prevZ = 0;
 		deltaX = deltaY = deltaZ = 0;
 		trig = false;
@@ -63,30 +66,26 @@ public class ShakeWii {
 	
 	//TODO figure out how to get angle
 	//TODO use ir for a trig position
-	public void trigEvent(){
-		System.out.println("Button: "+buttonState);
-		/*
-		switch(buttonState){
+	public void trigEvent(){		
+		int irX = (int) ((listener.getIrX()/WiiConstant.MAX_MOTE_IR_LENGTH)*GUIConstants.WINDOW_WIDTH);
+		int irY = (int) ((listener.getIrY()/WiiConstant.MAX_MOTE_IR_LENGTH)*GUIConstants.WINDOW_HEIGHT);
+		switch(listener.getButtonState()){
 		case CoreButtonEvent.BUTTON_A:
 			mwp5.addPlayBackBar(PlayBackType.BAR, 
-					new P5Points2D((int)(Math.random()*GUIConstants.WINDOW_WIDTH),(int)(Math.random()*GUIConstants.WINDOW_HEIGHT)), 
-					dotProduct, (float)Math.random());
+					new P5Points2D(irX,irY), dotProduct*P5Constants.MAX_SPEED, (float)Math.random());
 			break;
 		case CoreButtonEvent.BUTTON_B:
 			mwp5.addPlayBackBar(PlayBackType.RADIAL, 
-					new P5Points2D((int)(Math.random()*GUIConstants.WINDOW_WIDTH),(int)(Math.random()*GUIConstants.WINDOW_HEIGHT)), 
-					dotProduct, (float)Math.random());
+					new P5Points2D(irX,irY), dotProduct*P5Constants.MAX_SPEED, (float)Math.random());
 			break;
 			
 		case CoreButtonEvent.BUTTON_MINUS:
 			//TODO remove play bar
 			//mwp5.remove
-			break;
-			
+			break;		
 		case CoreButtonEvent.BUTTON_PLUS:
 			mwp5.addPlayBackBar(PlayBackType.RADIAL2, 
-					new P5Points2D((int)(Math.random()*GUIConstants.WINDOW_WIDTH),(int)(Math.random()*GUIConstants.WINDOW_HEIGHT)), 
-					dotProduct, (float)Math.random());
+					new P5Points2D(irX,irY), dotProduct*P5Constants.MAX_SPEED, (float)Math.random());
 			break;
 		case CoreButtonEvent.BUTTON_ONE:
 			
@@ -94,15 +93,11 @@ public class ShakeWii {
 		case CoreButtonEvent.BUTTON_TWO:
 			
 			break;
-			
 		case CoreButtonEvent.BUTTON_HOME:
 			
 			break;
 		}
-		*/
-		mwp5.addPlayBackBar(PlayBackType.RADIAL, 
-				new P5Points2D((int)(Math.random()*GUIConstants.WINDOW_WIDTH),(int)(Math.random()*GUIConstants.WINDOW_HEIGHT)), 
-				dotProduct, (float)Math.random());
+		
 		LogMessage.info("Shake detected");
 		trig = true;
 	}
