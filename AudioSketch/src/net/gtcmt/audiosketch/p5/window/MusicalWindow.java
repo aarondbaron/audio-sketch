@@ -115,12 +115,34 @@ public class MusicalWindow extends PApplet {
 	}
 
 	/**
+	 * 
+	 */
+	public void addTableObject(int id, int shape,ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, int midiNote) {
+		soundObject.add(id, new SoundObject(objPos, objSize, color, shape, midiNote, sndType, this));
+		action.addActionObject(soundObject.get(id));
+		//TODO before adding playback bar check collision state and pass in appropriate boolean
+		for(int i=0;i<playBackBar.size();i++) {
+			soundObject.get(id).addCollideState(false);
+		}
+	}
+	
+	/**
 	 * Removes soundObject and related action listener
 	 */
 	public synchronized void remove() {
 		if(soundObject.size() > 0){
 			action.removeMouseEvent(soundObject.size()-1);
 			soundObject.removeLast();	
+		}
+	}
+
+	/**
+	 * 
+	 */
+	public synchronized void removeTableObject(int id) {
+		if(soundObject.size() > 0){
+			action.removeMouseEvent(id);
+			soundObject.remove(id);	
 		}
 	}
 	
