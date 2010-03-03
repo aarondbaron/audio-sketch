@@ -8,6 +8,7 @@ import motej.event.CoreButtonListener;
 import motej.event.IrCameraEvent;
 import motej.event.IrCameraListener;
 import net.gtcmt.audiosketch.p5.window.MusicalWindow;
+import net.gtcmt.audiosketch.wii.util.WiiConstant;
 
 public class WiiMoteListener {
 
@@ -36,8 +37,8 @@ public class WiiMoteListener {
 		
 		irListener = new IrCameraListener() {
 			public void irImageChanged(IrCameraEvent evt) {
-				irX = evt.getIrPoint(0).getX();
-				irY = evt.getIrPoint(0).getY();
+				irX = WiiConstant.MAX_MOTE_IR_LENGTH-((evt.getIrPoint(0).getX()-evt.getIrPoint(1).getX())/2.0f);
+				irY = WiiConstant.MAX_MOTE_IR_LENGTH-((evt.getIrPoint(0).getY()-evt.getIrPoint(1).getY())/2.0f);
 			}	
 		};
 	}
