@@ -7,7 +7,7 @@ import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
 import net.gtcmt.audiosketch.p5.window.MusicalWindow;
 import net.gtcmt.audiosketch.util.LogMessage;
-import net.gtcmt.audiosketch.wii.util.WiiConstant;
+import net.gtcmt.audiosketch.wii.util.WiiMoteConstant;
 
 public class ShakeWii {
 
@@ -17,13 +17,16 @@ public class ShakeWii {
 	private int deltaX;
 	private int deltaY;
 	private int deltaZ;
-	private static final int THRESHOLD = 10;
+	private static final int THRESHOLD = 8;
 	private static final long UPDATE_TIME = 400;
 	private long curTime;
 	private boolean trig;
 	private MusicalWindow mwp5;
 	private WiiMoteListener listener;
 	private float dotProduct;
+	private float angle;
+	private long elapsedTime;
+	private long PREV_TIME = 100;
 	
 	public ShakeWii(MusicalWindow mwp5, WiiMoteListener listener){
 		this.mwp5 = mwp5;
@@ -31,6 +34,7 @@ public class ShakeWii {
 		prevX = prevY = prevZ = 0;
 		deltaX = deltaY = deltaZ = 0;
 		trig = false;
+		elapsedTime = System.currentTimeMillis();
 	}
 		
 	public void onAccelChanged(int accX, int accY, int accZ){
@@ -49,41 +53,46 @@ public class ShakeWii {
 					}
 	//	System.out.println(deltaX + " : " + deltaY + " : " + deltaZ);
 		dotProduct(accX,accY,accZ);
+		angle(accX,accY);
 		
-		prevX = accX;
-		prevY = accY;
-		prevZ = accZ;
+		if(elapsedTime > PREV_TIME ){
+			prevX = accX;
+			prevY = accY;
+			prevZ = accZ;
+			elapsedTime = elapsedTime - System.currentTimeMillis();
+		}
 	}
 	
-	private void dotProduct(int curX, int curY, int curZ) 
-	{ 
+	private void dotProduct(int curX, int curY, int curZ) { 
 		dotProduct = (prevX * curX) + (prevY * curY) + (prevZ * curZ);
-		float prevMag = (float) Math.abs(Math.sqrt(prevX*prevX+prevY*prevY+prevZ*prevZ));
-		float mag = (float) Math.abs(Math.sqrt(curX*curX+curY*curY+curZ*curZ));
-		dotProduct /= (prevMag*mag);
+		float prevMag = (float) Math.sqrt(prevX*prevX+prevY*prevY+prevZ*prevZ);
+		float mag = (float) Math.sqrt(curX*curX+curY*curY+curZ*curZ);
+		dotProduct /= (mag*prevMag);
+		dotProduct = (1 - dotProduct)*50f;
+	}
+	
+	private void angle(int curX, int curY){
+		angle = (float) Math.atan2(curY-prevY, curX-prevX);
 	}
 	
 	//TODO figure out how to get angle
 	public void trigEvent(){		
-		int irX = (int) ((listener.getIrX()/WiiConstant.MAX_MOTE_IR_LENGTH)*GUIConstants.WINDOW_WIDTH);
-		int irY = (int) ((listener.getIrY()/WiiConstant.MAX_MOTE_IR_LENGTH)*GUIConstants.WINDOW_HEIGHT);
-		System.out.println("speed: "+(dotProduct*P5Constants.MAX_SPEED));
+		int irX = (int) ((listener.getIrX()/WiiMoteConstant.MAX_MOTE_IR_LENGTH)*GUIConstants.WINDOW_WIDTH);
+		int irY = (int) ((listener.getIrY()/WiiMoteConstant.MAX_MOTE_IR_LENGTH)*(GUIConstants.WINDOW_HEIGHT));
+		System.out.println("speed: "+dotProduct+" angle: "+angle);
 		
 		switch(listener.getButtonState()){
 		case CoreButtonEvent.BUTTON_A:
 			mwp5.addPlayBackBar(PlayBackType.BAR, 
-					new P5Points2D(irX,irY), dotProduct*P5Constants.MAX_SPEED, (float)Math.random());
+					new P5Points2D(irX,irY), dotProduct*P5Constants.MAX_SPEED, angle);
 			break;
 		case CoreButtonEvent.BUTTON_B:
 			mwp5.addPlayBackBar(PlayBackType.RADIAL, 
-					new P5Points2D(irX,irY), dotProduct*P5Constants.MAX_SPEED, (float)Math.random());
+					new P5Points2D(irX,irY), dotProduct*P5Constants.MAX_SPEED, angle);
 			break;
-		case CoreButtonEvent.BUTTON_MINUS:
-			mwp5.removeLastPlayBar();
-			break;		
 		case CoreButtonEvent.BUTTON_PLUS:
 			mwp5.addPlayBackBar(PlayBackType.RADIAL2, 
-					new P5Points2D(irX,irY), dotProduct*P5Constants.MAX_SPEED, (float)Math.random());
+					new P5Points2D(irX,irY), dotProduct*P5Constants.MAX_SPEED, angle);
 			break;
 		case CoreButtonEvent.BUTTON_ONE:
 			

@@ -4,6 +4,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.LinkedList;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
@@ -12,10 +13,10 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import net.gtcmt.audiosketch.gui.util.GUIConstants;
+import net.gtcmt.audiosketch.p5.object.TableMessageRouter;
 import net.gtcmt.audiosketch.p5.window.MusicalWindow;
 import net.gtcmt.audiosketch.wii.MoteConnector;
-
-import net.gtcmt.audiosketch.p5.object.TableMessageRouter;
+import net.gtcmt.audiosketch.wii.util.WiiMoteConstant;
 
 /**
  * Put together all the gui elements
@@ -29,7 +30,7 @@ public class AudioSketchMainFrame extends JFrame {
 	private ActionPanel actionPanel;
 	private MusicalWindow musicalWindow;
 	private EditSoundObjectPanel  editPanel;
-	private MoteConnector connector;
+	private LinkedList<MoteConnector> connector;
 	
 	private TableMessageRouter tableMessageRouter; 
 	
@@ -75,17 +76,13 @@ public class AudioSketchMainFrame extends JFrame {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public AudioSketchMainFrame(String userName) {
-		super("Audio Sketch");
-		
-		this.userName = userName;
+	public AudioSketchMainFrame(String appName) {
+		super(appName);
 		
 		//set up gui
-		setupGUI();
-		
-		//Initialize processing windows
+		musicalWindow = new MusicalWindow(this);
 		musicalWindow.init();
-		editPanel.getObjectWindow().init();
+		add(musicalWindow);
 		
 		//Add action listener on application quit
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -96,22 +93,21 @@ public class AudioSketchMainFrame extends JFrame {
 		});
 		
 		//configure main frame 
-		setSize(GUIConstants.FRAME_WIDTH, GUIConstants.FRAME_HEIGHT);
+		setSize(GUIConstants.WINDOW_WIDTH, GUIConstants.WINDOW_HEIGHT);
 		setLocation(0, 0);
 		setVisible(true);
-		validate();
-		repaint();
 
-		this.tableMessageRouter=new TableMessageRouter(musicalWindow);
-		//musicalWindow.remove();
-		//musicalWindow.addSoundObject(shape, color, sndType, objPos, objSize, midiNote)
-		//musicalWindow.addSoundObject(shape, color, sndType, objPos, objSize, midiNote)
-		//musicalWindow.moveObject(index, posX, posY)
-		//TODO initialize object signal filtering before MoteConnector
-		//Connect to wiimote
-		
-		connector = new MoteConnector(musicalWindow);
-		musicalWindow.initPointer(connector.getMoteListener());
+		this.tableMessageRouter = new TableMessageRouter(musicalWindow);
+
+		connector = new LinkedList<MoteConnector>();
+		//Connect to wiimote	
+		for(int i=0;i<WiiMoteConstant.MOTE_MAC_ADDR.length;i++){
+			MoteConnector mc = new MoteConnector(WiiMoteConstant.MOTE_MAC_ADDR[i], musicalWindow);
+			mc.start();
+			connector.add(mc); 
+		}
+		//Add pointer to musical window
+		musicalWindow.initPointer(connector);
 	}
 	
 	/**
