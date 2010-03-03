@@ -52,6 +52,22 @@ public class AudioControl {
 		
 		/* send the message */
 		 oscP5.send(oscMsg, remoteLocation);
+		 
+		 //just a tester
+		 sendSoundFile("1 BOOGER 2 SNOT 3 FART");
+	}
+	
+	public void sendSoundFile(String fileName) {
+		//System.out.println("sending sound file name");
+		OscMessage oscMsg = new OscMessage("/file");
+		oscMsg.add(fileName);
+		double randy=Math.random();
+		
+		oscMsg.add(Double.toString(randy));
+		//oscMsg.add(midi);
+		
+		/* send the message */
+		 oscP5.send(oscMsg, remoteLocation);
 	}
 	
 	/* incoming osc message are forwarded to the oscEvent method. */
