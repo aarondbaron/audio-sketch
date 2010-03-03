@@ -2,7 +2,6 @@ package net.gtcmt.audiosketch.wii;
 
 import motej.event.CoreButtonEvent;
 import net.gtcmt.audiosketch.gui.util.GUIConstants;
-import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
@@ -65,10 +64,11 @@ public class ShakeWii {
 	}
 	
 	//TODO figure out how to get angle
-	//TODO use ir for a trig position
 	public void trigEvent(){		
 		int irX = (int) ((listener.getIrX()/WiiConstant.MAX_MOTE_IR_LENGTH)*GUIConstants.WINDOW_WIDTH);
 		int irY = (int) ((listener.getIrY()/WiiConstant.MAX_MOTE_IR_LENGTH)*GUIConstants.WINDOW_HEIGHT);
+		System.out.println("speed: "+(dotProduct*P5Constants.MAX_SPEED));
+		
 		switch(listener.getButtonState()){
 		case CoreButtonEvent.BUTTON_A:
 			mwp5.addPlayBackBar(PlayBackType.BAR, 
@@ -78,10 +78,8 @@ public class ShakeWii {
 			mwp5.addPlayBackBar(PlayBackType.RADIAL, 
 					new P5Points2D(irX,irY), dotProduct*P5Constants.MAX_SPEED, (float)Math.random());
 			break;
-			
 		case CoreButtonEvent.BUTTON_MINUS:
-			//TODO remove play bar
-			//mwp5.remove
+			mwp5.removeLastPlayBar();
 			break;		
 		case CoreButtonEvent.BUTTON_PLUS:
 			mwp5.addPlayBackBar(PlayBackType.RADIAL2, 

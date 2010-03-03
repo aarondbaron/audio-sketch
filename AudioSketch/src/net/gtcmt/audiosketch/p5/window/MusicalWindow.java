@@ -202,6 +202,12 @@ public class MusicalWindow extends PApplet {
 		}
 	}
 
+	/**
+	 * Removes last playBackBar
+	 */
+	public synchronized void removeLastPlayBar(){
+		playBackBar.removeLast();
+	}
 	/*----------------------- Edit Mode -----------------------------*/
 	/**
 	 * Actions related to editing position of soundObjects are 
