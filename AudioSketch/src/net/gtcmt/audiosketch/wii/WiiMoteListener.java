@@ -8,7 +8,7 @@ import motej.event.CoreButtonListener;
 import motej.event.IrCameraEvent;
 import motej.event.IrCameraListener;
 import net.gtcmt.audiosketch.p5.window.MusicalWindow;
-import net.gtcmt.audiosketch.wii.util.WiiConstant;
+import net.gtcmt.audiosketch.wii.util.WiiMoteConstant;
 
 public class WiiMoteListener {
 
@@ -20,14 +20,19 @@ public class WiiMoteListener {
 	private double irY;
 	private ShakeWii shake;
 
-	public WiiMoteListener(MusicalWindow mwp5){
+	public WiiMoteListener(final MusicalWindow mwp5){
 		buttonListener = new CoreButtonListener() {
 			public void buttonPressed(CoreButtonEvent evt) {
 				buttonState = evt.getButton();
+				if(evt.isButtonMinusPressed()){
+					if(mwp5.getPlayBarSize() > 0){
+						mwp5.removeLastPlayBar();
+					}
+				}
 			}		
 		};
 		
-		shake = new ShakeWii(mwp5,this);
+		shake = new ShakeWii(mwp5, this);
 		accelListener = new AccelerometerListener<Mote>() {
 			public void accelerometerChanged(AccelerometerEvent<Mote> evt) {
 				//System.out.println(evt.getX() + " : " + evt.getY() + " : " + evt.getZ());
@@ -37,8 +42,8 @@ public class WiiMoteListener {
 		
 		irListener = new IrCameraListener() {
 			public void irImageChanged(IrCameraEvent evt) {
-				irX = WiiConstant.MAX_MOTE_IR_LENGTH-((evt.getIrPoint(0).getX()-evt.getIrPoint(1).getX())/2.0f);
-				irY = WiiConstant.MAX_MOTE_IR_LENGTH-((evt.getIrPoint(0).getY()-evt.getIrPoint(1).getY())/2.0f);
+				irX = WiiMoteConstant.MAX_MOTE_IR_LENGTH-evt.getIrPoint(0).getX();
+				irY =evt.getIrPoint(0).getY();
 			}	
 		};
 	}

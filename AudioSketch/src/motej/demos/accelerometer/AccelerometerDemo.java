@@ -32,6 +32,8 @@ public class AccelerometerDemo {
 	private static Mote mote;
 	
 	public static void main(String[] args) throws InterruptedException {
+		System.setProperty("bluecove.jsr82.psm_minimum_off", "true");
+
 		final AccelerometerListener<Mote> listener = new AccelerometerListener<Mote>() {
 		
 			public void accelerometerChanged(AccelerometerEvent<Mote> evt) {
@@ -40,9 +42,9 @@ public class AccelerometerDemo {
 		
 		};
 		
-		Thread connectThread = new Thread("connect: 001A19C10D31"){
+		Thread connectThread = new Thread("connect: 00191D5367E7"){
 			public void run(){
-				mote = new Mote("001A19C10D31");
+				mote = new Mote("00191D5367E7");
 				mote.addAccelerometerListener(listener);
 				mote.setReportMode(ReportModeRequest.DATA_REPORT_0x31);
 			};

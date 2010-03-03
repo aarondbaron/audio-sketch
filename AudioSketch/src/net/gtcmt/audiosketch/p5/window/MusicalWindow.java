@@ -21,7 +21,7 @@ import net.gtcmt.audiosketch.sound.util.SndConstants;
 import net.gtcmt.audiosketch.sound.util.SndConstants.EffectType;
 import net.gtcmt.audiosketch.sound.util.SndConstants.SndType;
 import net.gtcmt.audiosketch.wii.IRDisplay;
-import net.gtcmt.audiosketch.wii.WiiMoteListener;
+import net.gtcmt.audiosketch.wii.MoteConnector;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -49,7 +49,7 @@ public class MusicalWindow extends PApplet {
 	private EffectType effType;
 	private Object lockObject;
 	private AudioSketchMainFrame mainFrame;
-	private IRDisplay irDisplay;
+	private LinkedList<IRDisplay> irDisplay;
 	
 	/**
 	 * Constructor for MusicalWindow
@@ -72,6 +72,7 @@ public class MusicalWindow extends PApplet {
 		//Initialize collections
 		soundObject = new LinkedList<SoundObject>();
 		playBackBar = new LinkedList<PlayBackBar>();
+		irDisplay = new LinkedList<IRDisplay>();
 		effectBox = new LinkedList<EffectBox>();
 		shuffle = new int[SndConstants.NUM_EFFECT];
 	
@@ -98,7 +99,6 @@ public class MusicalWindow extends PApplet {
 	 */
 	public void draw() {
 		background(0);
-		drawPointer();
 		synchronized (lockObject) {
 			drawSoundObject();
 			drawEffectBox();
@@ -106,6 +106,7 @@ public class MusicalWindow extends PApplet {
 			editMode();
 			effectMode();
 		}
+		drawPointer();
 	}
 	
 	/*----------------------- SoundObject methods -----------------------------*/
@@ -214,7 +215,7 @@ public class MusicalWindow extends PApplet {
 	 * put into this method.
 	 */
 	private synchronized void editMode(){
-		if(mainFrame.getActionPanel().getEditButton().isSelected()){
+		if(mainFrame.getActionPanel() != null && mainFrame.getActionPanel().getEditButton().isSelected()){
 			action.detectObjectArea();
 			action.mousePressed();
 			action.mouseDragged();
@@ -233,7 +234,7 @@ public class MusicalWindow extends PApplet {
 	 * Allows users to draw effect box when effectButton is selected
 	 */
 	private synchronized void effectMode(){
-		if(mainFrame.getActionPanel().effectButton.isSelected()){
+		if(mainFrame.getActionPanel() != null && mainFrame.getActionPanel().effectButton.isSelected()){
 			drawPreviewEffectBox();	
 		}
 	}
@@ -301,22 +302,26 @@ public class MusicalWindow extends PApplet {
 	
 	/*---------------------- Wii mote stuff ----------------------------*/
 
-	public void initPointer(WiiMoteListener moteListener) {
-		irDisplay = new IRDisplay(this, moteListener);
+	public void initPointer(LinkedList<MoteConnector> connector) {
+		for(int i=0;i<connector.size();i++){
+			irDisplay.add(new IRDisplay(this, connector.get(i).getMoteListener()));
+		}
 	}
 	
 	public void drawPointer(){
 		if(irDisplay != null){
-			irDisplay.draw();
+			for(int i=0;i<irDisplay.size();i++){
+				irDisplay.get(i).draw();
+			}
 		}
 	}
 	/*----------------------- Mouse Action -----------------------------*/
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		if(mainFrame.getActionPanel().getPlayButton().isSelected()) {
+		if(mainFrame.getActionPanel() != null && mainFrame.getActionPanel().getPlayButton().isSelected()) {
 			trigPlayBackBar();
 		}
-		else if(mainFrame.getActionPanel().getEffectButton().isSelected()){
+		else if(mainFrame.getActionPanel() != null && mainFrame.getActionPanel().getEffectButton().isSelected()){
 			addEffectBox();
 		}
 		super.mouseReleased(arg0);
@@ -358,5 +363,9 @@ public class MusicalWindow extends PApplet {
 	
 	public String getUserName(){
 		return mainFrame.getUserName();
+	}
+	
+	public int getPlayBarSize(){
+		return playBackBar.size();
 	}
 }
