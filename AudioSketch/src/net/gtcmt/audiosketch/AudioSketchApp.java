@@ -11,6 +11,7 @@ import java.awt.image.MemoryImageSource;
 
 import net.gtcmt.audiosketch.gui.client.AudioSketchMainFrame;
 import net.gtcmt.audiosketch.gui.util.GUIConstants;
+import net.gtcmt.audiosketch.wii.util.WiiMoteConstant;
 
 public class AudioSketchApp extends AudioSketchMainFrame {
 
@@ -27,6 +28,9 @@ public class AudioSketchApp extends AudioSketchMainFrame {
 		//stem.setProperty(BlueCoveConfigProperties.PROPERTY_JSR_82_PSM_MINIMUM_OFF, "true");
 		//You can also do this. "java -Dbluecove.jsr82.psm_minimum_off=true  yourClass" as java argument
 
+		//Initialize mote cal data
+		WiiMoteConstant.initCalData();
+		
 		AudioSketchApp audioSketch = new AudioSketchApp();
 
 		//Make cursor invisible

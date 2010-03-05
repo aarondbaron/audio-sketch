@@ -20,7 +20,7 @@ public class IRDisplay {
 	public void draw(){
 		irX = (int) ((listener.getIrX()/WiiMoteConstant.MAX_MOTE_IR_LENGTH)*GUIConstants.WINDOW_WIDTH);
 		irY = (int) ((listener.getIrY()/WiiMoteConstant.MAX_MOTE_IR_LENGTH)*GUIConstants.WINDOW_HEIGHT);
-		p5.fill(255,0,255,125);
+		p5.fill(listener.getRed(),listener.getGreen(),listener.getBlue(),listener.getAlpha());
 		p5.noStroke();
 		p5.ellipse(irX, irY, POINTER_SIZE, POINTER_SIZE);
 	}

@@ -12,7 +12,7 @@ public class MoteConnector extends Thread {
 	
 	public MoteConnector(String address, MusicalWindow mwp5){
 		this.address = address;
-		moteListener = new WiiMoteListener(mwp5);
+		moteListener = new WiiMoteListener(mwp5, address);
 	}
 	
 	/**
