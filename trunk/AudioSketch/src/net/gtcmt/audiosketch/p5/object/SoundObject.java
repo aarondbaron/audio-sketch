@@ -131,10 +131,15 @@ public class SoundObject {
 
 		
 		p5.strokeWeight(5);
-		p5.fill(0, 0, 0, 0);
+		p5.fill(255,255,255,100);
 		p5.stroke(color[0], color[1], color[2], 200);
 		p5.shapeMode(PConstants.CENTER);
 		p5.shape(image, 0, 0, objSize.getWidth(), objSize.getHeight());
+		
+	//	PShape child = image.getChild("path3603");
+	//	child.disableStyle();
+	//
+	//	p5.shape(child,0, 0,objSize.getWidth(), objSize.getHeight());
 		
 		//setup for explodeMultple
 		//float explodeRate=.1f;

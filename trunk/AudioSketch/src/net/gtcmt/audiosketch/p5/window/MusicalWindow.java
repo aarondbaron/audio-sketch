@@ -1,6 +1,5 @@
 package net.gtcmt.audiosketch.p5.window;
 
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
@@ -8,11 +7,9 @@ import java.util.Random;
 
 import net.gtcmt.audiosketch.gui.client.AudioSketchMainFrame;
 import net.gtcmt.audiosketch.gui.util.GUIConstants;
-import net.gtcmt.audiosketch.p5.action.MouseAction;
 import net.gtcmt.audiosketch.p5.object.EffectBox;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
 import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
-import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectColorType;
@@ -23,7 +20,6 @@ import net.gtcmt.audiosketch.sound.util.SndConstants.SndType;
 import net.gtcmt.audiosketch.wii.IRDisplay;
 import net.gtcmt.audiosketch.wii.MoteConnector;
 import processing.core.PApplet;
-import processing.core.PConstants;
 
 /**
  * This is the main window where all the action user makes happen such
@@ -36,12 +32,8 @@ public class MusicalWindow extends PApplet {
 
 	private static final long serialVersionUID = 2781100810368642853L;
 	//Mouse actions
-	private boolean mouseDragged;
-	private int xPos;
-	private int yPos;
 	private LinkedList<SoundObject> soundObject;
 	private LinkedList<PlayBackBar> playBackBar;		
-	private MouseAction action;
 	private LinkedList<EffectBox> effectBox; 
 	private int[] shuffle;
 	private Random rgen;
@@ -75,13 +67,11 @@ public class MusicalWindow extends PApplet {
 		irDisplay = new LinkedList<IRDisplay>();
 		effectBox = new LinkedList<EffectBox>();
 		shuffle = new int[SndConstants.NUM_EFFECT];
-	
-		mouseDragged=false;
-		xPos=0;
-		yPos=0;
+
 		rgen = new Random();
 		
 		shuffleEffect();
+
 	}
 
 	/*----------------------- Main Processing methods -----------------------------*/
@@ -91,7 +81,12 @@ public class MusicalWindow extends PApplet {
 	public void setup() {
 		size(GUIConstants.WINDOW_WIDTH, GUIConstants.WINDOW_HEIGHT);
 		smooth();
-		action = new MouseAction(soundObject, this);
+		//For testing
+		System.out.println("width "+(this.width>>1));
+		addSoundObject(3, ObjectColorType.BLUE, SndType.BUZZ, new P5Points2D(this.width>>1,this.height>>1), new P5Size2D(100,100), 0);
+		addSoundObject(2, ObjectColorType.BLUE, SndType.CHING, new P5Points2D(100,100), new P5Size2D(100,100), 0);
+		addSoundObject(1, ObjectColorType.BLUE, SndType.BANJO, new P5Points2D(500,500), new P5Size2D(100,100), 0);
+		addSoundObject(0, ObjectColorType.BLUE, SndType.FEMALE, new P5Points2D(300,400), new P5Size2D(100,100), 0);
 	}
 
 	/**
@@ -100,11 +95,10 @@ public class MusicalWindow extends PApplet {
 	public void draw() {
 		background(0);
 		synchronized (lockObject) {
-			drawSoundObject();
-			drawEffectBox();
 			playBar();
-			editMode();
-			effectMode();
+			drawSoundObject();
+			//drawEffectBox();
+			//effectMode();
 		}
 		drawPointer();
 	}
@@ -112,7 +106,6 @@ public class MusicalWindow extends PApplet {
 	/*----------------------- SoundObject methods -----------------------------*/
 	public void addSoundObject(int shape,ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, int midiNote) {
 		soundObject.add(new SoundObject(objPos, objSize, color, shape, midiNote, sndType, this));
-		action.addActionObject(soundObject.getLast());
 		//TODO before adding playback bar check collision state and pass in appropriate boolean
 		for(int i=0;i<playBackBar.size();i++) {
 			soundObject.getLast().addCollideState(false);
@@ -124,7 +117,6 @@ public class MusicalWindow extends PApplet {
 	 */
 	public void addTableObject(int id, int shape,ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, int midiNote) {
 		soundObject.add(id, new SoundObject(objPos, objSize, color, shape, midiNote, sndType, this));
-		action.addActionObject(soundObject.get(id));
 		//TODO before adding playback bar check collision state and pass in appropriate boolean
 		for(int i=0;i<playBackBar.size();i++) {
 			soundObject.get(id).addCollideState(false);
@@ -136,7 +128,6 @@ public class MusicalWindow extends PApplet {
 	 */
 	public synchronized void remove() {
 		if(soundObject.size() > 0){
-			action.removeMouseEvent(soundObject.size()-1);
 			soundObject.removeLast();	
 		}
 	}
@@ -146,7 +137,6 @@ public class MusicalWindow extends PApplet {
 	 */
 	public synchronized void removeTableObject(int id) {
 		if(soundObject.size() > 0){
-			action.removeMouseEvent(id);
 			soundObject.remove(id);	
 		}
 	}
@@ -161,22 +151,6 @@ public class MusicalWindow extends PApplet {
 	}
 	
 	/*----------------------- PlayBack Mode -----------------------------*/
-	/**
-	 * Sends play back info to server when user clicks and releases mouse.
-	 */
-	private synchronized void trigPlayBackBar(){
-		if(playBackBar.size() <= PlayBackBar.MAX_TRIG){
-			if(mouseX - xPos == 0 && mouseY - yPos == 0){
-				xPos -= 1;
-			}
-			//Calculate speed and angle from mouse actions
-			float speed = (float) Math.sqrt(Math.pow(mouseX-xPos, 2)+Math.pow(mouseY-yPos, 2))/P5Constants.MAX_TRIG_DISTANCE;
-			float angle = (float) Math.atan2(mouseY-yPos, mouseX-xPos);
-
-			addPlayBackBar(PlayBackType.values()[getPlayBarIndex()], new P5Points2D(xPos, yPos), speed, angle);
-			mouseDragged = false;
-		}
-	}
 
 	/**
 	 * Adds play back bar upon receiving message from server
@@ -210,20 +184,6 @@ public class MusicalWindow extends PApplet {
 		playBackBar.removeLast();
 	}
 	/*----------------------- Edit Mode -----------------------------*/
-	/**
-	 * Actions related to editing position of soundObjects are 
-	 * put into this method.
-	 */
-	private synchronized void editMode(){
-		if(mainFrame.getActionPanel() != null && mainFrame.getActionPanel().getEditButton().isSelected()){
-			action.detectObjectArea();
-			action.mousePressed();
-			action.mouseDragged();
-			action.mouseReleased();
-			if(mouseDragged)
-				mouseDragged = false;
-		}
-	}
 	
 	public synchronized void moveObject(int index, int posX, int posY){
 		soundObject.get(index).setPos(posX,posY);
@@ -253,12 +213,12 @@ public class MusicalWindow extends PApplet {
 	 * Only the drawer of the box can see this.
 	 */
 	private synchronized void drawPreviewEffectBox(){
-		if(mouseDragged){
-			this.stroke(255, 255, 255, 200);
-			this.noFill();
-			this.rectMode(PConstants.CORNER);
-			this.rect(xPos, yPos, mouseX-xPos, mouseY-yPos);
-		}	
+//		if(mouseDragged){
+//			this.stroke(255, 255, 255, 200);
+//			this.noFill();
+//			this.rectMode(PConstants.CORNER);
+//			this.rect(xPos, yPos, mouseX-xPos, mouseY-yPos);
+//		}	
 	}
 
 	/**
@@ -274,8 +234,7 @@ public class MusicalWindow extends PApplet {
 			effType = EffectType.values()[shuffle[incr++]];
 		}
 		
-		effectBox.add(new EffectBox(new P5Points2D(mouseX, mouseY), new P5Size2D(mouseX-xPos, mouseY-yPos), effType, this));
-		mouseDragged = false;
+		//effectBox.add(new EffectBox(new P5Points2D(mouseX, mouseY), new P5Size2D(mouseX-xPos, mouseY-yPos), effType, this));
 	}
 
 	/**
@@ -315,31 +274,7 @@ public class MusicalWindow extends PApplet {
 			}
 		}
 	}
-	/*----------------------- Mouse Action -----------------------------*/
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		if(mainFrame.getActionPanel() != null && mainFrame.getActionPanel().getPlayButton().isSelected()) {
-			trigPlayBackBar();
-		}
-		else if(mainFrame.getActionPanel() != null && mainFrame.getActionPanel().getEffectButton().isSelected()){
-			addEffectBox();
-		}
-		super.mouseReleased(arg0);
-	}
-	
-	@Override
-	public void mouseDragged(MouseEvent arg0) {
-		mouseDragged = true;
-		super.mouseDragged(arg0);
-	}
-	
-	@Override
-	public void mousePressed() {
-		//Store click position
-		xPos = mouseX;
-		yPos = mouseY;
-		super.mouseClicked();
-	}
+
 	/*------------------ Getter/Setter --------------------*/
 	public Object getLockObject() {
 		return lockObject;

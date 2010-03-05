@@ -61,7 +61,7 @@ public abstract class PlayBackBar {
 		
 		switch(pbType){
 		case BAR: case BAR2:
-			this.playbarSize = new P5Size2D(P5Constants.BAR_WIDTH,10);
+			this.playbarSize = new P5Size2D(P5Constants.BAR_WIDTH, P5Constants.STROKE_WEIGHT);
 			break;
 		case RADIAL:	 case RADIAL2: case SQUAREBAR: default:
 			this.playbarSize = new P5Size2D(0, 0);

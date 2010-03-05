@@ -1,8 +1,5 @@
 package net.gtcmt.audiosketch.wii;
 
-import com.apple.audio.jdirect.ArrayCopy;
-import com.sun.tools.javac.code.Attribute.Array;
-
 import net.gtcmt.audiosketch.gui.util.GUIConstants;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;

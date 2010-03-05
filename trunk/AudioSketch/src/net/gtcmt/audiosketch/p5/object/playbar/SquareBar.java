@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import net.gtcmt.audiosketch.p5.action.Collision;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
+import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
 import processing.core.PApplet;
@@ -33,9 +34,10 @@ public class SquareBar extends PlayBackBar {
 			strokeUpdate=1;
 		}
 		
-		p5.strokeWeight(10);
+		p5.strokeWeight(P5Constants.STROKE_WEIGHT);
 		p5.stroke(255-strokeParam, strokeParam, 255, 200);
 		p5.fill(0, 0, 0, 0);
+		p5.rectMode(PApplet.CENTER);
 		p5.rect(playbarPos.getPosX(), playbarPos.getPosY(), playbarSize.getWidth(), playbarSize.getHeight());
 		playbarSize.setSize(((int) (playbarSize.getWidth()+speed)), ((int) (playbarSize.getHeight()+speed)));
 	}

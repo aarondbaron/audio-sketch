@@ -8,7 +8,7 @@ import net.gtcmt.audiosketch.p5.window.MusicalWindow;
 /**
  * Mostly handle mouse action on sound object
  * @author akito
- *
+ * @deprecated
  */
 public class MouseAction {
 
