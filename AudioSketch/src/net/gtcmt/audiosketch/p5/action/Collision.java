@@ -241,12 +241,12 @@ public class Collision {
 				float objectX = (soundObject.getPosX()) - playBar.getPosX();
 				float objectY = (soundObject.getPosY()) - playBar.getPosY();
 				
-				System.out.println(objectX);
-				System.out.println(objectY);
+				//System.out.println(objectX);
+				//System.out.println(objectY);
 
 				float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.getWidth()/3, 2)
 						+Math.pow(soundObject.getHeight()/3, 2)))+(playBar.getWidth()/2));
-				System.out.println(minDistance);
+				//System.out.println(minDistance);
 
 				if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
 					AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) (Math.random()*.01 +1));
@@ -255,6 +255,11 @@ public class Collision {
 					soundObject.setGetFrame(true);
 					soundObject.setStartTime(System.currentTimeMillis());		
 				}
+			}
+		}
+		else{
+			if(soundObject.getCollideState().get(index)){
+				soundObject.setCollideState(index,false);
 			}
 		}
 		

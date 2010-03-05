@@ -58,7 +58,9 @@ public class AudioSketchMainFrame extends JFrame {
 			}
 		});
 	
-		add(musicalWindow);
+		JPanel panel = new JPanel();
+		panel.add(musicalWindow);
+		add(panel);
 		
 		setUndecorated(true);
 		setLocationRelativeTo(null);

@@ -18,6 +18,7 @@ public class P5Constants {
 	public static final float MAX_TRIG_DISTANCE = 20;
 	public static final double NINETY = 1.5707963267948966;
 	public static final int BAR_WIDTH = 1400;
+	public static final int STROKE_WEIGHT = 5;
 	public static final int COLLISION_AREA=80000;
 	
 	//Sound object
