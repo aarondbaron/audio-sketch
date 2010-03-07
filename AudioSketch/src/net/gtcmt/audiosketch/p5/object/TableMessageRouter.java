@@ -41,7 +41,7 @@ public class TableMessageRouter {
 			
 //			System.out.println("Remove Object ID: " + id);
 			
-		} else if (theOscMessage.addrPattern().equalsIgnoreCase("/pos")) {
+		} else if (theOscMessage.addrPattern().equalsIgnoreCase("/updateObject")) {
 			id = theOscMessage.get(0).intValue();
 			xPos = theOscMessage.get(1).intValue();
 			yPos = theOscMessage.get(2).intValue();
@@ -54,5 +54,16 @@ public class TableMessageRouter {
 			
 //		this.haveReceivedMsg=true;
 	}
+	
+//	public int scaleDim(int windowDim, float posFloat,boolean flipped) {
+//		
+//		if (!flipped) {
+//			return (int)Float*xWindowDim;
+//		}
+//		else {
+//			return xWindowDim-(int)(xFloat*xWindowDim);
+//		}
+//		
+//	}
 }
 
