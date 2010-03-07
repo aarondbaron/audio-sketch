@@ -81,8 +81,7 @@ public class MusicalWindow extends PApplet {
 	public void setup() {
 		size(GUIConstants.WINDOW_WIDTH, GUIConstants.WINDOW_HEIGHT);
 		smooth();
-		//For testing
-		System.out.println("width "+(this.width>>1));
+		//XXX For testing
 		addSoundObject(3, ObjectColorType.BLUE, SndType.BUZZ, new P5Points2D(this.width>>1,this.height>>1), new P5Size2D(100,100), 0);
 		addSoundObject(2, ObjectColorType.BLUE, SndType.CHING, new P5Points2D(100,100), new P5Size2D(100,100), 0);
 		addSoundObject(1, ObjectColorType.BLUE, SndType.BANJO, new P5Points2D(500,500), new P5Size2D(100,100), 0);
@@ -181,6 +180,7 @@ public class MusicalWindow extends PApplet {
 	 * Removes last playBackBar
 	 */
 	public synchronized void removeLastPlayBar(){
+		
 		playBackBar.removeLast();
 	}
 	/*----------------------- Edit Mode -----------------------------*/
