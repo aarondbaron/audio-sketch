@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import net.gtcmt.audiosketch.event.AudioTrigger;
+import net.gtcmt.audiosketch.event.TempoClock;
 import net.gtcmt.audiosketch.gui.client.AudioSketchMainFrame;
 import net.gtcmt.audiosketch.gui.util.GUIConstants;
 import net.gtcmt.audiosketch.p5.object.EffectBox;
@@ -74,6 +75,9 @@ public class MusicalWindow extends PApplet {
 		
 		shuffleEffect();
 
+		//Initialize tempo clock
+		TempoClock.initTempoClock();
+		
 		//Initialize audioTrigger
 		AudioTrigger.initAudioTrigger();
 	}

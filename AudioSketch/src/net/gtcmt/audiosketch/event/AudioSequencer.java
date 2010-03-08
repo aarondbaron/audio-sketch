@@ -27,7 +27,7 @@ public abstract class AudioSequencer extends Thread {
 	 */
 	public void run() {
 		isRunning = true;
-		while (isRunning ) {
+		while (isRunning) {
 			if(tempoClock.isTrigOn()){
 				if(audioQueue.size() > 0){
 					try {

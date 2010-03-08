@@ -40,5 +40,5 @@ public class P5Constants {
 	public static final String[] COLOR_LIST = { "White", "Blue", "Green", "Yellow", "Orange" };
 	
 	public static final float FRAME_RATE = 30f;
-	public static final float MIN_TRAVEL_DISTANCE = 10f;
+	public static final float MIN_TRAVEL_DISTANCE = 50f;
 }

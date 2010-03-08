@@ -4,7 +4,6 @@ import java.util.Comparator;
 
 public class AudioInfoComparator implements Comparator<AudioInfo> {
 
-	@Override
 	public int compare(AudioInfo o1, AudioInfo o2) {
 		if(o1.getTrigTime()<o2.getTrigTime()){
 			return -1;

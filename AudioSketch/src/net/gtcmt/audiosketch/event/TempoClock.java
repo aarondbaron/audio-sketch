@@ -56,6 +56,25 @@ public class TempoClock extends Thread {
 	}
 	
 	/**
+	 * Fine grain trigger time calculator. based on sixteenth note
+	 * @return
+	 */
+	public long getNextTrigTimeSubBeat(int note) {
+		// get beat length
+		long beatLengthInMs = bps2millisec(bpm2bps(tempo))/note;
+		long elapsedTime = System.currentTimeMillis() - appStartTime;
+		long nextBeatStartTime = elapsedTime - (elapsedTime % beatLengthInMs) + beatLengthInMs + appStartTime;
+//		if ((nextBeatStartTime - System.currentTimeMillis()) < THRESH_TIME){
+//			nextBeatStartTime += beatLengthInMs;
+//		}
+		
+//		System.out.println("nextBeat1 "+nextBeatStartTime);
+		//Add number of beat
+//		nextBeatStartTime += beatLengthInMs/note;
+		return nextBeatStartTime;
+	}
+	
+	/**
 	 * Core of the clock
 	 */
 	public void run() {
@@ -63,7 +82,7 @@ public class TempoClock extends Thread {
 		while(isRunning){
 			if(System.currentTimeMillis() > trigTime){
 				trigOn = true;
-				trigTime = getNextTrigTime(1);
+				trigTime = getNextTrigTimeSubBeat(shortestNote);
 			}
 		}
 	}
@@ -121,6 +140,12 @@ public class TempoClock extends Thread {
 	public void setBeatPerHyperMeasure(int beatPerHyperMeasure) {
 		this.beatPerHyperMeasure = beatPerHyperMeasure;
 	}
+	
+	public static void initTempoClock(){
+		tempoClock = new TempoClock();
+		tempoClock.start();
+	}
+	
 	public static TempoClock getTempoClock(){
 		if(tempoClock == null){
 			tempoClock = new TempoClock();
