@@ -20,7 +20,6 @@ public class AudioTrigger extends AudioSequencer {
 	@Override
 	public void sendAudioInfo(AudioInfo audioInfo){
 		audioCtrl.trigger(audioInfo);
-		System.out.println("TRIG");
 	}
 	
 	public void addNewAudioInfo(AudioInfo audioInfo){
