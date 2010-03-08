@@ -2,12 +2,10 @@ package net.gtcmt.audiosketch.p5.object;
 
 import java.util.LinkedList;
 
-import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectColorType;
-import net.gtcmt.audiosketch.sound.util.AudioControl;
 import net.gtcmt.audiosketch.sound.util.SndConstants.SndType;
 import net.gtcmt.audiosketch.util.Constants;
 import processing.core.PApplet;
@@ -98,26 +96,6 @@ public class SoundObject {
 		case ORANGE: colorSet[0] = 255f; colorSet[1] = 125f; colorSet[2] = 0; break;
 		}	
 		return colorSet;
-	}
-
-	/**
-	 * Play sound. It uses thread to do this
-	 */
-	public void play(){
-		switch(this.sndType) {
-		case BUZZ: AudioControl.getAudioCtrl().trigger(SndType.BUZZ.toString(), (float) Math.random()*2); break;
-		case BANJO: AudioControl.getAudioCtrl().trigger(SndType.BANJO.toString(), (float) Math.random()*2); break;
-		case CHING: AudioControl.getAudioCtrl().trigger(SndType.CHING.toString(), (float) Math.random()*2); break;
-		case CLARINET: AudioControl.getAudioCtrl().trigger(SndType.CLARINET.toString(), (float) Math.random()*2); break;
-		case POP: AudioControl.getAudioCtrl().trigger(SndType.POP.toString(), (float) Math.random()*2); break;
-		case FEMALE: AudioControl.getAudioCtrl().trigger(SndType.FEMALE.toString(), (float) Math.random()*2); break;
-		case GUITAR_CLASSIC: AudioControl.getAudioCtrl().trigger(SndType.GUITAR_CLASSIC.toString(), (float) Math.random()*2); break;
-		case GUITAR_ELEC: AudioControl.getAudioCtrl().trigger(SndType.GUITAR_ELEC.toString(), (float) Math.random()*2); break;
-		case SAX: AudioControl.getAudioCtrl().trigger(SndType.SAX.toString(), (float) Math.random()*2); break;
-		case TOY_PIANO: AudioControl.getAudioCtrl().trigger(SndType.TOY_PIANO.toString(), (float) Math.random()*2); break;
-		case VIOLA: AudioControl.getAudioCtrl().trigger(SndType.VIOLA.toString(), (float) Math.random()*2); break;
-		case ZAP: AudioControl.getAudioCtrl().trigger(SndType.ZAP.toString(), (float) Math.random()*2); break;
-		}
 	}
 	
 	/**
@@ -213,7 +191,7 @@ public class SoundObject {
 	}
 	
 	
-private void explodeMultiple(PApplet p5, float numShapes, float rate) {
+	private void explodeMultiple(PApplet p5, float numShapes, float rate) {
 		
 		if(isCollide){
 			if(getFrame){

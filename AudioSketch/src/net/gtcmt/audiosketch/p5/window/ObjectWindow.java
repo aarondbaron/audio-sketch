@@ -1,7 +1,5 @@
 package net.gtcmt.audiosketch.p5.window;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
@@ -12,6 +10,11 @@ import net.gtcmt.audiosketch.util.Constants;
 import processing.core.PApplet;
 import processing.core.PShape;
 
+/**
+ * 
+ * @author akito
+ * @deprecated
+ */
 public class ObjectWindow  extends PApplet {
 
 	private static final long serialVersionUID = 2957684291479793914L;

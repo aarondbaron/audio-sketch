@@ -5,11 +5,13 @@ import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.Random;
 
+import net.gtcmt.audiosketch.event.AudioTrigger;
 import net.gtcmt.audiosketch.gui.client.AudioSketchMainFrame;
 import net.gtcmt.audiosketch.gui.util.GUIConstants;
 import net.gtcmt.audiosketch.p5.object.EffectBox;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
 import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
+import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.ObjectColorType;
@@ -72,6 +74,8 @@ public class MusicalWindow extends PApplet {
 		
 		shuffleEffect();
 
+		//Initialize audioTrigger
+		AudioTrigger.initAudioTrigger();
 	}
 
 	/*----------------------- Main Processing methods -----------------------------*/
@@ -81,6 +85,7 @@ public class MusicalWindow extends PApplet {
 	public void setup() {
 		size(GUIConstants.WINDOW_WIDTH, GUIConstants.WINDOW_HEIGHT);
 		smooth();
+		this.frameRate = P5Constants.FRAME_RATE;
 		//XXX For testing
 		addSoundObject(3, ObjectColorType.BLUE, SndType.BUZZ, new P5Points2D(this.width>>1,this.height>>1), new P5Size2D(100,100), 0);
 		addSoundObject(2, ObjectColorType.BLUE, SndType.CHING, new P5Points2D(100,100), new P5Size2D(100,100), 0);

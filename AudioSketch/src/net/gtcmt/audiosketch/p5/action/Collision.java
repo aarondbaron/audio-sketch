@@ -1,5 +1,7 @@
 package net.gtcmt.audiosketch.p5.action;
 
+import net.gtcmt.audiosketch.event.AudioInfo;
+import net.gtcmt.audiosketch.event.AudioTrigger;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
 import net.gtcmt.audiosketch.p5.object.playbar.CircleFillBar;
 import net.gtcmt.audiosketch.p5.object.playbar.ClockBar;
@@ -21,7 +23,9 @@ public class Collision {
 					+Math.pow(soundObject.getHeight()/3, 2)))+(playBar.getWidth()/2));
 
 			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
-				AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) (Math.random()*.01 +1));
+				//TODO pass in appropriate midi number
+				AudioTrigger.getAudioTrigger().addNewAudioInfo(new AudioInfo(AudioTrigger.getAudioTrigger().getNextTrigTime(), 
+						soundObject.getSndType().toString(),  (int) (Math.random()*69)));
 				soundObject.setCollideState(index, true);
 				soundObject.setCollide(true);
 				soundObject.setGetFrame(true);
@@ -68,7 +72,9 @@ public class Collision {
 						System.out.println("iSectPoints[" + i + "]: "+ iSectPoints[i]);
 
 					}*/
-					AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) Math.random()*2);
+					//TODO pass in appropriate midi number
+					AudioTrigger.getAudioTrigger().addNewAudioInfo(new AudioInfo(AudioTrigger.getAudioTrigger().getNextTrigTime(), 
+							soundObject.getSndType().toString(),  (int) (Math.random()*69)));
 					//soundObject.play();
 					soundObject.setCollideState(index, true);
 					soundObject.setCollide(true);
@@ -195,7 +201,9 @@ public class Collision {
 					+Math.pow(soundObject.getHeight()/2, 2))/4)+((playBar.getCollisionArea()-400)/2));
 
 			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
-				AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) Math.random()*2);
+				//TODO pass in appropriate midi number
+				AudioTrigger.getAudioTrigger().addNewAudioInfo(new AudioInfo(AudioTrigger.getAudioTrigger().getNextTrigTime(), 
+						soundObject.getSndType().toString(),  (int) (Math.random()*69)));
 				//soundObject.play();
 				soundObject.setCollideState(index, true);
 				soundObject.setCollide(true);
@@ -221,7 +229,9 @@ public class Collision {
 					+Math.pow(soundObject.getHeight()/3, 2)))+(playBar.getWidth()/2));
 
 			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
-				AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) (Math.random()*.01 +1));
+				//TODO pass in appropriate midi number
+				AudioTrigger.getAudioTrigger().addNewAudioInfo(new AudioInfo(AudioTrigger.getAudioTrigger().getNextTrigTime(), 
+						soundObject.getSndType().toString(),  (int) (Math.random()*69)));
 				soundObject.setCollideState(index, true);
 				soundObject.setCollide(true);
 				soundObject.setGetFrame(true);
@@ -249,7 +259,9 @@ public class Collision {
 				//System.out.println(minDistance);
 
 				if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
-					AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) (Math.random()*.01 +1));
+					//TODO pass in appropriate midi number
+					AudioTrigger.getAudioTrigger().addNewAudioInfo(new AudioInfo(AudioTrigger.getAudioTrigger().getNextTrigTime(), 
+							soundObject.getSndType().toString(),  (int) (Math.random()*69)));
 					soundObject.setCollideState(index, true);
 					soundObject.setCollide(true);
 					soundObject.setGetFrame(true);
