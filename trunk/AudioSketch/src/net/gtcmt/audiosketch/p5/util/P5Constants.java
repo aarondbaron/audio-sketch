@@ -32,16 +32,13 @@ public class P5Constants {
 	};
 	public static String[] children = dir.list(filter);		
 	public static String[] SHAPE_NAME = children;
-	public static int NUM_SHAPE = children.length;
-
-	
-	
-	
-	
+	public static int NUM_SHAPE = children.length;	
 	
 	public enum ObjectColorType{
 		WHITE, BLUE, GREEN, YELLOW, ORANGE
 	}
 	public static final String[] COLOR_LIST = { "White", "Blue", "Green", "Yellow", "Orange" };
-
+	
+	public static final float FRAME_RATE = 30f;
+	public static final float MIN_TRAVEL_DISTANCE = 10f;
 }

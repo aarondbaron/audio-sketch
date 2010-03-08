@@ -1,5 +1,6 @@
 package net.gtcmt.audiosketch.sound.util;
 
+import net.gtcmt.audiosketch.event.AudioInfo;
 import netP5.NetAddress;
 import oscP5.OscMessage;
 import oscP5.OscP5;
@@ -16,28 +17,22 @@ public class AudioControl {
 	private NetAddress remoteLocation;
 	private boolean haveReceivedMsg;
 
-	private static AudioControl audioCtrl = null;
 	private static final String OUT_IP = "localhost";
 	private static final int IN_PORT = 57849;
 	private static final int OUT_PORT = 57848;
 	public static final int TRIG_ON = 1;
 	public static final int TRIG_OFF = 0;
 	
-	public AudioControl(String outIP,int thisPort,int outPort){
-	/* start oscP5, listening for incoming messages at port inPort */
-		
-		oscP5 = new OscP5(this,thisPort);
-	  
-	  /* myRemoteLocation is a NetAddress. a NetAddress takes 2 parameters,
-	   * an ip address and a port number. myRemoteLocation is used as parameter in
-	   * oscP5.send() when sending osc packets to another computer, device, 
-	   * application. usage see below. for testing purposes the listening port
-	   * and the port of the remote location address are the same, hence you will
-	   * send messages back to this sketch.
-	   */
-	  remoteLocation = new NetAddress(outIP,outPort);
-	  
-	  this.haveReceivedMsg=false;
+	/**
+	 * Constructor: out ip addr is set to localhost
+	 * in port is 57849
+	 * out port is 57848
+	 */
+	public AudioControl(){
+		/* start oscP5, listening for incoming messages at port inPort */
+		oscP5 = new OscP5(this,IN_PORT);
+		remoteLocation = new NetAddress(OUT_IP,OUT_PORT);
+		this.haveReceivedMsg=false;
 	}
 
 	/**
@@ -52,13 +47,18 @@ public class AudioControl {
 		
 		/* send the message */
 		 oscP5.send(oscMsg, remoteLocation);
-		 
-		 //just a tester
-		 sendSoundFile("1 BOOGER 2 SNOT 3 FART");
 	}
 	
+	public void trigger(AudioInfo audioInfo) {
+		OscMessage oscMsg = new OscMessage("/trigger");
+		oscMsg.add(audioInfo.getSoundID());
+		oscMsg.add(audioInfo.getMidi());
+		
+		/* send the message */
+		 oscP5.send(oscMsg, remoteLocation);
+	}
+
 	public void sendSoundFile(String fileName) {
-		//System.out.println("sending sound file name");
 		OscMessage oscMsg = new OscMessage("/file");
 		oscMsg.add(fileName);
 		double randy=Math.random();
@@ -75,14 +75,6 @@ public class AudioControl {
 	  System.out.println(theOscMessage.toString());
 	  this.haveReceivedMsg=true;
 	}
-	
-	public static AudioControl getAudioCtrl(){
-		if(audioCtrl == null){
-			audioCtrl = new AudioControl(OUT_IP, IN_PORT, OUT_PORT);
-		}
-		return audioCtrl;
-	}
-	
 	/*-------------- Getter/Setter -------------*/
 	public OscP5 getOscP5() {
 		return oscP5;

@@ -3,10 +3,10 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/Jar/core.jar"/>
-	<classpathentry kind="lib" path="lib/Jar/oscP5.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/motej-library-0.9.jar"/>
-	<classpathentry kind="lib" path="lib/Jar/bluecove-2.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/oscP5.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/slf4j-api-1.5.10.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/slf4j-simple-1.5.10.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/bluecove-2.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

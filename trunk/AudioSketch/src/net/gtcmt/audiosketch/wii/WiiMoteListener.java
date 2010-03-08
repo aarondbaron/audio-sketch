@@ -10,6 +10,7 @@ import motej.event.IrCameraEvent;
 import motej.event.IrCameraListener;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
 import net.gtcmt.audiosketch.p5.window.MusicalWindow;
+import net.gtcmt.audiosketch.util.LogMessage;
 import net.gtcmt.audiosketch.wii.util.WiiMoteConstant;
 
 public class WiiMoteListener {
@@ -114,9 +115,13 @@ public class WiiMoteListener {
 		accelListener = new AccelerometerListener<Mote>() {
 			public void accelerometerChanged(AccelerometerEvent<Mote> evt) {
 				//System.out.println(evt.getX() + " : " + evt.getY() + " : " + evt.getZ());
-				shake.onAccelChanged((float)(evt.getX()-report.getZeroX())/(float)report.getGravityX(),
-						(float)(evt.getY()-report.getZeroY())/(float)report.getGravityY(),
-						(float)(evt.getZ()-report.getZeroZ())/(float)report.getGravityZ());
+				try {
+					shake.onAccelChanged((float)(evt.getX()-report.getZeroX())/(float)report.getGravityX(),
+							(float)(evt.getY()-report.getZeroY())/(float)report.getGravityY(),
+							(float)(evt.getZ()-report.getZeroZ())/(float)report.getGravityZ());
+				} catch (InterruptedException e) {
+					LogMessage.javaErr(e);
+				}
 			}
 		};
 		
