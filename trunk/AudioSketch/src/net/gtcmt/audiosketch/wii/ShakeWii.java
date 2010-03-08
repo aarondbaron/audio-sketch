@@ -55,9 +55,9 @@ public class ShakeWii {
 				&& (System.currentTimeMillis() - curTime > UPDATE_TIME))
 		{
 			//Wait until trig time
-			trigTime = TempoClock.getTempoClock().getNextTrigTime(4);
+			trigTime = TempoClock.getTempoClock().getNextTrigTimeSubBeat(AudioConstants.THIRTY_SECOND_NOTE);
 			while(System.currentTimeMillis() < trigTime){
-				wait();
+				//wait();
 			}
 			trigEvent();
 			curTime = System.currentTimeMillis();
@@ -76,7 +76,7 @@ public class ShakeWii {
 	}
 	
 	private void speed(float curX, float curY, float curZ) { 
-		shakeVelocity = (float) Math.sqrt(curX*curX+curY*curY+curZ*curZ);
+		shakeVelocity = (float) Math.sqrt(curX*curX+curY*curY+curZ*curZ)/3.0f;
 	}
 	
 	private void angle(double curX, double curY){
@@ -94,6 +94,7 @@ public class ShakeWii {
 		int irX = (int) ((listener.getIrX()/WiiMoteConstant.MAX_MOTE_IR_LENGTH)*GUIConstants.WINDOW_WIDTH);
 		int irY = (int) ((listener.getIrY()/WiiMoteConstant.MAX_MOTE_IR_LENGTH)*(GUIConstants.WINDOW_HEIGHT));
 		System.out.println("speed: "+shakeVelocity+" angle: "+angle);
+		System.out.println("Quantized to: "+quantizedSpeed());
 		
 		switch(listener.getBarType()){
 		case RADIAL:
@@ -143,16 +144,17 @@ public class ShakeWii {
 	private float quantizedSpeed() {
 		int note=0;
 		if(shakeVelocity > 0.75){
-			note = AudioConstants.SIXTY_FOURTH_NOTE;
+			note = AudioConstants.SIXTEENTH_NOTE;
 		}
 		else if(shakeVelocity < 0.25){
 			note = AudioConstants.QUARTER_NOTE;
 		}
 		else{
-			note = AudioConstants.SIXTEENTH_NOTE;
+			note = AudioConstants.EIGTH_NOTE;
 		}
 	
-		return P5Constants.FRAME_RATE/(P5Constants.MIN_TRAVEL_DISTANCE*note);
+		//TODO perhaps fix this equation
+		return (P5Constants.MIN_TRAVEL_DISTANCE*note)/P5Constants.FRAME_RATE;
 	}
 
 	public boolean isTriggered() {

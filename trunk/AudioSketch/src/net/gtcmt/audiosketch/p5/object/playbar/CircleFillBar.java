@@ -56,17 +56,17 @@ public class CircleFillBar extends PlayBackBar{
 		
 		//Draws fill until the time out. set bang to true on first time entered.
 		if((System.currentTimeMillis()-startTime) % timeOutMS > (timeOutMS >> 1)){
-			p5.fill(255, 25, 255, 100);
-			//image.setVisible(true);
-			if(!bang){
-				this.bang=true;
-			}
-		}
-		else {
 			p5.noFill();
 			if(this.bang){
 				this.bang = false;
 			}
+		}
+		else {
+			p5.fill(255, 25, 255, 100);
+			//image.setVisible(true);
+			if(!bang){
+				this.bang=true;
+			}	
 		}
 		
 

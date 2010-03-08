@@ -20,6 +20,7 @@ public class AudioTrigger extends AudioSequencer {
 	@Override
 	public void sendAudioInfo(AudioInfo audioInfo){
 		audioCtrl.trigger(audioInfo);
+		System.out.println("TRIG");
 	}
 	
 	public void addNewAudioInfo(AudioInfo audioInfo){
@@ -28,15 +29,26 @@ public class AudioTrigger extends AudioSequencer {
 	
 	public static void initAudioTrigger(){
 		audioTrigger = new AudioTrigger();
+		audioTrigger.start();
 	}
 	
 	public static AudioTrigger getAudioTrigger(){
 		if(audioTrigger == null){
 			audioTrigger = new AudioTrigger();
+			audioTrigger.start();
 		}
 		return audioTrigger;
 	}
+	
 	public long getNextTrigTime() {
 		return tempoClock.getNextTrigTime(1);
+	}
+	
+	/**
+	 * Subbeat update
+	 * @return
+	 */
+	public long getNextTrigTimeSubBeat(){
+		return tempoClock.getNextTrigTimeSubBeat(AudioConstants.THIRTY_SECOND_NOTE);
 	}
 }
