@@ -32,6 +32,7 @@ public class SoundObject {
 	private long frame=0;
 	private float updateStep=0.0f;
 	private float updateStep2=0.0f;
+	private int id = -1;
 
 	int numberOfShapes=7;
 	float[] vinity;
@@ -53,7 +54,7 @@ public class SoundObject {
 	 * @param colorSet Color of the object
 	 * @param p
 	 */
-	public SoundObject(P5Points2D objPos, P5Size2D objSize, ObjectColorType color, int shape, int midiNote, SndType sndType, PApplet p){
+	public SoundObject(int id, P5Points2D objPos, P5Size2D objSize, ObjectColorType color, int shape, int midiNote, SndType sndType, PApplet p){
 		this.objPos = objPos;
 		this.objSize = objSize;
 		this.color = chooseColor(color);
@@ -65,6 +66,7 @@ public class SoundObject {
 		this.collideState = new LinkedList<Boolean>();
 		this.image = p.loadShape(Constants.SOUND_OBJECT_PATH+this.shape);
 		this.image.disableStyle();
+		this.id=id;
 		
 		vinity = new float[numberOfShapes];
 		vinitx = new float[numberOfShapes];
@@ -80,6 +82,8 @@ public class SoundObject {
 		}
 		
 	}
+
+
 
 	/**
 	 * Create color of sound object
@@ -359,5 +363,13 @@ public class SoundObject {
 
 	public void setMidiNote(int midiNote) {
 		this.midiNote = midiNote;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

@@ -38,7 +38,7 @@ public class TableMessageRouter {
 			xPos = GUIConstants.WINDOW_WIDTH-scalePos(theOscMessage.get(1).floatValue(),GUIConstants.WINDOW_WIDTH);
 			yPos = scalePos(theOscMessage.get(2).floatValue(),GUIConstants.WINDOW_HEIGHT);
 
-			System.out.println("Add Object ID: " + id + " x: " + xPos + " y: " + yPos);
+//			System.out.println("Add Object ID: " + id + " x: " + xPos + " y: " + yPos);
 			theMusicalWindow.addTableObject(id,id, ObjectColorType.WHITE, SndType.values()[id], new P5Points2D(xPos, yPos), new P5Size2D(70, 70), 64);
 			
 			
@@ -49,7 +49,7 @@ public class TableMessageRouter {
 			
 			theMusicalWindow.removeTableObject(id);
 			
-			System.out.println("Remove Object ID: " + id);
+//			System.out.println("Remove Object ID: " + id);
 			
 		} else if (theOscMessage.addrPattern().equalsIgnoreCase("/updateObject")) {
 			id = offsetIndex(theOscMessage.get(0).intValue());
