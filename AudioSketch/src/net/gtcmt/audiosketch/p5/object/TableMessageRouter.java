@@ -35,7 +35,7 @@ public class TableMessageRouter {
 		
 		if (theOscMessage.addrPattern().equalsIgnoreCase("/addObject")) {
 			id = offsetIndex(theOscMessage.get(0).intValue());
-			xPos = scalePos(theOscMessage.get(1).floatValue(),GUIConstants.WINDOW_WIDTH);
+			xPos = GUIConstants.WINDOW_WIDTH-scalePos(theOscMessage.get(1).floatValue(),GUIConstants.WINDOW_WIDTH);
 			yPos = scalePos(theOscMessage.get(2).floatValue(),GUIConstants.WINDOW_HEIGHT);
 
 			System.out.println("Add Object ID: " + id + " x: " + xPos + " y: " + yPos);
@@ -53,7 +53,7 @@ public class TableMessageRouter {
 			
 		} else if (theOscMessage.addrPattern().equalsIgnoreCase("/updateObject")) {
 			id = offsetIndex(theOscMessage.get(0).intValue());
-			xPos = scalePos(theOscMessage.get(1).floatValue(),GUIConstants.WINDOW_WIDTH);
+			xPos = GUIConstants.WINDOW_WIDTH-scalePos(theOscMessage.get(1).floatValue(),GUIConstants.WINDOW_WIDTH);
 			yPos = scalePos(theOscMessage.get(2).floatValue(),GUIConstants.WINDOW_HEIGHT);
 			
 			theMusicalWindow.moveObject(id, xPos, yPos);
