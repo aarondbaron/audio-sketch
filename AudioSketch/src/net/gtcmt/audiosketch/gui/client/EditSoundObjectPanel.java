@@ -191,19 +191,19 @@ public class EditSoundObjectPanel extends JPanel {
 	
 		hBox.add(playButton);
 		
-		//Add button to add it to musical window
-		addButton = new JButton("Add");
-		addButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//Send message to server
-				synchronized (mainFrame.getMusicalWindow().getLockObject()) {
-					mainFrame.getMusicalWindow().addSoundObject(objectShapeID, objectColor, sndType, 
-							new P5Points2D((int) (Math.random()*GUIConstants.WINDOW_WIDTH), (int) (Math.random()*GUIConstants.WINDOW_HEIGHT)), 
-							new P5Size2D(objectWindow.getObjectWidth(), objectWindow.getObjectHeight()), midiIndex);
-				}
-			}
-		});
-		hBox.add(addButton);
+//		//Add button to add it to musical window
+//		addButton = new JButton("Add");
+//		addButton.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				//Send message to server
+//				synchronized (mainFrame.getMusicalWindow().getLockObject()) {
+//					mainFrame.getMusicalWindow().addSoundObject(id,objectShapeID, objectColor, sndType, 
+//							new P5Points2D((int) (Math.random()*GUIConstants.WINDOW_WIDTH), (int) (Math.random()*GUIConstants.WINDOW_HEIGHT)), 
+//							new P5Size2D(objectWindow.getObjectWidth(), objectWindow.getObjectHeight()), midiIndex);
+//				}
+//			}
+//		});
+//		hBox.add(addButton);
 		
 		return hBox;
 	}

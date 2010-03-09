@@ -3,6 +3,7 @@ package net.gtcmt.audiosketch.p5.window;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Random;
 
 import net.gtcmt.audiosketch.event.AudioTrigger;
@@ -36,7 +37,7 @@ public class MusicalWindow extends PApplet {
 	private static final long serialVersionUID = 2781100810368642853L;
 	//Mouse actions
 	private LinkedList<SoundObject> soundObject;
-	private int[] soundObjectIndices={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};		//Stores the LinkedList index values for each added SoundObject
+	//private int[] soundObjectIndices={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};		//Stores the LinkedList index values for each added SoundObject
 	private LinkedList<PlayBackBar> playBackBar;		
 	private LinkedList<EffectBox> effectBox; 
 	private int[] shuffle;
@@ -113,6 +114,7 @@ public class MusicalWindow extends PApplet {
 	}
 	
 	/*----------------------- SoundObject methods -----------------------------*/
+	/*
 	public void addSoundObject(int shape,ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, int midiNote) {
 		synchronized (lockObject) {
 			soundObject.add(new SoundObject(objPos, objSize, color, shape, midiNote, sndType, this));
@@ -122,17 +124,18 @@ public class MusicalWindow extends PApplet {
 			}
 		}
 	}
+	*/
 
 	/**
 	 * 
 	 */
 	public void addTableObject(int id, int shape,ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, int midiNote) {
 		synchronized (lockObject) {
-			soundObject.add(new SoundObject(objPos, objSize, color, shape, midiNote, sndType, this));
-			this.soundObjectIndices[id]=soundObject.size()-1;
+			soundObject.add(new SoundObject(id, objPos, objSize, color, shape, midiNote, sndType, this));
+//			this.soundObjectIndices[id]=soundObject.size()-1;
 			//TODO before adding playback bar check collision state and pass in appropriate boolean
 			for(int i=0;i<playBackBar.size();i++) {
-				soundObject.get(this.soundObjectIndices[id]).addCollideState(false);
+				soundObject.getLast().addCollideState(false);
 			}
 		}
 	}
@@ -152,10 +155,20 @@ public class MusicalWindow extends PApplet {
 	 * 
 	 */
 	public synchronized void removeTableObject(int id) {
-		if(soundObject.size() > 0){
-			soundObject.remove(this.soundObjectIndices[id]);	
+//		if(soundObject.size() > 0){
+//			soundObject.remove(this.soundObjectIndices[id]);	
+//		}
+//		this.soundObjectIndices[id]=-1;
+		ListIterator<SoundObject> iter=soundObject.listIterator(0);
+		while(iter.hasNext()) {
+			SoundObject tempSoundObject=iter.next();
+			if (tempSoundObject.getId()==id) {
+				System.out.println("Were able to remove soundObject ID="+id);
+				System.out.println(""+soundObject.remove(tempSoundObject));
+				//soundObject.remove(tempSoundObject);
+				break;
+			}
 		}
-		this.soundObjectIndices[id]=-1;
 	}
 	
 	/**
@@ -203,8 +216,18 @@ public class MusicalWindow extends PApplet {
 	}
 	/*----------------------- Edit Mode -----------------------------*/
 	
-	public synchronized void moveObject(int index, int posX, int posY){
-		soundObject.get(this.soundObjectIndices[index]).setPos(posX,posY);
+	public synchronized void moveObject(int id, int posX, int posY){
+		
+		ListIterator<SoundObject> iter=soundObject.listIterator(0);
+		while(iter.hasNext()) {
+			SoundObject tempSoundObject=iter.next();
+			if (tempSoundObject.getId()==id) {
+				tempSoundObject.setPos(posX,posY);
+				System.out.println("Object to be moved: " + id);
+				System.out.println("Object which is moved: " + tempSoundObject.getId());
+				break;
+			}
+		}
 	}
 
 	/*----------------------- Effect Mode -----------------------------*/
