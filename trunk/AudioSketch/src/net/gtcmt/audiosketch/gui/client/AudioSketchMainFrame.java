@@ -34,42 +34,6 @@ public class AudioSketchMainFrame extends JFrame {
 	
 	private TableMessageRouter tableMessageRouter; 
 	
-	/**
-	 * Constructor for starting audience view
-	 * @param client
-	 * @throws UnknownHostException
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-	public AudioSketchMainFrame() {
-		super("Audience View");
-		
-		this.userName = "Audience";
-		
-		initGUI();
-		musicalWindow.init();
-		editPanel.getObjectWindow().init();
-		
-		//Add action listener on application quit
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent evt){
-				System.exit(0);
-			}
-		});
-	
-		JPanel panel = new JPanel();
-		panel.add(musicalWindow);
-		add(panel);
-		
-		setUndecorated(true);
-		setLocationRelativeTo(null);
-		setSize(GUIConstants.WINDOW_WIDTH, GUIConstants.WINDOW_HEIGHT);
-		setLocation(0, 0);
-		setVisible(true);
-		repaint();
-		validate();
-	}
 	
 	/**
 	 * Constructor for starting main client gui panel

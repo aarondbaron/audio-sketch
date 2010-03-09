@@ -36,6 +36,7 @@ public class MusicalWindow extends PApplet {
 	private static final long serialVersionUID = 2781100810368642853L;
 	//Mouse actions
 	private LinkedList<SoundObject> soundObject;
+	private int[] soundObjectIndices={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};		//Stores the LinkedList index values for each added SoundObject
 	private LinkedList<PlayBackBar> playBackBar;		
 	private LinkedList<EffectBox> effectBox; 
 	private int[] shuffle;
@@ -91,10 +92,10 @@ public class MusicalWindow extends PApplet {
 		smooth();
 		this.frameRate = P5Constants.FRAME_RATE;
 		//XXX For testing
-		addSoundObject(3, ObjectColorType.BLUE, SndType.BUZZ, new P5Points2D(this.width>>1,this.height>>1), new P5Size2D(100,100), 0);
-		addSoundObject(2, ObjectColorType.BLUE, SndType.CHING, new P5Points2D(100,100), new P5Size2D(100,100), 0);
-		addSoundObject(1, ObjectColorType.BLUE, SndType.BANJO, new P5Points2D(500,500), new P5Size2D(100,100), 0);
-		addSoundObject(0, ObjectColorType.BLUE, SndType.FEMALE, new P5Points2D(300,400), new P5Size2D(100,100), 0);
+//		addSoundObject(3, ObjectColorType.BLUE, SndType.BUZZ, new P5Points2D(this.width>>1,this.height>>1), new P5Size2D(100,100), 0);
+//		addSoundObject(2, ObjectColorType.BLUE, SndType.CHING, new P5Points2D(100,100), new P5Size2D(100,100), 0);
+//		addSoundObject(1, ObjectColorType.BLUE, SndType.BANJO, new P5Points2D(500,500), new P5Size2D(100,100), 0);
+//		addSoundObject(0, ObjectColorType.BLUE, SndType.FEMALE, new P5Points2D(300,400), new P5Size2D(100,100), 0);
 	}
 
 	/**
@@ -113,10 +114,12 @@ public class MusicalWindow extends PApplet {
 	
 	/*----------------------- SoundObject methods -----------------------------*/
 	public void addSoundObject(int shape,ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, int midiNote) {
-		soundObject.add(new SoundObject(objPos, objSize, color, shape, midiNote, sndType, this));
-		//TODO before adding playback bar check collision state and pass in appropriate boolean
-		for(int i=0;i<playBackBar.size();i++) {
-			soundObject.getLast().addCollideState(false);
+		synchronized (lockObject) {
+			soundObject.add(new SoundObject(objPos, objSize, color, shape, midiNote, sndType, this));
+			//TODO before adding playback bar check collision state and pass in appropriate boolean
+			for(int i=0;i<playBackBar.size();i++) {
+				soundObject.getLast().addCollideState(false);
+			}
 		}
 	}
 
@@ -124,10 +127,13 @@ public class MusicalWindow extends PApplet {
 	 * 
 	 */
 	public void addTableObject(int id, int shape,ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, int midiNote) {
-		soundObject.add(id, new SoundObject(objPos, objSize, color, shape, midiNote, sndType, this));
-		//TODO before adding playback bar check collision state and pass in appropriate boolean
-		for(int i=0;i<playBackBar.size();i++) {
-			soundObject.get(id).addCollideState(false);
+		synchronized (lockObject) {
+			soundObject.add(new SoundObject(objPos, objSize, color, shape, midiNote, sndType, this));
+			this.soundObjectIndices[id]=soundObject.size()-1;
+			//TODO before adding playback bar check collision state and pass in appropriate boolean
+			for(int i=0;i<playBackBar.size();i++) {
+				soundObject.get(this.soundObjectIndices[id]).addCollideState(false);
+			}
 		}
 	}
 	
@@ -138,6 +144,8 @@ public class MusicalWindow extends PApplet {
 		if(soundObject.size() > 0){
 			soundObject.removeLast();	
 		}
+		
+		
 	}
 
 	/**
@@ -145,8 +153,9 @@ public class MusicalWindow extends PApplet {
 	 */
 	public synchronized void removeTableObject(int id) {
 		if(soundObject.size() > 0){
-			soundObject.remove(id);	
+			soundObject.remove(this.soundObjectIndices[id]);	
 		}
+		this.soundObjectIndices[id]=-1;
 	}
 	
 	/**
@@ -195,7 +204,7 @@ public class MusicalWindow extends PApplet {
 	/*----------------------- Edit Mode -----------------------------*/
 	
 	public synchronized void moveObject(int index, int posX, int posY){
-		soundObject.get(index).setPos(posX,posY);
+		soundObject.get(this.soundObjectIndices[index]).setPos(posX,posY);
 	}
 
 	/*----------------------- Effect Mode -----------------------------*/
