@@ -26,6 +26,7 @@ public class SoundObject {
 	private int midiNote;
 	private SndType sndType;
 	private PShape image;
+	private PShape[] children = new PShape[20];//20 is an arbitrary limit
 	private LinkedList<Boolean> collideState;	//collide state for each playback
 	private boolean isCollide;
 	private boolean getFrame;
@@ -65,6 +66,14 @@ public class SoundObject {
 		this.getFrame = false;
 		this.collideState = new LinkedList<Boolean>();
 		this.image = p.loadShape(Constants.SOUND_OBJECT_PATH+this.shape);
+		
+		//some of these children will be null if there aren't that many actual children, but you can handle that.
+		for (int i=0;i<children.length;i++){
+			   
+			   children[i]=this.image.getChild(Integer.toString(i+1));
+			    
+		}
+		
 		this.image.disableStyle();
 		this.id=id;
 		
@@ -175,7 +184,7 @@ public class SoundObject {
 	}
 
 	/**
-	 * Rotate sound object
+	 * Rotate and jitter sound object
 	 * @param p5
 	 */
 	private void rotateAndJitter(PApplet p5){
@@ -193,6 +202,72 @@ public class SoundObject {
 			timeOut(p5, 500f,false );
 		}
 	}
+	
+	/**
+	 * jitter and fill sound object
+	 * @param p5
+	 */
+	private void jitterAndFill(PApplet p5){
+		//TODO isCollider no longer relevant?
+		if(isCollide)
+		{
+			
+			if(getFrame){
+				frame = p5.frameCount;
+				getFrame=false;
+			}
+			//float theta = (p5.frameCount*2) % MAX_DEGREE;
+			//float size = (float) (2.0 - Math.abs((double) (((p5.frameCount-frame)*2) % MAX_DEGREE) / (MAX_DEGREE/2)));
+			//p5.rotate((float) Math.toRadians(theta));
+			float sfactor=(float).1;
+			p5.scale((float)(Math.random()*sfactor+1), (float)(Math.random()*sfactor+1));
+			timeOut(p5, 500f,false );
+			
+			
+			//////
+			for (int i=0; i<children.length ;i++)
+			  {
+			    if(children[i]!=null)
+			    {
+			    //System.out.println(evod);
+			    //pushMatrix();
+			    /*
+			    translate(tranparam*cos(num),-tranparam*cos(num));
+			    rotate(num);
+			    //*/
+			    
+			    p5.shape(children[i], 0, 0, objSize.getWidth(), objSize.getHeight());
+			    children[i].disableStyle();
+			    p5.noStroke();
+			    //hoping here that frameCount is always increasing???
+			    if(p5.frameCount%7==1){
+			      
+			      //fill(100+22*i,20+2*i,1+5*i,150);
+			      p5.fill((int)Math.random()*255,(int)Math.random()*255,(int)Math.random()*255,150);
+			    }
+			    else
+			    {
+			      p5.fill(50+22*i,70+2*i,100+5*i,150);
+			    }
+			    
+			    //popMatrix();
+			    
+			    //evod=counter%7;
+			    //counter++;
+			    }
+			    
+			  }
+			
+			
+			
+			
+			
+		}
+	}
+	
+	
+	
+	
 	
 	
 	private void explodeMultiple(PApplet p5, float numShapes, float rate) {
