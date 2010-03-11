@@ -69,7 +69,7 @@ public class AudioSketchMainFrame extends JFrame {
 		//Connect to wiimote	
 		for(int i=0;i<WiiMoteConstant.MOTE_MAC_ADDR.length;i++){
 			MoteConnector mc = new MoteConnector(WiiMoteConstant.MOTE_MAC_ADDR[i], musicalWindow);
-			mc.start();
+			//mc.start();
 			connector.add(mc); 
 		}
 		//Add pointer to musical window
