@@ -21,7 +21,7 @@ public abstract class AudioSequencer extends Thread {
 		this.tempoClock = tempoClock;
 		audioQueue = new AudioPriorityQueue();
 	}
-
+	
 	/**
 	 * Continuously read incoming messages and write outgoing messages
 	 */

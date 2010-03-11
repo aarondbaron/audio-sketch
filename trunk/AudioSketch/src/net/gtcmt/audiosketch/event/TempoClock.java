@@ -11,11 +11,12 @@ public class TempoClock extends Thread {
 	private int beatUnit;
 	private int beatPerHyperMeasure;
 	public boolean trigOn;
-
 	private boolean isRunning;
-
 	private long trigTime;
 	
+	/**
+	 * TempoClock currently takes place in two parts: jerk detection and soundObject trigger.
+	 */
 	public TempoClock(){
 		this.appStartTime = System.currentTimeMillis();
 		this.tempo = 120;
@@ -24,7 +25,7 @@ public class TempoClock extends Thread {
 		this.beatPerHyperMeasure = 4;	
 		this.beatUnit = AudioConstants.QUARTER_NOTE;
 		isRunning = false;
-		trigTime = getNextTrigTime(1);
+		trigTime = getNextTrigTime(AudioConstants.SIXTEENTH_NOTE);
 	}
 
 	public static double bpm2bps(int bpm) {
@@ -36,41 +37,15 @@ public class TempoClock extends Thread {
 	}
 	
 	/**
-	 * Calculates next trigger time of event
-	 * @param elapsedTime elapsed time since the app started
-	 * @param numBeat number of beat in the future when the event need to get triggered
-	 * @return event trigger time
-	 */
-	public long getNextTrigTime(int numBeat) {
-		// get beat length
-		long beatLengthInMs = bps2millisec(bpm2bps(tempo));
-		long elapsedTime = System.currentTimeMillis() - appStartTime;
-		long nextBeatStartTime = elapsedTime - (elapsedTime % beatLengthInMs) + beatLengthInMs + appStartTime;
-		if ((nextBeatStartTime - System.currentTimeMillis()) < THRESH_TIME){
-			nextBeatStartTime += beatLengthInMs;
-		}
-		
-		//Add number of beat
-		nextBeatStartTime += beatLengthInMs*numBeat;
-		return nextBeatStartTime;
-	}
-	
-	/**
 	 * Fine grain trigger time calculator. based on sixteenth note
 	 * @return
 	 */
-	public long getNextTrigTimeSubBeat(int note) {
+	public long getNextTrigTime(int note) {
 		// get beat length
 		long beatLengthInMs = bps2millisec(bpm2bps(tempo))/note;
 		long elapsedTime = System.currentTimeMillis() - appStartTime;
 		long nextBeatStartTime = elapsedTime - (elapsedTime % beatLengthInMs) + beatLengthInMs + appStartTime;
-//		if ((nextBeatStartTime - System.currentTimeMillis()) < THRESH_TIME){
-//			nextBeatStartTime += beatLengthInMs;
-//		}
-		
-//		System.out.println("nextBeat1 "+nextBeatStartTime);
-		//Add number of beat
-//		nextBeatStartTime += beatLengthInMs/note;
+
 		return nextBeatStartTime;
 	}
 	
@@ -82,7 +57,7 @@ public class TempoClock extends Thread {
 		while(isRunning){
 			if(System.currentTimeMillis() > trigTime){
 				trigOn = true;
-				trigTime = getNextTrigTimeSubBeat(shortestNote);
+				trigTime = getNextTrigTime(shortestNote);
 			}
 		}
 	}

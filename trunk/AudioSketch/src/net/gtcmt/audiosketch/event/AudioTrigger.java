@@ -39,15 +39,11 @@ public class AudioTrigger extends AudioSequencer {
 		return audioTrigger;
 	}
 	
-	public long getNextTrigTime() {
-		return tempoClock.getNextTrigTime(1);
-	}
-	
 	/**
-	 * Subbeat update
+	 * Sub beat update
 	 * @return
 	 */
-	public long getNextTrigTimeSubBeat(){
-		return tempoClock.getNextTrigTimeSubBeat(AudioConstants.THIRTY_SECOND_NOTE);
+	public long getNextTrigTime(){
+		return tempoClock.getNextTrigTime(AudioConstants.SIXTEENTH_NOTE);
 	}
 }

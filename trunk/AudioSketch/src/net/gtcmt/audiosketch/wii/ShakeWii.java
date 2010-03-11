@@ -55,7 +55,7 @@ public class ShakeWii {
 				&& (System.currentTimeMillis() - curTime > UPDATE_TIME))
 		{
 			//Wait until trig time
-			trigTime = TempoClock.getTempoClock().getNextTrigTimeSubBeat(AudioConstants.THIRTY_SECOND_NOTE);
+			trigTime = TempoClock.getTempoClock().getNextTrigTime(AudioConstants.SIXTEENTH_NOTE);
 			while(System.currentTimeMillis() < trigTime){
 				//wait();
 			}
