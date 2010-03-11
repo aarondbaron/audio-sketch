@@ -118,39 +118,36 @@ public class SoundObject {
 	public void draw(PApplet p5){
 		p5.pushMatrix();
 		p5.translate(objPos.getPosX(), objPos.getPosY());
-		
-		if(!isCollide){
-			
+		//rotateAndJitter(p5);
+		if(isCollide){
+			jitterAndFill(p5);
+		}
+		else{
 			p5.strokeWeight(5);
 			p5.fill(255,255,255,100);
 			p5.stroke(color[0], color[1], color[2], 200);
 			p5.shapeMode(PConstants.CENTER);
 			p5.shape(image, 0, 0, objSize.getWidth(), objSize.getHeight());
-			
-			
 		}
-		else {
-			
-			jitterAndFill(p5);	
-			
-			//rotateAndJitter(p5);
-			
-			
-			//setup for explodeMultple
-			//float explodeRate=.1f;
-			//explodeMultiple(p5, numberOfShapes,explodeRate);
-			
-			//setup for spawnMultiple
-			//float rotateRate = .007f;
-			//float translateParam =  5.0f;
-			//float sfactorParam =  (1.0f + .01f);
-			//int numShapes = numberOfShapes;
-			//spawnMultiple(p5,numShapes,rotateRate, translateParam,sfactorParam);
-
 		
-		}
-	
-			
+		
+		
+	//	PShape child = image.getChild("path3603");
+	//	child.disableStyle();
+	//
+	//	p5.shape(child,0, 0,objSize.getWidth(), objSize.getHeight());
+		
+		//setup for explodeMultple
+		//float explodeRate=.1f;
+		//explodeMultiple(p5, numberOfShapes,explodeRate);
+		
+		//setup for spawnMultiple
+		float rotateRate = .007f;
+		float translateParam =  5.0f;
+		float sfactorParam =  (1.0f + .01f);
+		int numShapes = numberOfShapes;
+		//spawnMultiple(p5,numShapes,rotateRate, translateParam,sfactorParam);
+		
 		
 		p5.popMatrix();
 	}
@@ -191,7 +188,7 @@ public class SoundObject {
 	}
 
 	/**
-	 * Rotate and jitter sound object
+	 * Rotate sound object
 	 * @param p5
 	 */
 	private void rotateAndJitter(PApplet p5){
@@ -216,60 +213,62 @@ public class SoundObject {
 	 */
 	private void jitterAndFill(PApplet p5){
 		//TODO isCollider no longer relevant?
-
-		if(getFrame){
-			frame = p5.frameCount;
-			getFrame=false;
-		}
-		//float theta = (p5.frameCount*2) % MAX_DEGREE;
-		//float size = (float) (2.0 - Math.abs((double) (((p5.frameCount-frame)*2) % MAX_DEGREE) / (MAX_DEGREE/2)));
-		//p5.rotate((float) Math.toRadians(theta));
-		float sfactor=(float).1;
-		p5.scale((float)(Math.random()*sfactor+1), (float)(Math.random()*sfactor+1));
-		timeOut(p5, 500f,false );
-
-
-		//////
-		for (int i=0; i<children.length ;i++)
+		if(isCollide)
 		{
-			if(children[i]!=null)
-			{
-				//System.out.println(evod);
-				//pushMatrix();
-				/*
+			
+			if(getFrame){
+				frame = p5.frameCount;
+				getFrame=false;
+			}
+			//float theta = (p5.frameCount*2) % MAX_DEGREE;
+			//float size = (float) (2.0 - Math.abs((double) (((p5.frameCount-frame)*2) % MAX_DEGREE) / (MAX_DEGREE/2)));
+			//p5.rotate((float) Math.toRadians(theta));
+			float sfactor=(float).1;
+			p5.scale((float)(Math.random()*sfactor+1), (float)(Math.random()*sfactor+1));
+			timeOut(p5, 500f,false );
+			
+			
+			//////
+			for (int i=0; i<children.length ;i++)
+			  {
+			    if(children[i]!=null)
+			    {
+			    //System.out.println(evod);
+			    //pushMatrix();
+			    /*
 			    translate(tranparam*cos(num),-tranparam*cos(num));
 			    rotate(num);
 			    //*/
-
-				p5.noStroke();
-				p5.shape(children[i], 0, 0, objSize.getWidth(), objSize.getHeight());
-				children[i].disableStyle();				
-				//hoping here that frameCount is always increasing???
-				if(p5.frameCount%7==1){
-
-					//fill(100+22*i,20+2*i,1+5*i,150);
-					p5.fill((int)Math.random()*255,(int)Math.random()*255,(int)Math.random()*255,150);
-				}
-				else
-				{
-					p5.fill(255,255,255,150);
-				}
-
-				//popMatrix();
-
-				//evod=counter%7;
-				//counter++;
-			}
-
-
-
-
-
-
-
+			    
+			    p5.shape(children[i], 0, 0, objSize.getWidth(), objSize.getHeight());
+			    children[i].disableStyle();
+			    p5.noStroke();
+			    //hoping here that frameCount is always increasing???
+			    if(p5.frameCount%2==1){
+			      
+			      //fill(100+22*i,20+2*i,1+5*i,150);
+			      p5.fill((int)Math.random()*255,(int)Math.random()*255,(int)Math.random()*255,150);
+			    }
+			    else
+			    {
+			      p5.fill(50+22*i,70+2*i,100+5*i,150);
+			    }
+			    
+			    //popMatrix();
+			    
+			    //evod=counter%7;
+			    //counter++;
+			    }
+			    
+			  }
+			
+			
+			
+			
+			
 		}
 	}
-
+	
 	
 	
 	

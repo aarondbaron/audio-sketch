@@ -17,7 +17,7 @@ public class ShakeWii {
 	private float deltaX;
 	private float deltaY;
 	private float deltaZ;
-	private static final float THRESHOLD = 0.2f;
+	private static final float THRESHOLD = 0.3f;
 	private static final long UPDATE_TIME = 200;
 	private long curTime;
 	private boolean trig;

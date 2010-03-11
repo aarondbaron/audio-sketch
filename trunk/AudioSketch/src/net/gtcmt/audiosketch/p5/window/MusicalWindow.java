@@ -93,17 +93,17 @@ public class MusicalWindow extends PApplet {
 		smooth();
 		this.frameRate = P5Constants.FRAME_RATE;
 		//XXX For testing
-//		addSoundObject(3, ObjectColorType.BLUE, SndType.BUZZ, new P5Points2D(this.width>>1,this.height>>1), new P5Size2D(100,100), 0);
-//		addSoundObject(2, ObjectColorType.BLUE, SndType.CHING, new P5Points2D(100,100), new P5Size2D(100,100), 0);
-//		addSoundObject(1, ObjectColorType.BLUE, SndType.BANJO, new P5Points2D(500,500), new P5Size2D(100,100), 0);
-//		addSoundObject(0, ObjectColorType.BLUE, SndType.FEMALE, new P5Points2D(300,400), new P5Size2D(100,100), 0);
+		addTableObject(1, 11, ObjectColorType.BLUE, SndType.BUZZ, new P5Points2D((this.width>>1)+200,(this.height>>1)-200), new P5Size2D(100,100), 0);
+		addTableObject(2, 10, ObjectColorType.BLUE, SndType.CHING, new P5Points2D((this.width>>1)-200,(this.height>>1)+200), new P5Size2D(100,100), 0);
+		addTableObject(3, 9, ObjectColorType.BLUE, SndType.BANJO, new P5Points2D((this.width>>1)+200,(this.height>>1)+200), new P5Size2D(100,100), 0);
+		addTableObject(4, 8, ObjectColorType.BLUE, SndType.FEMALE, new P5Points2D((this.width>>1)-200,(this.height>>1)-200), new P5Size2D(100,100), 0);
 	}
 
 	/**
 	 * Main method where p5 is active
 	 */
 	public void draw() {
-		background(0);
+		background(0,0,0,0);
 		synchronized (lockObject) {
 			playBar();
 			drawSoundObject();
