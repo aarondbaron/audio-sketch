@@ -64,7 +64,7 @@
   <path
      sodipodi:type="star"
      style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     id="path3650"
+     id="1"
      sodipodi:sides="3"
      sodipodi:cx="84.145706"
      sodipodi:cy="38.072548"
@@ -76,5 +76,6 @@
      inkscape:rounded="0"
      inkscape:randomized="0"
      d="M 185.14076,96.382069 L -16.849347,96.382068 L 84.145707,-78.546494 L 185.14076,96.382069 z"
-     transform="matrix(0.9104863,0,0,0.9104863,23.386488,91.880476)" />
+     transform="matrix(0.9104863,0,0,0.9104863,23.386488,91.880476)"
+     inkscape:label="1" />
 </svg>
