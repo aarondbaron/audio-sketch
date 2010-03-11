@@ -54,7 +54,7 @@ public class Collision {
 				//float ang = temp.getClockAngle();
 				float ang = temp.getSomeAngle();
 				//System.out.println(ang);
-				int p2X = (int) Math.round((Math.cos(ang+Math.PI/2)*len) + pBarX);//the Math.PI is necessary but shoudl be fixed so you dotn have to do this
+				int p2X = (int) Math.round((Math.cos(ang+Math.PI/2)*len) + pBarX);//the Math.PI is necessary but should be fixed so you don't have to do this
 				int p2Y = (int) Math.round((Math.sin(ang+Math.PI/2)*len) + pBarY);
 				//System.out.println("p2X: " + p2X + " p2Y: " + p2Y + "...pBarX: " + pBarX + " pBarY: " + pBarY );//what are coordinates
 				//System.out.println(Math.sqrt(  Math.pow(pBarX-p2X,2) + Math.pow(pBarY-p2Y,2)));//just a length check
@@ -217,7 +217,7 @@ public class Collision {
 	}
 
 	public static void collideSquare(SoundObject soundObject, PlayBackBar playBar, int index) {
-		// TODO need to make this correct..it functions like colide circle now
+		// TODO need to make this correct..it functions like collide circle now
 		//
 
 		if(!soundObject.getCollideState(index)) {
