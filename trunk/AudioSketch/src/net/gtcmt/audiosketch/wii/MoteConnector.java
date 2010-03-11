@@ -10,9 +10,17 @@ public class MoteConnector extends Thread {
 	private WiiMoteListener moteListener;
 	private String address;
 	
-	public MoteConnector(String address, MusicalWindow mwp5){
+	public MoteConnector(String address, MusicalWindow mwp5) {
 		this.address = address;
+		mote = new Mote(address);
 		moteListener = new WiiMoteListener(mwp5, address);
+		mote.setReportMode(ReportModeRequest.DATA_REPORT_0x31);
+		mote.addAccelerometerListener(moteListener.getAccelListener());		
+		mote.addCoreButtonListener(moteListener.getButtonListener());
+		mote.addIrCameraListener(moteListener.getIrListener());
+		mote.enableIrCamera();
+		mote.setReportMode(ReportModeRequest.DATA_REPORT_0x37);
+		System.out.println("found mote with address: "+mote.getBluetoothAddress()+" "+mote.getStatusInformationReport());
 	}
 	
 	/**
@@ -27,7 +35,7 @@ public class MoteConnector extends Thread {
 		mote.addIrCameraListener(moteListener.getIrListener());
 		mote.enableIrCamera();
 		mote.setReportMode(ReportModeRequest.DATA_REPORT_0x37);
-		System.out.println("found mote with address: "+address);
+		System.out.println("found mote with address: "+address+" "+mote.getStatusInformationReport());
 	}
 	
 	public void shutdown(){
@@ -35,6 +43,7 @@ public class MoteConnector extends Thread {
 		mote.disconnect();
 		this.interrupt();
 	}
+
 	public WiiMoteListener getMoteListener() {
 		return moteListener;
 	}
