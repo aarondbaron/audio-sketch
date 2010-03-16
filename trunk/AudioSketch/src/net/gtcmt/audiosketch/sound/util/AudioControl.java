@@ -52,7 +52,7 @@ public class AudioControl {
 	public void trigger(AudioInfo audioInfo) {
 		OscMessage oscMsg = new OscMessage("/trigger");
 		oscMsg.add(audioInfo.getSoundID());
-		oscMsg.add(audioInfo.getMidi());
+		oscMsg.add(audioInfo.getPlaySpeedMultiply());
 		
 		/* send the message */
 		 oscP5.send(oscMsg, remoteLocation);
