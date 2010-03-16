@@ -93,10 +93,10 @@ public class MusicalWindow extends PApplet {
 		smooth();
 		this.frameRate = P5Constants.FRAME_RATE;
 		//XXX For testing
-		addTableObject(1, 11, ObjectColorType.BLUE, SndType.BUZZ, new P5Points2D((this.width>>1)+200,(this.height>>1)-200), new P5Size2D(100,100), 0);
-		addTableObject(2, 10, ObjectColorType.BLUE, SndType.CHING, new P5Points2D((this.width>>1)-200,(this.height>>1)+200), new P5Size2D(100,100), 0);
-		addTableObject(3, 9, ObjectColorType.BLUE, SndType.BANJO, new P5Points2D((this.width>>1)+200,(this.height>>1)+200), new P5Size2D(100,100), 0);
-		addTableObject(4, 8, ObjectColorType.BLUE, SndType.FEMALE, new P5Points2D((this.width>>1)-200,(this.height>>1)-200), new P5Size2D(100,100), 0);
+		//addTableObject(1, 11, ObjectColorType.BLUE, SndType.BUZZ, new P5Points2D((this.width>>1)+200,(this.height>>1)-200), new P5Size2D(100,100), 0);
+		//addTableObject(2, 10, ObjectColorType.BLUE, SndType.CHING, new P5Points2D((this.width>>1)-200,(this.height>>1)+200), new P5Size2D(100,100), 0);
+		//addTableObject(3, 9, ObjectColorType.BLUE, SndType.BANJO, new P5Points2D((this.width>>1)+200,(this.height>>1)+200), new P5Size2D(100,100), 0);
+		//addTableObject(4, 8, ObjectColorType.BLUE, SndType.FEMALE, new P5Points2D((this.width>>1)-200,(this.height>>1)-200), new P5Size2D(100,100), 0);
 	}
 
 	/**
@@ -235,9 +235,9 @@ public class MusicalWindow extends PApplet {
 	 * Allows users to draw effect box when effectButton is selected
 	 */
 	private synchronized void effectMode(){
-		if(mainFrame.getActionPanel() != null && mainFrame.getActionPanel().effectButton.isSelected()){
-			drawPreviewEffectBox();	
-		}
+//		if(mainFrame.getActionPanel() != null && mainFrame.getActionPanel().effectButton.isSelected()){
+//			drawPreviewEffectBox();	
+//		}
 	}
 
 	/**
@@ -331,14 +331,6 @@ public class MusicalWindow extends PApplet {
 
 	public void setMainFrame(AudioSketchMainFrame mainFrame) {
 		this.mainFrame = mainFrame;
-	}
-	
-	public int getPlayBarIndex(){
-		return mainFrame.getActionPanel().getBarMode().getSelectedIndex();
-	}
-	
-	public String getUserName(){
-		return mainFrame.getUserName();
 	}
 	
 	public int getPlayBarSize(){

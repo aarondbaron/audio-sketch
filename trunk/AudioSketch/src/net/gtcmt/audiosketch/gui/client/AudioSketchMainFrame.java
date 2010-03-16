@@ -6,11 +6,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
 
-import javax.swing.Box;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
 
 import net.gtcmt.audiosketch.gui.util.GUIConstants;
 import net.gtcmt.audiosketch.p5.object.TableMessageRouter;
@@ -26,10 +22,7 @@ import net.gtcmt.audiosketch.wii.util.WiiMoteConstant;
 public class AudioSketchMainFrame extends JFrame {
 
 	private static final long serialVersionUID = -454422848366277633L;
-	private String userName;
-	private ActionPanel actionPanel;
 	private MusicalWindow musicalWindow;
-	private EditSoundObjectPanel  editPanel;
 	private LinkedList<MoteConnector> connector;
 	
 	private TableMessageRouter tableMessageRouter; 
@@ -75,53 +68,7 @@ public class AudioSketchMainFrame extends JFrame {
 		//Add pointer to musical window
 		musicalWindow.initPointer(connector);
 	}
-	
-	/**
-	 * Sets up gui
-	 * @param clientApp reference to client application
-	 * @throws UnknownHostException
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-	private void setupGUI() {
-		Box hBox = Box.createHorizontalBox();
-		Box vBox = Box.createVerticalBox();
-		
-		//Main Window
-		musicalWindow = new MusicalWindow(this);
-		JPanel panel = new JPanel();
-		panel.add(musicalWindow);
-		hBox.add(panel);
-						
-		//Vertical seperator
-		hBox.add(new JSeparator(SwingConstants.VERTICAL));
-		
-		//Object Editing Panel
-		editPanel = new EditSoundObjectPanel(this);
-		vBox.add(editPanel);
-		
-		//Horizontal seperator
-		vBox.add(new JSeparator(SwingConstants.HORIZONTAL));
 
-		//Action Panel
-		actionPanel = new ActionPanel(this);
-		vBox.add(actionPanel);	
-
-		//Add to frame
-		hBox.add(vBox);		
-		add(hBox);
-	}
-	
-	
-	private void initGUI() {		
-		//Main Window
-		musicalWindow = new MusicalWindow(this);		
-		//Action Panel
-		actionPanel = new ActionPanel(this);
-		//Object Editing Panel
-		editPanel = new EditSoundObjectPanel(this);
-	}
-	
 	/*----------------- Getter/Setter ----------------*/
 	public MusicalWindow getMusicalWindow() {
 		return musicalWindow;
@@ -130,28 +77,4 @@ public class AudioSketchMainFrame extends JFrame {
 	public void setMusicalWindow(MusicalWindow musicalWindow) {
 		this.musicalWindow = musicalWindow;
 	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public ActionPanel getActionPanel() {
-		return actionPanel;
-	}
-
-	public void setActionPanel(ActionPanel actionPanel) {
-		this.actionPanel = actionPanel;
-	}
-
-	public EditSoundObjectPanel getEditPanel() {
-		return editPanel;
-	}
-
-	public void setEditPanel(EditSoundObjectPanel editPanel) {
-		this.editPanel = editPanel;
-	}	
 }
