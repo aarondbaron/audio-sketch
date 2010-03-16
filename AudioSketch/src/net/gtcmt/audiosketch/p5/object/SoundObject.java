@@ -444,8 +444,18 @@ public class SoundObject {
 		this.sndType = sndType;
 	}
 	
-	public float[] caclPlaySpeedMultiply() {
-		return playSpeedMultiply;
+	public float calcPlaySpeedMultiply() {
+		float quantRadianRange=this.TWO_PI/(float)this.playSpeedMultiply.length;
+		float thePlaySpeedMultiplier=0.0f;
+		
+		for (int i=0; i<this.playSpeedMultiply.length; i++) {
+			if (this.angle<quantRadianRange*(i+1)) {
+				thePlaySpeedMultiplier=this.playSpeedMultiply[i];
+				break;
+			}
+		}
+		
+		return thePlaySpeedMultiplier;
 	}
 
 	
