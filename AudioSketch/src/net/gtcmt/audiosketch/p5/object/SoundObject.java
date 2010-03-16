@@ -23,10 +23,10 @@ public class SoundObject {
 	private P5Size2D objSize;
 	private float[] color;
 	private String shape;
-	private int midiNote;
+	private float[] playSpeedMultiply;
 	private SndType sndType;
 	private PShape image;
-	private PShape[] children = new PShape[20];//20 is an arbitrary limit
+	private PShape[] children = new PShape[20];  //20 is an arbitrary limit
 	private LinkedList<Boolean> collideState;	//collide state for each playback
 	private boolean isCollide;
 	private boolean getFrame;
@@ -34,6 +34,8 @@ public class SoundObject {
 	private float updateStep=0.0f;
 	private float updateStep2=0.0f;
 	private int id = -1;
+	private float angle;		//the angle of the physical object's rotation
+
 
 	int numberOfShapes=7;
 	float[] vinity;
@@ -45,27 +47,32 @@ public class SoundObject {
 	
 	private static int MAX_DEGREE = 360;
 	public long startTime = 0;
+	
+	private final float TWO_PI=6.2832f;
 
 	/**
 	 * SoundObject represents sound in Musical Window. It contains sound information.
+	 * @param sndType Type of the sound this object contains
+	 * @param p
+	 * @param angle TODO
+	 * @param playSpeedMultiply TODO
 	 * @param x Location on X-axis where the object is going to stay
 	 * @param y Location on Y-axis where the object is going to stay
 	 * @param size Size of the object given in points of vertex
-	 * @param sndType Type of the sound this object contains
 	 * @param colorSet Color of the object
-	 * @param p
 	 */
-	public SoundObject(int id, P5Points2D objPos, P5Size2D objSize, ObjectColorType color, int shape, int midiNote, SndType sndType, PApplet p){
+	public SoundObject(int id, P5Points2D objPos, P5Size2D objSize, ObjectColorType color, int shape, SndType sndType, PApplet p, float angle, float[] playSpeedMultiply){
 		this.objPos = objPos;
 		this.objSize = objSize;
 		this.color = chooseColor(color);
 		this.shape = P5Constants.SHAPE_NAME[shape];//P5Constants.SHAPE_NAME[shape.ordinal()];
-		this.midiNote = midiNote;
+		this.playSpeedMultiply=playSpeedMultiply;
 		this.sndType = sndType;
 		this.isCollide = false;
 		this.getFrame = false;
 		this.collideState = new LinkedList<Boolean>();
 		this.image = p.loadShape(Constants.SOUND_OBJECT_PATH+this.shape);
+		this.angle=angle;
 		
 		//some of these children will be null if there aren't that many actual children, but you can handle that.
 		for (int i=0;i<children.length;i++){
@@ -437,13 +444,10 @@ public class SoundObject {
 		this.sndType = sndType;
 	}
 	
-	public int getMidiNote() {
-		return midiNote;
+	public float[] caclPlaySpeedMultiply() {
+		return playSpeedMultiply;
 	}
 
-	public void setMidiNote(int midiNote) {
-		this.midiNote = midiNote;
-	}
 	
 	public int getId() {
 		return id;
@@ -452,4 +456,13 @@ public class SoundObject {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public float getAngle() {
+		return angle;
+	}
+
+	public void setAngle(float angle) {
+		this.angle = angle;
+	}
+	
 }

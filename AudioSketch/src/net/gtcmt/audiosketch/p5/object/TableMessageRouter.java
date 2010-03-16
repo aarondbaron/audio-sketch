@@ -12,6 +12,22 @@ import oscP5.OscP5;
 public class TableMessageRouter {
 	private OscP5 oscP5;
 	private int id, xPos, yPos;
+	private float angle;
+	private final float[][] playSpeedMultipliers=new float[][] {	//used for specifying values of playback speed multiplication for pitch change
+		{.8f,1f,1.2f},
+		{.8f,1f,1.2f},
+		{.8f,1f,1.2f},
+		{.8f,1f,1.2f},
+		{.8f,1f,1.2f},
+		{.8f,1f,1.2f},
+		{.8f,1f,1.2f},
+		{.8f,1f,1.2f},
+		{.8f,1f,1.2f},
+		{.8f,1f,1.2f},
+		{.8f,1f,1.2f},
+		{.8f,1f,1.2f}
+	};
+
 	private MusicalWindow theMusicalWindow;
 	private final int firstMarkerIndex=114;
 	
@@ -23,8 +39,8 @@ public class TableMessageRouter {
 		System.out.println("TableMessageRouter Initialized");
 		
 		//
-		xPos=300;
-		yPos=300;
+		//xPos=300;
+		//yPos=300;
 		//theMusicalWindow.addTableObject(3,5, ObjectColorType.WHITE, SndType.values()[id], new P5Points2D(xPos, yPos), new P5Size2D(70, 70), 64);
 	}
 	
@@ -37,9 +53,11 @@ public class TableMessageRouter {
 			id = offsetIndex(theOscMessage.get(0).intValue());
 			xPos = GUIConstants.WINDOW_WIDTH-scalePos(theOscMessage.get(1).floatValue(),GUIConstants.WINDOW_WIDTH);
 			yPos = scalePos(theOscMessage.get(2).floatValue(),GUIConstants.WINDOW_HEIGHT);
+			angle=theOscMessage.get(3).floatValue();
 
 //			System.out.println("Add Object ID: " + id + " x: " + xPos + " y: " + yPos);
-			theMusicalWindow.addTableObject(id,id, ObjectColorType.WHITE, SndType.values()[id], new P5Points2D(xPos, yPos), new P5Size2D(70, 70), 64);
+			theMusicalWindow.addTableObject(id,id, ObjectColorType.WHITE, SndType.values()[id], new P5Points2D(xPos, yPos),
+					new P5Size2D(70, 70), angle, playSpeedMultipliers[id]);
 			
 			
 
@@ -55,8 +73,9 @@ public class TableMessageRouter {
 			id = offsetIndex(theOscMessage.get(0).intValue());
 			xPos = GUIConstants.WINDOW_WIDTH-scalePos(theOscMessage.get(1).floatValue(),GUIConstants.WINDOW_WIDTH);
 			yPos = scalePos(theOscMessage.get(2).floatValue(),GUIConstants.WINDOW_HEIGHT);
+			angle=theOscMessage.get(3).floatValue();
 			
-			theMusicalWindow.moveObject(id, xPos, yPos);
+			theMusicalWindow.moveObject(id, xPos, yPos, angle);
 
 			//System.out.println("Position Object ID: " + id + " x: " + xPos + " y: " + yPos);
 		}
