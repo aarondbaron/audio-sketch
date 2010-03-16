@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/Jar/slf4j-api-1.5.10.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/slf4j-simple-1.5.10.jar"/>
 	<classpathentry kind="lib" path="lib/Jar/bluecove-2.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/Jar/WiiRemoteJ.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
