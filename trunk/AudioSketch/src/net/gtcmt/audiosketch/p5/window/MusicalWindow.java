@@ -129,9 +129,10 @@ public class MusicalWindow extends PApplet {
 	/**
 	 * 
 	 */
-	public void addTableObject(int id, int shape,ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, int midiNote) {
+	public void addTableObject(int id, int shape,ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, 
+			float angle, float[] playSpeedMultiply) {
 		synchronized (lockObject) {
-			soundObject.add(new SoundObject(id, objPos, objSize, color, shape, midiNote, sndType, this));
+			soundObject.add(new SoundObject(id, objPos, objSize, color, shape, sndType, this, angle, playSpeedMultiply));
 //			this.soundObjectIndices[id]=soundObject.size()-1;
 			//TODO before adding playback bar check collision state and pass in appropriate boolean
 			for(int i=0;i<playBackBar.size();i++) {
@@ -216,13 +217,14 @@ public class MusicalWindow extends PApplet {
 	}
 	/*----------------------- Edit Mode -----------------------------*/
 	
-	public synchronized void moveObject(int id, int posX, int posY){
+	public synchronized void moveObject(int id, int posX, int posY, float angle){
 		
 		ListIterator<SoundObject> iter=soundObject.listIterator(0);
 		while(iter.hasNext()) {
 			SoundObject tempSoundObject=iter.next();
 			if (tempSoundObject.getId()==id) {
 				tempSoundObject.setPos(posX,posY);
+				tempSoundObject.setAngle(angle);
 				System.out.println("Object to be moved: " + id);
 				System.out.println("Object which is moved: " + tempSoundObject.getId());
 				break;

@@ -10,12 +10,12 @@ public class AudioInfo {
 
 	private long trigTime;
 	private String soundID;
-	private int midi;
+	private float playSpeedMultiply;
 	
-	public AudioInfo(long trigTime, String soundID, int midi){
+	public AudioInfo(long trigTime, String soundID, float playSpeedMultiply){
 		this.trigTime = trigTime;
 		this.soundID = soundID;
-		this.midi = midi;
+		this.playSpeedMultiply = playSpeedMultiply;
 	}
 	
 	public long getTrigTime() {
@@ -26,7 +26,7 @@ public class AudioInfo {
 		return soundID;
 	}
 	
-	public int getMidi() {
-		return midi;
+	public float getPlaySpeedMultiply() {
+		return playSpeedMultiply;
 	}
 }
