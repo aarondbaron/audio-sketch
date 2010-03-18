@@ -139,6 +139,8 @@ public class MusicalWindow extends PApplet {
 				soundObject.getLast().addCollideState(false);
 			}
 		}
+		//System.out.println("Length of SoundObjectLL: "+soundObject.size());
+
 	}
 	
 	/**
@@ -164,9 +166,9 @@ public class MusicalWindow extends PApplet {
 		while(iter.hasNext()) {
 			SoundObject tempSoundObject=iter.next();
 			if (tempSoundObject.getId()==id) {
-				System.out.println("Were able to remove soundObject ID="+id);
-				System.out.println(""+soundObject.remove(tempSoundObject));
-				//soundObject.remove(tempSoundObject);
+				//System.out.println("Were able to remove soundObject ID="+id);
+				//System.out.println(""+soundObject.remove(tempSoundObject));
+				soundObject.remove(tempSoundObject);
 				break;
 			}
 		}
@@ -225,8 +227,8 @@ public class MusicalWindow extends PApplet {
 			if (tempSoundObject.getId()==id) {
 				tempSoundObject.setPos(posX,posY);
 				tempSoundObject.setAngle(angle);
-				System.out.println("Object to be moved: " + id);
-				System.out.println("Object which is moved: " + tempSoundObject.getId());
+				//System.out.println("Object to be moved: " + id);
+				//System.out.println("Object which is moved: " + tempSoundObject.getId());
 				break;
 			}
 		}

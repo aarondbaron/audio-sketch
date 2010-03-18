@@ -67,7 +67,7 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="1">
     <path
        style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 100,-0.5 C 44.529469,-0.5 -0.5,44.529469 -0.5,100 C -0.5,155.47053 44.529469,200.5 100,200.5 C 155.47053,200.5 200.5,155.47053 200.5,100 C 200.5,44.529469 155.47053,-0.5 100,-0.5 z M 100,0.5 C 154.92947,0.5 199.5,45.070531 199.5,100 C 199.5,154.92947 154.92947,199.5 100,199.5 C 45.070531,199.5 0.5,154.92947 0.5,100 C 0.5,45.070531 45.070531,0.5 100,0.5 z"

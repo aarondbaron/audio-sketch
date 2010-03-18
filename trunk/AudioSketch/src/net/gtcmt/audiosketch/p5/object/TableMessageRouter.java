@@ -29,7 +29,7 @@ public class TableMessageRouter {
 	};
 
 	private MusicalWindow theMusicalWindow;
-	private final int firstMarkerIndex=114;
+	private final int firstMarkerIndex=0;
 	
 	public static final int tableMessageInPort=2100;
 	
@@ -58,7 +58,7 @@ public class TableMessageRouter {
 //			System.out.println("Add Object ID: " + id + " x: " + xPos + " y: " + yPos);
 			theMusicalWindow.addTableObject(id,id, ObjectColorType.WHITE, SndType.values()[id], new P5Points2D(xPos, yPos),
 					new P5Size2D(70, 70), angle, playSpeedMultipliers[id]);
-			
+			//System.out.println("/addObject has been called in TableMessageRouter");
 			
 
 			

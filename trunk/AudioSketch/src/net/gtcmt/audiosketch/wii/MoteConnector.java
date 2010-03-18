@@ -31,7 +31,8 @@ public class MoteConnector extends Thread {
 		mote.addIrCameraListener(moteListener.getIrListener());
 		mote.enableIrCamera();
 		mote.setReportMode(ReportModeRequest.DATA_REPORT_0x37);
-		JOptionPane.showMessageDialog(new JFrame(),"found new wii mote: "+mote.getBluetoothAddress(), "MoteJ", JOptionPane.INFORMATION_MESSAGE);
+		System.out.println("found new wii mote: "+mote.getBluetoothAddress());
+		//JOptionPane.showMessageDialog(new JFrame(),"found new wii mote: "+mote.getBluetoothAddress(), "MoteJ", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	/**
