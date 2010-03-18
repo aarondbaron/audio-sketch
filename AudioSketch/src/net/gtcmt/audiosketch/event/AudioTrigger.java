@@ -44,6 +44,6 @@ public class AudioTrigger extends AudioSequencer {
 	 * @return
 	 */
 	public long getNextTrigTime(){
-		return tempoClock.getNextTrigTime(AudioConstants.SIXTEENTH_NOTE);
+		return tempoClock.getNextTrigTime(AudioConstants.QUARTER_NOTE);
 	}
 }

@@ -55,7 +55,7 @@ public class ShakeWii {
 				&& (System.currentTimeMillis() - curTime > UPDATE_TIME))
 		{
 			//Wait until trig time
-			trigTime = TempoClock.getTempoClock().getNextTrigTime(AudioConstants.SIXTEENTH_NOTE);
+			trigTime = TempoClock.getTempoClock().getNextTrigTime(AudioConstants.QUARTER_NOTE);
 			while(System.currentTimeMillis() < trigTime){
 				//wait();
 			}
@@ -143,14 +143,11 @@ public class ShakeWii {
 	//TODO experiment with quantize values
 	private float quantizedSpeed() {
 		int note=0;
-		if(shakeVelocity > 0.75){
+		if(shakeVelocity > 0.5){
 			note = AudioConstants.SIXTEENTH_NOTE;
 		}
-		else if(shakeVelocity < 0.25){
-			note = AudioConstants.QUARTER_NOTE;
-		}
 		else{
-			note = AudioConstants.EIGTH_NOTE;
+			note = AudioConstants.QUARTER_NOTE;
 		}
 	
 		//TODO perhaps fix this equation

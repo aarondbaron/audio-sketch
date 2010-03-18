@@ -126,21 +126,20 @@ public class SoundObject {
 		p5.pushMatrix();
 		p5.translate(objPos.getPosX(), objPos.getPosY());
 		
-		if(!isCollide){
-			
-			p5.strokeWeight(5);
-			p5.fill(255,255,255,100);
-			p5.stroke(color[0], color[1], color[2], 200);
-			p5.shapeMode(PConstants.CENTER);
-			p5.shape(image, 0, 0, objSize.getWidth(), objSize.getHeight());
-			
-			
-		}
-		else {
-			
-			jitterAndFill(p5);	
-			
+				
 			//rotateAndJitter(p5);
+			if(!isCollide){
+				p5.strokeWeight(5);
+				p5.fill(255,255,255,100);
+				p5.stroke(color[0], color[1], color[2], 200);
+				p5.shapeMode(PConstants.CENTER);
+				p5.shape(image, 0, 0, objSize.getWidth(), objSize.getHeight());
+			}
+			else{
+				p5.fill(255,255,255,100);
+				jitterAndFill(p5);
+			}
+			
 			
 			
 			//setup for explodeMultple
@@ -155,7 +154,7 @@ public class SoundObject {
 			//spawnMultiple(p5,numShapes,rotateRate, translateParam,sfactorParam);
 
 		
-		}
+	
 	
 			
 		
@@ -252,14 +251,14 @@ public class SoundObject {
 				p5.shape(children[i], 0, 0, objSize.getWidth(), objSize.getHeight());
 				children[i].disableStyle();				
 				//hoping here that frameCount is always increasing???
-				if(p5.frameCount%7==1){
+				if(p5.frameCount%3==1){
 
 					//fill(100+22*i,20+2*i,1+5*i,150);
 					p5.fill((int)Math.random()*255,(int)Math.random()*255,(int)Math.random()*255,150);
 				}
 				else
 				{
-					p5.fill(255,255,255,150);
+					p5.fill(255,255,255,250);
 				}
 
 				//popMatrix();
@@ -445,16 +444,19 @@ public class SoundObject {
 	}
 	
 	public float calcPlaySpeedMultiply() {
+		
 		float quantRadianRange=this.TWO_PI/(float)this.playSpeedMultiply.length;
 		float thePlaySpeedMultiplier=0.0f;
 		
+		System.out.println("angle: "+this.angle);
+		System.out.println("quantRadianRange: "+quantRadianRange);
 		for (int i=0; i<this.playSpeedMultiply.length; i++) {
 			if (this.angle<quantRadianRange*(i+1)) {
 				thePlaySpeedMultiplier=this.playSpeedMultiply[i];
 				break;
 			}
 		}
-		
+		System.out.println("thePlaySpeedMultiplier: "+thePlaySpeedMultiplier);
 		return thePlaySpeedMultiplier;
 	}
 

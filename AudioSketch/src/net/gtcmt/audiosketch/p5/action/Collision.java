@@ -73,7 +73,7 @@ public class Collision {
 					}*/
 					//TODO pass in appropriate midi number
 					AudioTrigger.getAudioTrigger().addNewAudioInfo(new AudioInfo(AudioTrigger.getAudioTrigger().getNextTrigTime(), 
-							soundObject.getSndType().toString(),  1));
+							soundObject.getSndType().toString(),  soundObject.calcPlaySpeedMultiply()));
 					//soundObject.play();
 					soundObject.setCollideState(index, true);
 					soundObject.setCollide(true);
@@ -202,7 +202,7 @@ public class Collision {
 			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
 				//TODO pass in appropriate midi number
 				AudioTrigger.getAudioTrigger().addNewAudioInfo(new AudioInfo(AudioTrigger.getAudioTrigger().getNextTrigTime(), 
-						soundObject.getSndType().toString(), 1));
+						soundObject.getSndType().toString(), soundObject.calcPlaySpeedMultiply()));
 				//soundObject.play();
 				soundObject.setCollideState(index, true);
 				soundObject.setCollide(true);
@@ -230,7 +230,7 @@ public class Collision {
 			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
 				//TODO pass in appropriate midi number
 				AudioTrigger.getAudioTrigger().addNewAudioInfo(new AudioInfo(AudioTrigger.getAudioTrigger().getNextTrigTime(), 
-						soundObject.getSndType().toString(),  1));
+						soundObject.getSndType().toString(),  soundObject.calcPlaySpeedMultiply()));
 				soundObject.setCollideState(index, true);
 				soundObject.setCollide(true);
 				soundObject.setGetFrame(true);
@@ -260,7 +260,7 @@ public class Collision {
 				if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
 					//TODO pass in appropriate midi number
 					AudioTrigger.getAudioTrigger().addNewAudioInfo(new AudioInfo(AudioTrigger.getAudioTrigger().getNextTrigTime(), 
-							soundObject.getSndType().toString(),  1));
+							soundObject.getSndType().toString(),  soundObject.calcPlaySpeedMultiply()));
 					soundObject.setCollideState(index, true);
 					soundObject.setCollide(true);
 					soundObject.setGetFrame(true);
