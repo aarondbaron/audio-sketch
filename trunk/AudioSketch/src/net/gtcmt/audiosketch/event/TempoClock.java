@@ -19,7 +19,7 @@ public class TempoClock extends Thread {
 	 */
 	public TempoClock(){
 		this.appStartTime = System.currentTimeMillis();
-		this.tempo = 120;
+		this.tempo = 100;
 		this.shortestNote = AudioConstants.HUNDRED_TWENTY_EIGHTH;	
 		this.beatPerMeasure = 4;
 		this.beatPerHyperMeasure = 4;	

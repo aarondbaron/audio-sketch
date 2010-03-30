@@ -92,7 +92,7 @@ public class MouseAction {
 					moveY.set(i, moveY.get(i) + (mwp5.mouseY - mwp5.pmouseY));
 				}
 				
-				mwp5.moveObject(i, moveX.get(i).intValue(), moveY.get(i).intValue(),0);
+				//mwp5.moveObject(i, moveX.get(i).intValue(), moveY.get(i).intValue(),0);
 			}
 		}
 	}

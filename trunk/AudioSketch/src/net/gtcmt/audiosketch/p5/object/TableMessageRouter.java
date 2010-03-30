@@ -13,6 +13,7 @@ public class TableMessageRouter {
 	private OscP5 oscP5;
 	private int id, xPos, yPos;
 	private float angle;
+	boolean objectExists;
 	private final float[][] playSpeedMultipliers=new float[][] {	//used for specifying values of playback speed multiplication for pitch change
 		{.8f,1f,1.2f},
 		{.8f,1f,1.2f},
@@ -37,7 +38,7 @@ public class TableMessageRouter {
 		this.oscP5 = new OscP5(this, TableMessageRouter.tableMessageInPort);		
 		this.theMusicalWindow = theMusicalWindow;
 		System.out.println("TableMessageRouter Initialized");
-		
+		objectExists = false;
 		//
 		//xPos=300;
 		//yPos=300;
@@ -47,41 +48,44 @@ public class TableMessageRouter {
 	/* incoming osc message are forwarded to the oscEvent method. */
 	
 	public void oscEvent(OscMessage theOscMessage) {
-		//System.out.println(theOscMessage.toString());
-		
 		if (theOscMessage.addrPattern().equalsIgnoreCase("/addObject")) {
 			id = offsetIndex(theOscMessage.get(0).intValue());
-			xPos = GUIConstants.WINDOW_WIDTH-scalePos(theOscMessage.get(1).floatValue(),GUIConstants.WINDOW_WIDTH);
-			yPos = scalePos(theOscMessage.get(2).floatValue(),GUIConstants.WINDOW_HEIGHT);
-			angle=theOscMessage.get(3).floatValue();
+			for(SoundObject object : theMusicalWindow.getSoundObject()){
+				if(object.getId() == id){
+					objectExists = true;
+					break;
+				}
+			}
 
-			System.out.println("Add Object ID: " + id + " x: " + xPos + " y: " + yPos);
-			theMusicalWindow.addTableObject(id,id, ObjectColorType.WHITE, SndType.values()[id], new P5Points2D(xPos, yPos),
-					new P5Size2D(70, 70), angle, playSpeedMultipliers[id]);
-			//System.out.println("/addObject has been called in TableMessageRouter");
-			
+			if(!objectExists){
+				xPos = GUIConstants.WINDOW_WIDTH-scalePos(theOscMessage.get(1).floatValue(),GUIConstants.WINDOW_WIDTH);
+				yPos = scalePos(theOscMessage.get(2).floatValue(),GUIConstants.WINDOW_HEIGHT);
+				angle=theOscMessage.get(3).floatValue();
 
-			
-		} else if (theOscMessage.addrPattern().equalsIgnoreCase("/removeObject")) {
+				System.out.println("Add Object ID: " + id + " x: " + xPos + " y: " + yPos);
+				theMusicalWindow.addTableObject(id,id, ObjectColorType.WHITE, SndType.values()[id], new P5Points2D(xPos, yPos),
+						new P5Size2D(70, 70), angle, playSpeedMultipliers[id]);
+				
+			}
+			else{
+				objectExists = false;
+			}		
+		} else if (theOscMessage.addrPattern().equalsIgnoreCase("/removeObject")) {	
 			id = offsetIndex(theOscMessage.get(0).intValue());	
-			
 			theMusicalWindow.removeTableObject(id);
-			
-			System.out.println("Remove Object ID: " + id);
-			
 		} else if (theOscMessage.addrPattern().equalsIgnoreCase("/updateObject")) {
 			id = offsetIndex(theOscMessage.get(0).intValue());
-			xPos = GUIConstants.WINDOW_WIDTH-scalePos(theOscMessage.get(1).floatValue(),GUIConstants.WINDOW_WIDTH);
-			yPos = scalePos(theOscMessage.get(2).floatValue(),GUIConstants.WINDOW_HEIGHT);
-			angle=theOscMessage.get(3).floatValue();
-			
-			theMusicalWindow.moveObject(id, xPos, yPos, angle);
-
-			//System.out.println("Position Object ID: " + id + " x: " + xPos + " y: " + yPos);
+			//getSoundobject is a linked list
+			for(SoundObject object : theMusicalWindow.getSoundObject()){
+				if(object.getId() == id) {
+					xPos = GUIConstants.WINDOW_WIDTH-scalePos(theOscMessage.get(1).floatValue(),GUIConstants.WINDOW_WIDTH);
+					yPos = scalePos(theOscMessage.get(2).floatValue(),GUIConstants.WINDOW_HEIGHT);
+					angle=theOscMessage.get(3).floatValue();
+					theMusicalWindow.moveObject(object, xPos, yPos, angle);
+					break;
+				}
+			}
 		}
-			
-			
-//		this.haveReceivedMsg=true;
 	}
 	
 	
