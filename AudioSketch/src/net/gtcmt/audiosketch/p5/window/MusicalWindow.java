@@ -157,19 +157,18 @@ public class MusicalWindow extends PApplet {
 	/**
 	 * 
 	 */
-	public synchronized void removeTableObject(int id) {
-//		if(soundObject.size() > 0){
-//			soundObject.remove(this.soundObjectIndices[id]);	
-//		}
-//		this.soundObjectIndices[id]=-1;
-		ListIterator<SoundObject> iter=soundObject.listIterator(0);
-		while(iter.hasNext()) {
-			SoundObject tempSoundObject=iter.next();
-			if (tempSoundObject.getId()==id) {
-				//System.out.println("Were able to remove soundObject ID="+id);
-				//System.out.println(""+soundObject.remove(tempSoundObject));
-				soundObject.remove(tempSoundObject);
-				break;
+	public void removeTableObject(int id) {
+
+		synchronized (lockObject) {
+			ListIterator<SoundObject> iter=soundObject.listIterator(0);
+			while(iter.hasNext()) {
+				SoundObject tempSoundObject=iter.next();
+				if (tempSoundObject.getId()==id) {
+					//System.out.println("Were able to remove soundObject ID="+id);
+					//System.out.println(""+soundObject.remove(tempSoundObject));
+					soundObject.remove(tempSoundObject);
+					break;
+				}
 			}
 		}
 	}
@@ -221,15 +220,17 @@ public class MusicalWindow extends PApplet {
 	
 	public synchronized void moveObject(int id, int posX, int posY, float angle){
 		
-		ListIterator<SoundObject> iter=soundObject.listIterator(0);
-		while(iter.hasNext()) {
-			SoundObject tempSoundObject=iter.next();
-			if (tempSoundObject.getId()==id) {
-				tempSoundObject.setPos(posX,posY);
-				tempSoundObject.setAngle(angle);
-				//System.out.println("Object to be moved: " + id);
-				//System.out.println("Object which is moved: " + tempSoundObject.getId());
-				break;
+		synchronized (lockObject) {
+			ListIterator<SoundObject> iter=soundObject.listIterator(0);
+			while(iter.hasNext()) {
+				SoundObject tempSoundObject=iter.next();
+				if (tempSoundObject.getId()==id) {
+					tempSoundObject.setPos(posX,posY);
+					tempSoundObject.setAngle(angle);
+					//System.out.println("Object to be moved: " + id);
+					//System.out.println("Object which is moved: " + tempSoundObject.getId());
+					break;
+				}
 			}
 		}
 	}
