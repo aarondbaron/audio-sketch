@@ -104,13 +104,13 @@ public class MusicalWindow extends PApplet {
 	 */
 	public void draw() {
 		background(0,0,0,0);
-		synchronized (lockObject) {
+		//synchronized (lockObject) {
 			playBar();
 			drawSoundObject();
-			//drawEffectBox();
-			//effectMode();
-		}
-		drawPointer();
+			drawPointer();
+		//}
+		//drawEffectBox();
+		//effectMode();
 	}
 	
 	/*----------------------- SoundObject methods -----------------------------*/
@@ -131,13 +131,11 @@ public class MusicalWindow extends PApplet {
 	 */
 	public void addTableObject(int id, int shape,ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, 
 			float angle, float[] playSpeedMultiply) {
-		synchronized (lockObject) {
-			soundObject.add(new SoundObject(id, objPos, objSize, color, shape, sndType, this, angle, playSpeedMultiply));
-//			this.soundObjectIndices[id]=soundObject.size()-1;
-			//TODO before adding playback bar check collision state and pass in appropriate boolean
-			for(int i=0;i<playBackBar.size();i++) {
-				soundObject.getLast().addCollideState(false);
-			}
+		soundObject.add(new SoundObject(id, objPos, objSize, color, shape, sndType, this, angle, playSpeedMultiply));
+		//			this.soundObjectIndices[id]=soundObject.size()-1;
+		//TODO before adding playback bar check collision state and pass in appropriate boolean
+		for(int i=0;i<playBackBar.size();i++) {
+			soundObject.getLast().addCollideState(false);
 		}
 		//System.out.println("Length of SoundObjectLL: "+soundObject.size());
 
@@ -146,29 +144,25 @@ public class MusicalWindow extends PApplet {
 	/**
 	 * Removes soundObject and related action listener
 	 */
-	public synchronized void remove() {
+	public void remove() {
 		if(soundObject.size() > 0){
 			soundObject.removeLast();	
-		}
-		
-		
+		}	
 	}
 
 	/**
 	 * 
 	 */
 	public void removeTableObject(int id) {
-
-		synchronized (lockObject) {
-			ListIterator<SoundObject> iter=soundObject.listIterator(0);
-			while(iter.hasNext()) {
-				SoundObject tempSoundObject=iter.next();
-				if (tempSoundObject.getId()==id) {
-					//System.out.println("Were able to remove soundObject ID="+id);
-					//System.out.println(""+soundObject.remove(tempSoundObject));
-					soundObject.remove(tempSoundObject);
-					break;
-				}
+		ListIterator<SoundObject> iter=soundObject.listIterator(0);
+		while(iter.hasNext()) {
+			SoundObject tempSoundObject=iter.next();
+			if (tempSoundObject.getId()==id) {
+				//System.out.println("Were able to remove soundObject ID="+id);
+				//System.out.println(""+soundObject.remove(tempSoundObject));
+				soundObject.remove(tempSoundObject);
+				System.out.println("Remove Object ID: " + id);
+				break;
 			}
 		}
 	}
@@ -176,7 +170,7 @@ public class MusicalWindow extends PApplet {
 	/**
 	 * Handles drawing object in p5 window
 	 */
-	private synchronized void drawSoundObject(){
+	private void drawSoundObject(){
 		for(int i=0; i<soundObject.size();i++){
 			soundObject.get(i).draw(this);
 		}
@@ -188,7 +182,7 @@ public class MusicalWindow extends PApplet {
 	 * Adds play back bar upon receiving message from server
 	 * @param data data sent from server
 	 */
-	public synchronized void addPlayBackBar(PlayBackType playType, P5Points2D mousePnt,  float speed, float angle) {
+	public void addPlayBackBar(PlayBackType playType, P5Points2D mousePnt,  float speed, float angle) {
 		playBackBar.add(PlayBackBar.createPlayBar(playType, mousePnt, speed, angle, this));
 		for(int j=0;j<soundObject.size();j++){
 			soundObject.get(j).addCollideState(false);
@@ -199,47 +193,38 @@ public class MusicalWindow extends PApplet {
 	 * Draws and animates play back bar. 
 	 * It also handles collision detection and removing of play back bar.
 	 */
-	private synchronized void playBar(){
+	private void playBar(){
 		//Go through each play bar
-		for(int i=0;i<playBackBar.size();i++){			
-			playBackBar.get(i).draw();
-			if(playBackBar.get(i).checkState(soundObject, i)){
-				playBackBar.remove(i);
+		synchronized (lockObject) {
+			for(int i=0;i<playBackBar.size();i++){			
+				playBackBar.get(i).draw();
+				if(playBackBar.get(i).checkState(soundObject, i)){
+					playBackBar.remove(i);
+				}
 			}
-		}
+		}	
 	}
 
 	/**
 	 * Removes last playBackBar
 	 */
-	public synchronized void removeLastPlayBar(){
-		
-		playBackBar.removeLast();
+	public void removeLastPlayBar(){
+		synchronized (lockObject) {
+			playBackBar.removeLast();
+		}
 	}
 	/*----------------------- Edit Mode -----------------------------*/
 	
-	public synchronized void moveObject(int id, int posX, int posY, float angle){
-		
-		synchronized (lockObject) {
-			ListIterator<SoundObject> iter=soundObject.listIterator(0);
-			while(iter.hasNext()) {
-				SoundObject tempSoundObject=iter.next();
-				if (tempSoundObject.getId()==id) {
-					tempSoundObject.setPos(posX,posY);
-					tempSoundObject.setAngle(angle);
-					//System.out.println("Object to be moved: " + id);
-					//System.out.println("Object which is moved: " + tempSoundObject.getId());
-					break;
-				}
-			}
-		}
+	public void moveObject(SoundObject soundObject, int posX, int posY, float angle){
+		soundObject.setPos(posX,posY);
+		soundObject.setAngle(angle);
 	}
 
 	/*----------------------- Effect Mode -----------------------------*/
 	/**
 	 * Allows users to draw effect box when effectButton is selected
 	 */
-	private synchronized void effectMode(){
+	private void effectMode(){
 //		if(mainFrame.getActionPanel() != null && mainFrame.getActionPanel().effectButton.isSelected()){
 //			drawPreviewEffectBox();	
 //		}
@@ -248,7 +233,7 @@ public class MusicalWindow extends PApplet {
 	/**
 	 * Draws and maintains effect box on musical window
 	 */
-	private synchronized void drawEffectBox(){
+	private void drawEffectBox(){
 		for(int i=0;i<effectBox.size();i++){
 			effectBox.get(i).draw();
 		}
@@ -258,7 +243,7 @@ public class MusicalWindow extends PApplet {
 	 * Draws Box according to mouse action
 	 * Only the drawer of the box can see this.
 	 */
-	private synchronized void drawPreviewEffectBox(){
+	private void drawPreviewEffectBox(){
 //		if(mouseDragged){
 //			this.stroke(255, 255, 255, 200);
 //			this.noFill();
@@ -271,7 +256,7 @@ public class MusicalWindow extends PApplet {
 	 * Adds effect box upon receiving message from server
 	 * @param data data sent from server
 	 */
-	public synchronized void addEffectBox(){
+	public void addEffectBox(){
 		if(incr > SndConstants.NUM_EFFECT) {	//Shuffle effect
 			shuffleEffect();
 			incr = 0;
@@ -286,7 +271,7 @@ public class MusicalWindow extends PApplet {
 	/**
 	 * removes effect Box from musical window
 	 */
-	public synchronized void removeEffectBox(){
+	public void removeEffectBox(){
 		effectBox.removeLast();
 	}
 
@@ -340,5 +325,9 @@ public class MusicalWindow extends PApplet {
 	
 	public int getPlayBarSize(){
 		return playBackBar.size();
+	}
+	
+	public LinkedList<SoundObject> getSoundObject() {
+		return soundObject;
 	}
 }

@@ -7,7 +7,9 @@ import net.gtcmt.audiosketch.p5.object.SoundObject;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
+import net.gtcmt.audiosketch.util.Constants;
 import processing.core.PApplet;
+import processing.core.PShape;
 
 public class PathBar extends PlayBackBar{
 	
@@ -16,11 +18,26 @@ public class PathBar extends PlayBackBar{
 	long timeOutMS=1000;
 	long startTime;
 	public boolean bang = false;
+	PShape image;
+	PShape children[]= new PShape[10];
 
 	public PathBar(P5Points2D objPos, float speed, float angle,
 			PlayBackType pbType, PApplet p) {
 		super(objPos, speed, angle, pbType, p);
 		startTime = System.currentTimeMillis();
+		this.image = p.loadShape("lib/PlayBarImages/path.svg");
+		this.angle=angle;
+		
+		//some of these children will be null if there aren't that many actual children, but you can handle that.
+		for (int i=0;i<children.length;i++){
+			   
+			   children[i]=this.image.getChild(Integer.toString(i+1));
+			    
+		}
+		
+		
+		
+		
 	}
 	
 

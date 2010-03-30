@@ -448,15 +448,15 @@ public class SoundObject {
 		float quantRadianRange=this.TWO_PI/(float)this.playSpeedMultiply.length;
 		float thePlaySpeedMultiplier=0.0f;
 		
-		System.out.println("angle: "+this.angle);
-		System.out.println("quantRadianRange: "+quantRadianRange);
+		//System.out.println("angle: "+this.angle);
+		//System.out.println("quantRadianRange: "+quantRadianRange);
 		for (int i=0; i<this.playSpeedMultiply.length; i++) {
 			if (this.angle<quantRadianRange*(i+1)) {
 				thePlaySpeedMultiplier=this.playSpeedMultiply[i];
 				break;
 			}
 		}
-		System.out.println("thePlaySpeedMultiplier: "+thePlaySpeedMultiplier);
+		//System.out.println("thePlaySpeedMultiplier: "+thePlaySpeedMultiplier);
 		return thePlaySpeedMultiplier;
 	}
 
