@@ -30,32 +30,37 @@ public class Radial2Bar extends PlayBackBar{
 	@Override
 	public boolean checkState(LinkedList<SoundObject> soundObject, int index) {
 		//Check for collision
-		for(int j=0;j<soundObject.size();j++){
-			Collision.collideCircle(soundObject.get(j), this, index);
-		}
-		
-		if(this.getWidth() > p5.width>>1 &&this.getWidth() > p5.height>>1){
-			//playBackBar.remove(i);
-			//int x  = playBackBar.get(i).getInitX();
-			//int y = playBackBar.get(i).getInitY();
-			//playBackBar.get(i).setPosX(x);
-			//playBackBar.get(i).setPosX(y);
-			this.setSize(0, 0); // reset the circle
-			
-			//go to each sound object in play bar
-			for(int j=0; j<soundObject.size();j++){
-				if(soundObject.get(j).getCollideState(index)){
-					soundObject.get(j).setCollideState(index, false);
+		synchronized (soundObject) {
+			for(SoundObject so : soundObject){
+				if(so.getCollideState().size() > index){
+					Collision.collideCircle(so, this, index);
 				}
 			}
 			
-			//playBackBar.get(i).setWidth(0);
-			//playBackBar.get(i).setHeight(0);
+			if(this.getWidth() > (p5.width>>4)+100 &&this.getWidth() > (p5.height>>4)+100){
+				//playBackBar.remove(i);
+				//int x  = playBackBar.get(i).getInitX();
+				//int y = playBackBar.get(i).getInitY();
+				//playBackBar.get(i).setPosX(x);
+				//playBackBar.get(i).setPosX(y);
+				this.setSize(0, 0); // reset the circle
+				
+				//go to each sound object in play bar
+				for(SoundObject so : soundObject){
+					if(so.getCollideState().size() > index){
+						if(so.getCollideState(index)){
+							so.setCollideState(index, false);
+						}
+					}
+				}
+				
+				//playBackBar.get(i).setWidth(0);
+				//playBackBar.get(i).setHeight(0);
+			}
+		
+			//TODO implement removing
+			return false;
 		}
-	
-		//TODO implement removing
-		return false;
-	
 	}
 
 }

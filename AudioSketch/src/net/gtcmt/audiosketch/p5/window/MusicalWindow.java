@@ -114,31 +114,14 @@ public class MusicalWindow extends PApplet {
 	}
 	
 	/*----------------------- SoundObject methods -----------------------------*/
-	/*
-	public void addSoundObject(int shape,ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, int midiNote) {
-		synchronized (lockObject) {
-			soundObject.add(new SoundObject(objPos, objSize, color, shape, midiNote, sndType, this));
-			//TODO before adding playback bar check collision state and pass in appropriate boolean
-			for(int i=0;i<playBackBar.size();i++) {
-				soundObject.getLast().addCollideState(false);
-			}
-		}
-	}
-	*/
-
 	/**
 	 * 
 	 */
 	public void addTableObject(int id, int shape,ObjectColorType color, SndType sndType, P5Points2D objPos, P5Size2D objSize, 
 			float angle, float[] playSpeedMultiply) {
-		soundObject.add(new SoundObject(id, objPos, objSize, color, shape, sndType, this, angle, playSpeedMultiply));
-		//			this.soundObjectIndices[id]=soundObject.size()-1;
-		//TODO before adding playback bar check collision state and pass in appropriate boolean
-		for(int i=0;i<playBackBar.size();i++) {
-			soundObject.getLast().addCollideState(false);
+		synchronized (soundObject) {
+			soundObject.add(new SoundObject(id, objPos, objSize, color, shape, sndType, this, angle, playSpeedMultiply, playBackBar));
 		}
-		//System.out.println("Length of SoundObjectLL: "+soundObject.size());
-
 	}
 	
 	/**
@@ -146,7 +129,9 @@ public class MusicalWindow extends PApplet {
 	 */
 	public void remove() {
 		if(soundObject.size() > 0){
-			soundObject.removeLast();	
+			synchronized (soundObject) {
+				soundObject.removeLast();	
+			}
 		}	
 	}
 
@@ -154,15 +139,17 @@ public class MusicalWindow extends PApplet {
 	 * 
 	 */
 	public void removeTableObject(int id) {
-		ListIterator<SoundObject> iter=soundObject.listIterator(0);
-		while(iter.hasNext()) {
-			SoundObject tempSoundObject=iter.next();
-			if (tempSoundObject.getId()==id) {
-				//System.out.println("Were able to remove soundObject ID="+id);
-				//System.out.println(""+soundObject.remove(tempSoundObject));
-				soundObject.remove(tempSoundObject);
-				System.out.println("Remove Object ID: " + id);
-				break;
+		synchronized (soundObject) {
+			ListIterator<SoundObject> iter=soundObject.listIterator(0);
+			while(iter.hasNext()) {
+				SoundObject tempSoundObject=iter.next();
+				if (tempSoundObject.getId()==id) {
+					//System.out.println("Were able to remove soundObject ID="+id);
+					//System.out.println(""+soundObject.remove(tempSoundObject));
+					soundObject.remove(tempSoundObject);
+					//System.out.println("Remove Object ID: " + id);
+					break;
+				}
 			}
 		}
 	}
@@ -171,8 +158,10 @@ public class MusicalWindow extends PApplet {
 	 * Handles drawing object in p5 window
 	 */
 	private void drawSoundObject(){
-		for(int i=0; i<soundObject.size();i++){
-			soundObject.get(i).draw(this);
+		synchronized (soundObject) {
+			for(int i=0; i<soundObject.size();i++){
+				soundObject.get(i).draw(this);
+			}
 		}
 	}
 	
@@ -183,9 +172,13 @@ public class MusicalWindow extends PApplet {
 	 * @param data data sent from server
 	 */
 	public void addPlayBackBar(PlayBackType playType, P5Points2D mousePnt,  float speed, float angle) {
-		playBackBar.add(PlayBackBar.createPlayBar(playType, mousePnt, speed, angle, this));
-		for(int j=0;j<soundObject.size();j++){
-			soundObject.get(j).addCollideState(false);
+		synchronized (playBackBar) {
+			playBackBar.add(PlayBackBar.createPlayBar(playType, mousePnt, speed, angle, this));
+		}
+		synchronized (soundObject) {
+			for(SoundObject so : soundObject){
+				so.addCollideState(false);
+			}
 		}
 	}
 
@@ -194,16 +187,15 @@ public class MusicalWindow extends PApplet {
 	 * It also handles collision detection and removing of play back bar.
 	 */
 	private void playBar(){
-		//Go through each play bar
-		for(int i=0;i<playBackBar.size();i++){	
-			synchronized (playBackBar) {
+		synchronized (playBackBar) {
+			//Go through each play bar
+			for(int i=0;i<playBackBar.size();i++){	
 				playBackBar.get(i).draw();
 				if(playBackBar.get(i).checkState(soundObject, i)){
 					playBackBar.remove(i);
 				}
 			}
 		}
-		
 	}
 
 	/**
@@ -302,7 +294,7 @@ public class MusicalWindow extends PApplet {
 	public void drawPointer(){
 		if(irDisplay != null){
 			for(int i=0;i<irDisplay.size();i++){
-				irDisplay.get(i).draw();
+				irDisplay.get(i).draw(i);
 			}
 		}
 	}
@@ -325,10 +317,14 @@ public class MusicalWindow extends PApplet {
 	}
 	
 	public int getPlayBarSize(){
-		return playBackBar.size();
+		synchronized (playBackBar) {
+			return playBackBar.size();
+		}
 	}
 	
 	public LinkedList<SoundObject> getSoundObject() {
-		return soundObject;
+		synchronized (soundObject) {
+			return soundObject;
+		}
 	}
 }
