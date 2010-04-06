@@ -144,10 +144,10 @@ public class ShakeWii {
 	private float quantizedSpeed() {
 		int note=0;
 		if(shakeVelocity > 0.5){
-			note = AudioConstants.SIXTEENTH_NOTE;
+			note = AudioConstants.EIGTH_NOTE;
 		}
 		else{
-			note = AudioConstants.QUARTER_NOTE;
+			note = AudioConstants.HALF_NOTE;
 		}
 	
 		//TODO perhaps fix this equation
