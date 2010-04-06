@@ -90,9 +90,9 @@ public class ShakeWii {
 	}
 	
 	//TODO figure out how to get angle
-	public void trigEvent(){		
-		int irX = (int) ((listener.getIrX()/WiiMoteConstant.MAX_MOTE_IR_LENGTH)*GUIConstants.WINDOW_WIDTH);
-		int irY = (int) ((listener.getIrY()/WiiMoteConstant.MAX_MOTE_IR_LENGTH)*(GUIConstants.WINDOW_HEIGHT));
+	public void trigEvent(){
+		int irX = (int) ((listener.getIrX()/WiiMoteConstant.MAX_MOTE_IR_WIDTH)*GUIConstants.WINDOW_WIDTH);
+		int irY = (int) ((listener.getIrY()/WiiMoteConstant.MAX_MOTE_IR_HEIGHT)*(GUIConstants.WINDOW_HEIGHT));
 		//System.out.println("speed: "+shakeVelocity+" angle: "+angle);
 		//System.out.println("Quantized to: "+quantizedSpeed());
 		

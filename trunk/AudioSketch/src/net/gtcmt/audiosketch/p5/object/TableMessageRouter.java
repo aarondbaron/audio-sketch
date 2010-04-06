@@ -58,8 +58,9 @@ public class TableMessageRouter {
 			}
 
 			if(!objectExists){
-				xPos = GUIConstants.WINDOW_WIDTH-scalePos(theOscMessage.get(1).floatValue(),GUIConstants.WINDOW_WIDTH);
-				yPos = scalePos(theOscMessage.get(2).floatValue(),GUIConstants.WINDOW_HEIGHT);
+				xPos = scalePos(theOscMessage.get(2).floatValue(),GUIConstants.WINDOW_WIDTH);
+				yPos = scalePos(theOscMessage.get(1).floatValue(),GUIConstants.WINDOW_HEIGHT);
+				
 				angle=theOscMessage.get(3).floatValue();
 
 				System.out.println("Add Object ID: " + id + " x: " + xPos + " y: " + yPos);
@@ -78,8 +79,8 @@ public class TableMessageRouter {
 			//getSoundobject is a linked list
 			for(SoundObject object : theMusicalWindow.getSoundObject()){
 				if(object.getId() == id) {
-					xPos = GUIConstants.WINDOW_WIDTH-scalePos(theOscMessage.get(1).floatValue(),GUIConstants.WINDOW_WIDTH);
-					yPos = scalePos(theOscMessage.get(2).floatValue(),GUIConstants.WINDOW_HEIGHT);
+					xPos = scalePos(theOscMessage.get(2).floatValue(),GUIConstants.WINDOW_WIDTH);
+					yPos = scalePos(theOscMessage.get(1).floatValue(),GUIConstants.WINDOW_HEIGHT);
 					angle=theOscMessage.get(3).floatValue();
 					theMusicalWindow.moveObject(object, xPos, yPos, angle);
 					break;

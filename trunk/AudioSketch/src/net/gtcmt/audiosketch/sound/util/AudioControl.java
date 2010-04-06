@@ -19,7 +19,7 @@ public class AudioControl {
 
 	private static final String OUT_IP = "localhost";
 	private static final int IN_PORT = 57849;
-	private static final int OUT_PORT = 57848;
+	private static final int OUT_PORT = 57850;
 	public static final int TRIG_ON = 1;
 	public static final int TRIG_OFF = 0;
 	

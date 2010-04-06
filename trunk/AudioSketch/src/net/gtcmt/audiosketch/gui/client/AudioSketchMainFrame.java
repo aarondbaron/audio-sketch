@@ -1,7 +1,15 @@
 package net.gtcmt.audiosketch.gui.client;
 
+import java.awt.Cursor;
+import java.awt.DisplayMode;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.MemoryImageSource;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
@@ -51,11 +59,28 @@ public class AudioSketchMainFrame extends JFrame {
 			}
 		});
 		
+		setUndecorated(true);
+		
 		//configure main frame 
 		setSize(GUIConstants.WINDOW_WIDTH, GUIConstants.WINDOW_HEIGHT);
 		setLocation(0, 0);
 		setVisible(true);
+		
+		//Make cursor invisible
+		int[] pixels = new int[16 * 16];
+		Image image = Toolkit.getDefaultToolkit().createImage(
+				new MemoryImageSource(16, 16, pixels, 0, 16));
+		Cursor transparentCursor =
+			Toolkit.getDefaultToolkit().createCustomCursor
+			(image, new Point(0, 0), "invisibleCursor");
+		setCursor(transparentCursor);
 
+		GraphicsDevice dev = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice(); 
+		DisplayMode mode = new DisplayMode(GUIConstants.WINDOW_WIDTH, GUIConstants.WINDOW_HEIGHT, 32, DisplayMode.REFRESH_RATE_UNKNOWN);
+
+		dev.setFullScreenWindow(this);
+		if(dev.isDisplayChangeSupported()) dev.setDisplayMode(mode);
+		
 		this.tableMessageRouter = new TableMessageRouter(musicalWindow);
 
 		connector = new LinkedList<MoteConnector>();

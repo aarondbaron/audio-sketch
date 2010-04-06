@@ -195,21 +195,22 @@ public class MusicalWindow extends PApplet {
 	 */
 	private void playBar(){
 		//Go through each play bar
-		synchronized (lockObject) {
-			for(int i=0;i<playBackBar.size();i++){			
+		for(int i=0;i<playBackBar.size();i++){	
+			synchronized (playBackBar) {
 				playBackBar.get(i).draw();
 				if(playBackBar.get(i).checkState(soundObject, i)){
 					playBackBar.remove(i);
 				}
 			}
-		}	
+		}
+		
 	}
 
 	/**
 	 * Removes last playBackBar
 	 */
 	public void removeLastPlayBar(){
-		synchronized (lockObject) {
+		synchronized (playBackBar) {
 			playBackBar.removeLast();
 		}
 	}
