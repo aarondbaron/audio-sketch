@@ -4,7 +4,8 @@ import java.util.Hashtable;
 
 public class WiiMoteConstant {
 
-	public static final float MAX_MOTE_IR_LENGTH = 1000f;
+	public static final float MAX_MOTE_IR_WIDTH = 1000f;
+	public static final float MAX_MOTE_IR_HEIGHT = 750f;
 	public static final String[] MOTE_MAC_ADDR = {"00191D5367E7", "001BEA04CFBE"};//, 001A19C0F036""};
 	
 	public static java.util.Hashtable<String, int[]> wiiMoteCalData;

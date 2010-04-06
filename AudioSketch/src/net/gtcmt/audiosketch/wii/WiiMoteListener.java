@@ -127,13 +127,17 @@ public class WiiMoteListener {
 		
 		irListener = new IrCameraListener() {
 			public void irImageChanged(IrCameraEvent evt) {
+				
 				if(!lock){
-					irX = WiiMoteConstant.MAX_MOTE_IR_LENGTH-evt.getIrPoint(0).getX();
-					irY =evt.getIrPoint(0).getY();
+					irX = WiiMoteConstant.MAX_MOTE_IR_WIDTH-evt.getIrPoint(0).getX();
+					irY = evt.getIrPoint(0).getY();
 				}
 
-				realIrX = WiiMoteConstant.MAX_MOTE_IR_LENGTH-evt.getIrPoint(0).getX();
+				realIrX = WiiMoteConstant.MAX_MOTE_IR_WIDTH-evt.getIrPoint(0).getX();
 				realIrY = evt.getIrPoint(0).getY();
+				
+				//System.out.println("IrX "+realIrX+" IrY " +realIrY);
+
 			}	
 		};
 	}

@@ -18,8 +18,8 @@ public class IRDisplay {
 	}
 	
 	public void draw(){
-		irX = (int) ((listener.getIrX()/WiiMoteConstant.MAX_MOTE_IR_LENGTH)*GUIConstants.WINDOW_WIDTH);
-		irY = (int) ((listener.getIrY()/WiiMoteConstant.MAX_MOTE_IR_LENGTH)*GUIConstants.WINDOW_HEIGHT);
+		irX = (int) ((listener.getIrX()/WiiMoteConstant.MAX_MOTE_IR_WIDTH)*GUIConstants.WINDOW_WIDTH);
+		irY = (int) ((listener.getIrY()/WiiMoteConstant.MAX_MOTE_IR_HEIGHT)*GUIConstants.WINDOW_HEIGHT);
 		//System.out.println("irx: "+irX+" y "+irY);
 		p5.fill(listener.getRed(),listener.getGreen(),listener.getBlue(),listener.getAlpha());
 		p5.noStroke();

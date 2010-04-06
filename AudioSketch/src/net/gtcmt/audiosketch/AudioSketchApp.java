@@ -1,6 +1,16 @@
 package net.gtcmt.audiosketch;
 
+import java.awt.Cursor;
+import java.awt.DisplayMode;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.image.MemoryImageSource;
+
 import net.gtcmt.audiosketch.gui.client.AudioSketchMainFrame;
+import net.gtcmt.audiosketch.gui.util.GUIConstants;
 import net.gtcmt.audiosketch.wii.util.WiiMoteConstant;
 
 import com.intel.bluetooth.BlueCoveConfigProperties;
@@ -26,7 +36,6 @@ public class AudioSketchApp extends AudioSketchMainFrame {
 		//Initialize mote cal data
 		WiiMoteConstant.initCalData();
 		
-		new AudioSketchApp();
-		
+		AudioSketchApp audioSketch = new AudioSketchApp();	
 	}
 }
