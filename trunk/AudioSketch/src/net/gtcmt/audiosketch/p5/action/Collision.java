@@ -1,5 +1,6 @@
 package net.gtcmt.audiosketch.p5.action;
 
+import processing.core.PConstants;
 import net.gtcmt.audiosketch.event.AudioInfo;
 import net.gtcmt.audiosketch.event.AudioTrigger;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
@@ -156,65 +157,53 @@ public class Collision {
 	//TODO Akito come up with better collision algorithm
 	public static void collideBar(SoundObject soundObject, PlayBackBar playBar, int index){
 		
+		if(!soundObject.getCollideState(index)){
 
-		/*
-		int pBarX = playBar.getPosX();
-		int pBarY = playBar.getPosY();
-		int sobjX=soundObject.getPosX();
-		int sobjY=soundObject.getPosY();	
-		int p2X = (int) Math.round((Math.cos(playBar.getAngle()+Math.PI/2)*1) + pBarX);//the Math.PI is necessary but shoudl be fixed so you dotn have to do this
-		int p2Y = (int) Math.round((Math.sin(playBar.getAngle()+Math.PI/2)*1) + pBarY);
-		
+			int pX = (int) ((playBar.getWidth()>>2)*Math.cos(playBar.getAngle()));
+			int pY = (int) ((playBar.getWidth()>>2)*Math.sin(playBar.getAngle()));
 
-		
-		
-		float[] iSectPoints = sphere_line_iSect(p2X, p2Y, pBarX, pBarY, sobjX, sobjY, soundObject.getWidth());
-		//System.out.println("iSectPoints[0]: "+ iSectPoints[0]);
+			//System.out.println("angle "+pX+" "+pY);
+			//line point1 x, line point1 y, line point2 x, line point2 y, objct x, object y, 
+			float[] iSectPoints = sphere_line_iSect(playBar.getPosX(), playBar.getPosY(), pX, pY, soundObject.getPosX(), soundObject.getPosY(), soundObject.getWidth());
 
+			if (iSectPoints[0]>0) {
+				/*for(int i = 0; i<iSectPoints.length;i++){
+						System.out.println("iSectPoints[" + i + "]: "+ iSectPoints[i]);
 
-		if (iSectPoints[0]>0) {
-			//for(int i = 0; i<iSectPoints.length;i++){
-				//System.out.println("iSectPoints[" + i + "]: "+ iSectPoints[i]);
-
-			//}
-			AudioControl.getAudioCtrl().trigger(soundObject.getSndType().toString(), (float) Math.random()*2);
-			//soundObject.play();
-			soundObject.setCollideState(playBar, true);
-			soundObject.setCollide(true);
-			soundObject.setGetFrame(true);
-			soundObject.setStartTime(System.currentTimeMillis());		
-		}
-		*/
-		
-		
-		
-		
-		//this works ok, but it only triggers on a particular part of the object.
-		if(!soundObject.getCollideState(index)){	//TODO this will not work
-			float objectX = (float) ((soundObject.getPosX()+(soundObject.getWidth()/2)) 
-					- (playBar.getPosX()+(Math.cos(playBar.getAngle()+Math.PI)*(P5Constants.COLLISION_AREA/2))));
-			float objectY = (float) ((soundObject.getPosY()+(soundObject.getHeight()/2)) 
-					- (playBar.getPosY()+(Math.sin(playBar.getAngle()+Math.PI)*(P5Constants.COLLISION_AREA/2))));
-
-			float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.getWidth()/2, 2)
-					+Math.pow(soundObject.getHeight()/2, 2))/4)+((playBar.getCollisionArea()-400)/2));
-
-			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
+					}*/
 				//TODO pass in appropriate midi number
 				AudioTrigger.getAudioTrigger().addNewAudioInfo(new AudioInfo(AudioTrigger.getAudioTrigger().getNextTrigTime(), 
-						soundObject.getSndType().toString(), soundObject.calcPlaySpeedMultiply()));
+						soundObject.getSndType().toString(),  soundObject.calcPlaySpeedMultiply()));
 				//soundObject.play();
 				soundObject.setCollideState(index, true);
 				soundObject.setCollide(true);
 				soundObject.setGetFrame(true);
-				soundObject.setStartTime(System.currentTimeMillis());
+				soundObject.setStartTime(System.currentTimeMillis());		
 			}
 		}
-		
-		
-		
-		
 	}
+		
+		//this works ok, but it only triggers on a particular part of the object.
+//		if(!soundObject.getCollideState(index)){	//TODO this will not work
+//			float objectX = (float) ((soundObject.getPosX()+(soundObject.getWidth()/2)) 
+//					- (playBar.getPosX()+(Math.cos(playBar.getAngle()+Math.PI)*(P5Constants.COLLISION_AREA/2))));
+//			float objectY = (float) ((soundObject.getPosY()+(soundObject.getHeight()/2)) 
+//					- (playBar.getPosY()+(Math.sin(playBar.getAngle()+Math.PI)*(P5Constants.COLLISION_AREA/2))));
+//
+//			float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.getWidth()/2, 2)
+//					+Math.pow(soundObject.getHeight()/2, 2))/4)+((playBar.getCollisionArea()-400)/2));
+//
+//			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
+//				//TODO pass in appropriate midi number
+//				AudioTrigger.getAudioTrigger().addNewAudioInfo(new AudioInfo(AudioTrigger.getAudioTrigger().getNextTrigTime(), 
+//						soundObject.getSndType().toString(), soundObject.calcPlaySpeedMultiply()));
+//				//soundObject.play();
+//				soundObject.setCollideState(index, true);
+//				soundObject.setCollide(true);
+//				soundObject.setGetFrame(true);
+//				soundObject.setStartTime(System.currentTimeMillis());
+//			}
+//		}
 
 	public static void collideSquare(SoundObject soundObject, PlayBackBar playBar, int index) {
 		// TODO need to make this correct..it functions like collide circle now

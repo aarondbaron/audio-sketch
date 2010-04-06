@@ -45,30 +45,34 @@ public class Bar2 extends PlayBackBar{
 
 	@Override
 	public boolean checkState(LinkedList<SoundObject> soundObject, int index) {
-		//Check for collision
-		for(int j=0;j<soundObject.size();j++){
-			Collision.collideBar(soundObject.get(j), this, index);
-		}
+		synchronized (soundObject) {
+			//Check for collision
+			for(SoundObject so : soundObject){
+				if(so.getCollideState().size() > index){
+					Collision.collideBar(so, this, index);
+				}
+			}
 
-		if((this.getPosX() < 0 && this.getPosY() < 0) 
-				|| (this.getPosX() < 0 && this.getPosY() > p5.height) 
-				|| (this.getPosX() > p5.width && this.getPosY() < 0) 
-				|| (this.getPosX() > p5.width && this.getPosY() > p5.height)
-				|| (this.getPosX() < -(P5Constants.BAR_WIDTH)) || (this.getPosX() > p5.width+P5Constants.BAR_WIDTH)
-				|| (this.getPosY() < -(P5Constants.BAR_WIDTH)) || (this.getPosY() > p5.height+P5Constants.BAR_WIDTH)) {
-			//playBackBar.remove(i);
-			int x = this.getInitX();
-			int y = this.getInitY();
-			this.setPosX(0);
-			this.setPosY(0);
-			
-			//Boolean b = false;
-			//playBackBar.get(i).setTrigState(i, b);// i put this here so it will change the trigger state object, when it resets in the previous line
-			//playBackBar.get(i).setSize(0, 0);
-		}
+			if((this.getPosX() < 0 && this.getPosY() < 0) 
+					|| (this.getPosX() < 0 && this.getPosY() > p5.height) 
+					|| (this.getPosX() > p5.width && this.getPosY() < 0) 
+					|| (this.getPosX() > p5.width && this.getPosY() > p5.height)
+					|| (this.getPosX() < -(P5Constants.BAR_WIDTH)) || (this.getPosX() > p5.width+P5Constants.BAR_WIDTH)
+					|| (this.getPosY() < -(P5Constants.BAR_WIDTH)) || (this.getPosY() > p5.height+P5Constants.BAR_WIDTH)) {
+				//playBackBar.remove(i);
+				int x = this.getInitX();
+				int y = this.getInitY();
+				this.setPosX(0);
+				this.setPosY(0);
+				
+				//Boolean b = false;
+				//playBackBar.get(i).setTrigState(i, b);// i put this here so it will change the trigger state object, when it resets in the previous line
+				//playBackBar.get(i).setSize(0, 0);
+			}
 
-		//TODO implement removing
-		return false;
+			//TODO implement removing
+			return false;
+		}
 	}
 
 }

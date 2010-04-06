@@ -15,18 +15,18 @@ public class TableMessageRouter {
 	private float angle;
 	boolean objectExists;
 	private final float[][] playSpeedMultipliers=new float[][] {	//used for specifying values of playback speed multiplication for pitch change
-		{.8f,1f,1.2f},
-		{.8f,1f,1.2f},
-		{.8f,1f,1.2f},
-		{.8f,1f,1.2f},
-		{.8f,1f,1.2f},
-		{.8f,1f,1.2f},
-		{.8f,1f,1.2f},
-		{.8f,1f,1.2f},
-		{.8f,1f,1.2f},
-		{.8f,1f,1.2f},
-		{.8f,1f,1.2f},
-		{.8f,1f,1.2f}
+		{.6f,.8f,1f,1.2f},
+		{.6f,.8f,1f,1.2f},
+		{.6f,.8f,1f,1.2f},
+		{.6f,.8f,1f,1.2f},
+		{.6f,.8f,1f,1.2f},
+		{.6f,.8f,1f,1.2f},
+		{.6f,.8f,1f,1.2f},
+		{.6f,.8f,1f,1.2f},
+		{.6f,.8f,1f,1.2f},
+		{.6f,.8f,1f,1.2f},
+		{.6f,.8f,1f,1.2f},
+		{.6f,.8f,1f,1.2f},
 	};
 
 	private MusicalWindow theMusicalWindow;

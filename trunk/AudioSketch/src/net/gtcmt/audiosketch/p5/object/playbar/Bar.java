@@ -28,38 +28,34 @@ public class Bar extends PlayBackBar{
 		p5.rect(0, 0, playbarSize.getWidth(), playbarSize.getHeight());
 		p5.popMatrix();
 		
-		p5.pushMatrix(); //Used for collision detection
-		p5.translate(initPlaybarPos.getPosX()+(float)(Math.cos(angle+Math.PI)*(P5Constants.COLLISION_AREA/2)), initPlaybarPos.getPosY()+(float) (Math.sin(angle+Math.PI)*(P5Constants.COLLISION_AREA/2)));	
-		p5.noStroke();
-		p5.noFill();
-		p5.scale(collisionArea/P5Constants.COLLISION_AREA, collisionArea/P5Constants.COLLISION_AREA);
-		p5.ellipse(0, 0, P5Constants.COLLISION_AREA, P5Constants.COLLISION_AREA);
-		p5.popMatrix();
 		playbarPos.setPosX((int) (playbarPos.getPosX()+speed*Math.cos(angle)));
 		playbarPos.setPosY((int) (playbarPos.getPosY()+speed*Math.sin(angle)));
-		collisionArea += speed*2;
-		
 	}
 
 	@Override
 	public boolean checkState(LinkedList<SoundObject> soundObject, int index) {
-		//Check for collision
-		for(int j=0;j<soundObject.size();j++){
-			Collision.collideBar(soundObject.get(j), this, index);
-		}
-		
-		if((this.getPosX() < 0 && this.getPosY() < 0) 
-				|| (this.getPosX() < 0 && this.getPosY() > p5.height) 
-				|| (this.getPosX() > p5.width && this.getPosY() < 0) 
-				|| (this.getPosX() > p5.width && this.getPosY() > p5.height)
-				|| (this.getPosX() < -(P5Constants.BAR_WIDTH)) || (this.getPosX() > p5.width+P5Constants.BAR_WIDTH)
-				|| (this.getPosY() < -(P5Constants.BAR_WIDTH)) || (this.getPosY() > p5.height+P5Constants.BAR_WIDTH)) {
-			for(int j=0;j<soundObject.size();j++){
-				soundObject.get(j).removeCollideState(index);
+		synchronized (soundObject) {
+			//Check for collision
+			for(SoundObject so : soundObject){
+				if(so.getCollideState().size() > index){
+					Collision.collideBar(so, this, index);
+				}
 			}
-			return true;
-		}
-		return false;
+			
+			if((this.getPosX() < 0 && this.getPosY() < 0) 
+					|| (this.getPosX() < 0 && this.getPosY() > p5.height) 
+					|| (this.getPosX() > p5.width && this.getPosY() < 0) 
+					|| (this.getPosX() > p5.width && this.getPosY() > p5.height)
+					|| (this.getPosX() < -(P5Constants.BAR_WIDTH)) || (this.getPosX() > p5.width+P5Constants.BAR_WIDTH)
+					|| (this.getPosY() < -(P5Constants.BAR_WIDTH)) || (this.getPosY() > p5.height+P5Constants.BAR_WIDTH)) {
+				for(SoundObject so : soundObject){
+					if(so.getCollideState().size() > index){
+						so.removeCollideState(index);
+					}
+				}
+				return true;
+			}
+			return false;
+		}	
 	}
-
 }

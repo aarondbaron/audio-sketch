@@ -2,6 +2,7 @@ package net.gtcmt.audiosketch.p5.object;
 
 import java.util.LinkedList;
 
+import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
@@ -61,7 +62,7 @@ public class SoundObject {
 	 * @param size Size of the object given in points of vertex
 	 * @param colorSet Color of the object
 	 */
-	public SoundObject(int id, P5Points2D objPos, P5Size2D objSize, ObjectColorType color, int shape, SndType sndType, PApplet p, float angle, float[] playSpeedMultiply){
+	public SoundObject(int id, P5Points2D objPos, P5Size2D objSize, ObjectColorType color, int shape, SndType sndType, PApplet p, float angle, float[] playSpeedMultiply, LinkedList<PlayBackBar> playbackBar){
 		this.objPos = objPos;
 		this.objSize = objSize;
 		this.color = chooseColor(color);
@@ -97,6 +98,9 @@ public class SoundObject {
 			//System.out.println(vinitx[i]);
 		}
 		
+		for(PlayBackBar pb : playbackBar){
+			addCollideState(false);
+		}
 	}
 
 
@@ -133,11 +137,18 @@ public class SoundObject {
 				p5.fill(255,255,255,100);
 				p5.stroke(color[0], color[1], color[2], 200);
 				p5.shapeMode(PConstants.CENTER);
-				p5.shape(image, 0, 0, objSize.getWidth(), objSize.getHeight());
+				p5.pushMatrix();
+				p5.rotate(this.angle);
+				p5.shape(image, 0, 0, objSize.getWidth(), objSize.getHeight());		
+				p5.popMatrix();
 			}
 			else{
 				p5.fill(255,255,255,100);
-				jitterAndFill(p5);
+				p5.pushMatrix();
+				p5.rotate(this.angle);
+				jitterAndFill(p5);	
+				p5.popMatrix();
+				
 			}
 			
 			
@@ -416,23 +427,33 @@ public class SoundObject {
 	}
 	
 	public LinkedList<Boolean> getCollideState() {
-		return collideState;
+		synchronized (this.collideState) {
+			return collideState;			
+		}
 	}
 	
 	public void addCollideState(boolean collideState){
-		this.collideState.add(collideState);
+		synchronized (this.collideState) {
+			this.collideState.add(collideState);
+		}
 	}
 	
 	public boolean getCollideState(int index){
-		return this.collideState.get(index);
+		synchronized (this.collideState) {
+			return this.collideState.get(index);
+		}
 	}
 	
 	public void removeCollideState(int index) {
-		this.collideState.remove(index);
+		synchronized (this.collideState) {
+			this.collideState.remove(index);
+		}
 	}
 
 	public void setCollideState(int index, boolean bool) {
-		this.collideState.set(index, bool);
+		synchronized (this.collideState) {
+			this.collideState.set(index, bool);
+		}
 	}
 
 	public SndType getSndType() {

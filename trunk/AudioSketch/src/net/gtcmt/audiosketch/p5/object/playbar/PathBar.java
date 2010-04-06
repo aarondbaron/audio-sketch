@@ -44,22 +44,27 @@ public class PathBar extends PlayBackBar{
 	@Override
 	public boolean checkState(LinkedList<SoundObject> soundObject, int index) {
 		//Check for collision
-		for(int j=0;j<soundObject.size();j++){
-			Collision.collideCircleFillBar(soundObject.get(j), this, index);
-		}
-		
-		if(this.getWidth() > p5.width>>1 &&this.getWidth() > p5.height>>1){			
-			//go to each sound object in play bar
-			for(int j=0; j<soundObject.size();j++){
-				if(soundObject.get(j).getCollideState(index)){
-					soundObject.get(j).setCollideState(index, false);
+		synchronized (soundObject) {
+			for(SoundObject so : soundObject){
+				if(so.getCollideState().size() > index){
+					Collision.collideCircleFillBar(so, this, index);
 				}
-			}			
-		}
-	
-		//TODO implement removing
-		return false;
+			}
+			
+			if(this.getWidth() > p5.width>>1 &&this.getWidth() > p5.height>>1){			
+				//go to each sound object in play bar
+				for(SoundObject so : soundObject){
+					if(so.getCollideState().size() > index){
+						if(so.getCollideState(index)){
+							so.setCollideState(index, false);
+						}
+					}
+				}			
+			}
 		
+			//TODO implement removing
+			return false;
+		}
 	}
 
 	@Override
