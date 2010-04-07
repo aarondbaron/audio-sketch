@@ -63,7 +63,7 @@ public abstract class PlayBackBar {
 		case BAR: case BAR2:
 			this.playbarSize = new P5Size2D(P5Constants.BAR_WIDTH, P5Constants.STROKE_WEIGHT);
 			break;
-		case RADIAL:	 case RADIAL2: case SQUAREBAR: default:
+		case RADIAL:	 case RADIAL2: case SQUAREBAR: case SQUAREBAR2: default:
 			this.playbarSize = new P5Size2D(0, 0);
 			break;	
 		case CLOCKBAR:
@@ -102,6 +102,7 @@ public abstract class PlayBackBar {
 		case CIRCLEFILLBAR: 	return new CircleFillBar(mousePnt, speed, angle, barType, p5); 
 		case SQUAREFILLBAR: 	return new SquareFillBar(mousePnt, speed, angle, barType, p5); 	
 		case SQUAREBAR: 	return new SquareBar(mousePnt, speed, angle, barType, p5);
+		case SQUAREBAR2: 	return new SquareBar2(mousePnt, speed, angle, barType, p5);
 		case CLOCKBAR:	return new ClockBar(mousePnt, speed, angle, barType, p5);	
 		case BAR:		return new Bar(mousePnt, speed, angle, barType, p5);	
 		case BAR2:		return new Bar2(mousePnt, speed, angle, barType, p5);

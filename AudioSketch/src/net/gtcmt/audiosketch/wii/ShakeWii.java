@@ -117,6 +117,11 @@ public class ShakeWii {
 					new P5Points2D(irX,irY),quantizedSpeed(), angle);
 			listener.setRGBA(255,255,0,125);
 			break;
+		case SQUAREBAR2:
+			mwp5.addPlayBackBar(PlayBackType.SQUAREBAR2, 
+					new P5Points2D(irX,irY),quantizedSpeed(), angle);
+			listener.setRGBA(255,255,255,125);
+			break;
 		case BAR2:
 			mwp5.addPlayBackBar(PlayBackType.BAR2, 
 					new P5Points2D(irX,irY), quantizedSpeed(), angle);

@@ -37,7 +37,7 @@ public class Radial2Bar extends PlayBackBar{
 				}
 			}
 			
-			if(this.getWidth() > (p5.width>>3) &&this.getWidth() > (p5.height>>3)){
+			if(this.getWidth() > (p5.width>>2) &&this.getWidth() > (p5.height>>2)){
 				//playBackBar.remove(i);
 				//int x  = playBackBar.get(i).getInitX();
 				//int y = playBackBar.get(i).getInitY();
