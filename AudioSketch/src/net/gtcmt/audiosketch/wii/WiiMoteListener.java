@@ -85,6 +85,9 @@ public class WiiMoteListener {
 						case SQUAREBAR:
 							setRGBA(255,255,0,125);
 							break;
+						case SQUAREBAR2:
+							setRGBA(255, 255, 255, 125);
+							break;
 						case BAR2:
 							setRGBA(178,34,34,125);
 							break;
