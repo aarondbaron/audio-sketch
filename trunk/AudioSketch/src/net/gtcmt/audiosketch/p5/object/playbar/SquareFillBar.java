@@ -16,6 +16,22 @@ public class SquareFillBar extends PlayBackBar{
 	long timeOutMS=1000;
 	long startTime;
 	public boolean bang = false;
+	int vx=0;
+	int vy=0;
+	
+	public int getVx() {
+		return vx;
+	}
+	public void setVx(int vx) {
+		this.vx = vx;
+	}
+	public int getVy() {
+		return vy;
+	}
+	public void setVy(int vy) {
+		this.vy = vy;
+	}
+	
 
 	public SquareFillBar(P5Points2D objPos, float speed, float angle,
 			PlayBackType pbType, PApplet p) {
@@ -53,6 +69,7 @@ public class SquareFillBar extends PlayBackBar{
 	@Override
 	public void draw() {
 		
+		updatePos();
 		p5.strokeWeight(P5Constants.STROKE_WEIGHT-3);
 		p5.stroke(255);
 		//p5.stroke(255, 255, 255, 100);
@@ -94,4 +111,28 @@ public class SquareFillBar extends PlayBackBar{
 		this.setWidth(w);
 		this.setWidth(h);		
 	}
+
+
+	private void updatePos() {
+		// TODO Auto-generated method stub
+		playbarPos.setPosX(playbarPos.getPosX()+vx);
+		playbarPos.setPosY(playbarPos.getPosY()+vy);
+		
+		if(playbarPos.getPosX()<0+150)
+		{
+			vx=-vx;
+			
+		}
+		
+		if(playbarPos.getPosY()<0+150)
+		{
+			
+			vy=-vy;
+		}
+		
+	}
+	
+	
+	
+	
 }
