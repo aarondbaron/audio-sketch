@@ -9,10 +9,10 @@ public class P5Constants {
 
 	//Playback bar 
 	public enum PlayBackType{
-		BAR, RADIAL, RADIAL2, BAR2, CLOCKBAR, SQUAREBAR, CIRCLEFILLBAR
+		BAR, RADIAL, RADIAL2, BAR2, CLOCKBAR, SQUAREBAR, CIRCLEFILLBAR, SQUAREFILLBAR
 	}
 	
-	public static final String[] BAR_TYPE = {"Bar", "Radial", "Radial2" ,"Bar2", "ClockBar","SquareBar","CircleFillBar"};
+	public static final String[] BAR_TYPE = {"Bar", "Radial", "Radial2" ,"Bar2", "ClockBar","SquareBar","CircleFillBar","SquareFillBar"};
 	public static final int MIN_SPEED=1;
 	public static final int MAX_SPEED=11;
 	public static final float MAX_TRIG_DISTANCE = 20;
