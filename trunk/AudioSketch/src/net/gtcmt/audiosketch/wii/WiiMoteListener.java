@@ -8,6 +8,7 @@ import motej.event.CoreButtonEvent;
 import motej.event.CoreButtonListener;
 import motej.event.IrCameraEvent;
 import motej.event.IrCameraListener;
+import net.gtcmt.audiosketch.p5.util.P5Color;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
 import net.gtcmt.audiosketch.p5.window.MusicalWindow;
 import net.gtcmt.audiosketch.util.LogMessage;
@@ -34,6 +35,7 @@ public class WiiMoteListener {
 	private CalibrationDataReport report;
 	private double realIrX;
 	private double realIrY;
+	private boolean fillBarMovesItself;
 	
 	public WiiMoteListener(final MusicalWindow mwp5, String address){
 		lock = false;
@@ -46,6 +48,7 @@ public class WiiMoteListener {
 		lockPressed = false;
 		padDownPressed = false;
 		removePressed = false;
+		fillBarMovesItself = false;
 		
 		int[] calData = WiiMoteConstant.wiiMoteCalData.get(address);
 		//This is a cal data for accelerometer
@@ -53,8 +56,13 @@ public class WiiMoteListener {
 		
 		buttonListener = new CoreButtonListener() {
 
-			public void buttonPressed(CoreButtonEvent evt) {		
-				if(evt.isButtonMinusPressed()){
+			public void buttonPressed(CoreButtonEvent evt) {
+				if(evt.isButtonBPressed()){
+					if(!fillBarMovesItself){
+						fillBarMovesItself = true;
+					}
+				}
+				else if(evt.isButtonMinusPressed()){
 					if(mwp5.getPlayBarSize() > 0){
 						if(!removePressed){
 							removePressed = true;
@@ -62,48 +70,30 @@ public class WiiMoteListener {
 						}
 					}
 				}
-				if(evt.isButtonAPressed()){
+				else if(evt.isButtonAPressed()){
 					if(!lockPressed){
 						lockPressed = true;
 						lock = !lock;
 					}
 				}
-				if(evt.isDPadDownPressed()){
+				else if(evt.isDPadDownPressed()){
 					if(!padDownPressed){
 						padDownPressed = true;
-						barType = PlayBackType.values()[countBar++%PlayBackType.values().length];
+						countBar = (countBar+1)%PlayBackType.values().length;
+						barType = PlayBackType.values()[countBar];
+						System.out.println("BARTYPE: "+barType);
 						switch(barType){
-						case RADIAL:
-							setRGBA(255, 255, 255, 125);
-							break;
-						case RADIAL2:
-							setRGBA(100,149,237,125);
-							break;
-						case BAR:
-							setRGBA(124,252,0,125);
-							break;
-						case SQUAREBAR:
-							setRGBA(255,255,0,125);
-							break;
-						case SQUAREBAR2:
-							setRGBA(255, 255, 255, 125);
-							break;
-						case BAR2:
-							setRGBA(178,34,34,125);
-							break;
-						case CIRCLEFILLBAR:
-							setRGBA(255,192,203,125);
-							break;
-						/*case SQUAREFILLBAR:
-							setRGBA(192,255,155,125);
-							break;*/
-						case CLOCKBAR:
-							setRGBA(255,165,0,125);
-							break;
+						case RADIAL:		setRGBA(P5Color.ALICE_BLUE,125);		break;
+						case RADIAL2:		setRGBA(P5Color.BABY_BLUE,125);			break;
+						case CIRCLEFILLBAR:	setRGBA(P5Color.ELECTRIC_BLUE,125);		break;
+						case SQUAREBAR:		setRGBA(P5Color.MOSS_GREEN,125);		break;
+						case SQUAREBAR2:	setRGBA(P5Color.LIME, 125);				break;
+						case SQUAREFILLBAR:	setRGBA(P5Color.ELECTRIC_GREEN,125);	break;
+						case BAR:			setRGBA(124,252,0,125);					break;
 						}
 					}
 				}
-				if(evt.isNoButtonPressed()){
+				else if(evt.isNoButtonPressed()){
 					if(padDownPressed){
 						padDownPressed = false;
 					}
@@ -146,6 +136,14 @@ public class WiiMoteListener {
 
 			}	
 		};
+	}
+
+	public boolean isFillBarMovesItself() {
+		return fillBarMovesItself;
+	}
+
+	public void setFillBarMovesItself(boolean fillBarMovesItself) {
+		this.fillBarMovesItself = fillBarMovesItself;
 	}
 
 	public void resetTrigger(){
@@ -196,6 +194,13 @@ public class WiiMoteListener {
 		alpha = a;
 	}
 
+	public void setRGBA(int[] color, int a){
+		red = color[0];
+		green = color[1];
+		blue = color[2];
+		alpha = a;
+	}
+	
 	public void setRed(int red) {
 		this.red = red;
 	}

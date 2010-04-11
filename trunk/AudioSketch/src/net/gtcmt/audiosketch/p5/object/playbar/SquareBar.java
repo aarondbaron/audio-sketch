@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import net.gtcmt.audiosketch.p5.action.Collision;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
+import net.gtcmt.audiosketch.p5.util.P5Color;
 import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
@@ -22,21 +23,21 @@ public class SquareBar extends PlayBackBar {
 
 	@Override
 	public void draw() {
-		strokeParam=strokeParam+strokeUpdate;
-		if(strokeParam==256)
-		{
-			strokeParam=255;
-			strokeUpdate=-1;
-		}
-		if(strokeParam==-1)
-		{
-			strokeParam=0;
-			strokeUpdate=1;
-		}
+//		strokeParam=strokeParam+strokeUpdate;
+//		if(strokeParam==256)
+//		{
+//			strokeParam=255;
+//			strokeUpdate=-1;
+//		}
+//		if(strokeParam==-1)
+//		{
+//			strokeParam=0;
+//			strokeUpdate=1;
+//		}
 		
 		p5.strokeWeight(P5Constants.STROKE_WEIGHT);
-		p5.stroke(255-strokeParam, strokeParam, 255, 200);
-		p5.fill(0, 0, 0, 0);
+		p5.stroke(P5Color.MOSS_GREEN[0],P5Color.MOSS_GREEN[1],P5Color.MOSS_GREEN[2], 200);
+		p5.noFill();
 		p5.rectMode(PApplet.CENTER);
 		p5.rect(playbarPos.getPosX(), playbarPos.getPosY(), playbarSize.getWidth(), playbarSize.getHeight());
 		playbarSize.setSize(((int) (playbarSize.getWidth()+speed)), ((int) (playbarSize.getHeight()+speed)));

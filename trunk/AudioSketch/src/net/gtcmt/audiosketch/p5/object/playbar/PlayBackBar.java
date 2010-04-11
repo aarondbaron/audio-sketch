@@ -7,6 +7,7 @@ import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Size2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
+import net.gtcmt.audiosketch.wii.ShakeWii;
 import processing.core.PApplet;
 
 /**
@@ -60,15 +61,15 @@ public abstract class PlayBackBar {
 		this.playbackType = pbType;
 		
 		switch(pbType){
-		case BAR: case BAR2:
-			this.playbarSize = new P5Size2D(P5Constants.BAR_WIDTH, P5Constants.STROKE_WEIGHT);
-			break;
+//		case BAR: case BAR2:
+//			this.playbarSize = new P5Size2D(P5Constants.BAR_WIDTH, P5Constants.STROKE_WEIGHT);
+//			break;
 		case RADIAL:	 case RADIAL2: case SQUAREBAR: case SQUAREBAR2: default:
 			this.playbarSize = new P5Size2D(0, 0);
 			break;	
-		case CLOCKBAR:
-			this.playbarSize = new P5Size2D(p5.mouseX, p5.mouseY);
-			break;
+//		case CLOCKBAR:
+//			this.playbarSize = new P5Size2D(p5.mouseX, p5.mouseY);
+//			break;
 		}
 		
 		collisionArea = P5Constants.COLLISION_AREA;
@@ -94,18 +95,18 @@ public abstract class PlayBackBar {
 	 * @param p5
 	 * @return
 	 */
-	public static PlayBackBar createPlayBar(PlayBackType barType, P5Points2D mousePnt, float speed, float angle, PApplet p5){
+	public static PlayBackBar createPlayBar(PlayBackType barType, P5Points2D mousePnt, float speed, float angle, PApplet p5, ShakeWii shakeWii){
 		switch(barType)
 		{
 		case RADIAL:		return new RadialBar(mousePnt, speed, angle, barType, p5);
 		case RADIAL2: 	return new Radial2Bar(mousePnt, speed, angle, barType, p5); 
 		case CIRCLEFILLBAR: 	return new CircleFillBar(mousePnt, speed, angle, barType, p5); 
-		//case SQUAREFILLBAR: 	return new SquareFillBar(mousePnt, speed, angle, barType, p5); 	
+		case SQUAREFILLBAR: 	return new SquareFillBar(mousePnt, speed, angle, barType, p5, shakeWii); 	
 		case SQUAREBAR: 	return new SquareBar(mousePnt, speed, angle, barType, p5);
 		case SQUAREBAR2: 	return new SquareBar2(mousePnt, speed, angle, barType, p5);
-		case CLOCKBAR:	return new ClockBar(mousePnt, speed, angle, barType, p5);	
+//		case CLOCKBAR:	return new ClockBar(mousePnt, speed, angle, barType, p5);	
 		case BAR:		return new Bar(mousePnt, speed, angle, barType, p5);	
-		case BAR2:		return new Bar2(mousePnt, speed, angle, barType, p5);
+//		case BAR2:		return new Bar2(mousePnt, speed, angle, barType, p5);
 		default: 		return new RadialBar(mousePnt, speed, angle, barType, p5);
 		}
 	}

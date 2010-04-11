@@ -1,9 +1,6 @@
 package net.gtcmt.audiosketch.gui.client;
 
 import java.awt.Cursor;
-import java.awt.DisplayMode;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -31,10 +28,7 @@ public class AudioSketchMainFrame extends JFrame {
 
 	private static final long serialVersionUID = -454422848366277633L;
 	private MusicalWindow musicalWindow;
-	private LinkedList<MoteConnector> connector;
-	
-	private TableMessageRouter tableMessageRouter; 
-	
+	private LinkedList<MoteConnector> connector;	
 	
 	/**
 	 * Constructor for starting main client gui panel
@@ -75,20 +69,21 @@ public class AudioSketchMainFrame extends JFrame {
 			(image, new Point(0, 0), "invisibleCursor");
 		setCursor(transparentCursor);
 
-		GraphicsDevice dev = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice(); 
-		DisplayMode mode = new DisplayMode(GUIConstants.WINDOW_WIDTH, GUIConstants.WINDOW_HEIGHT, 32, DisplayMode.REFRESH_RATE_UNKNOWN);
-
-		dev.setFullScreenWindow(this);
-		if(dev.isDisplayChangeSupported()) dev.setDisplayMode(mode);
+//		GraphicsDevice dev = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice(); 
+//		DisplayMode mode = new DisplayMode(GUIConstants.WINDOW_WIDTH, GUIConstants.WINDOW_HEIGHT, 32, DisplayMode.REFRESH_RATE_UNKNOWN);
+//
+//		dev.setFullScreenWindow(this);
+//		if(dev.isDisplayChangeSupported()) dev.setDisplayMode(mode);
 		
-		this.tableMessageRouter = new TableMessageRouter(musicalWindow);
+		//reacTVision related stuff
+		new TableMessageRouter(musicalWindow);
 
+		//Connect to wiimote
 		connector = new LinkedList<MoteConnector>();
-		//Connect to wiimote	
 		for(int i=0;i<WiiMoteConstant.MOTE_MAC_ADDR.length;i++){
 			MoteConnector mc = new MoteConnector(WiiMoteConstant.MOTE_MAC_ADDR[i], musicalWindow);
 			//mc.start();
-			connector.add(mc); 
+			connector.add(mc);
 		}
 		//Add pointer to musical window
 		musicalWindow.initPointer(connector);

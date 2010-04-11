@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import net.gtcmt.audiosketch.p5.action.Collision;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
-import net.gtcmt.audiosketch.p5.util.P5Constants;
+import net.gtcmt.audiosketch.p5.util.P5Color;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
 import processing.core.PApplet;
@@ -69,8 +69,9 @@ public class CircleFillBar extends PlayBackBar{
 	public void draw() {
 		
 		updatePos();
-		p5.strokeWeight(P5Constants.STROKE_WEIGHT-3);
-		p5.stroke(255);
+		//p5.strokeWeight(P5Constants.STROKE_WEIGHT-3);
+		//p5.stroke(255);
+		p5.noStroke();
 		//p5.stroke(255, 255, 255, 100);
 		
 		//time2 = System.currentTimeMillis() - time1;
@@ -83,7 +84,7 @@ public class CircleFillBar extends PlayBackBar{
 			}
 		}
 		else {
-			p5.fill(255, 25, 255, 100);
+			p5.fill(P5Color.ELECTRIC_BLUE[0],P5Color.ELECTRIC_BLUE[1],P5Color.ELECTRIC_BLUE[2], 100);
 			//image.setVisible(true);
 			if(!bang){
 				this.bang=true;
