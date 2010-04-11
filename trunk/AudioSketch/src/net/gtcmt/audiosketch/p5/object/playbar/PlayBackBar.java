@@ -100,7 +100,7 @@ public abstract class PlayBackBar {
 		case RADIAL:		return new RadialBar(mousePnt, speed, angle, barType, p5);
 		case RADIAL2: 	return new Radial2Bar(mousePnt, speed, angle, barType, p5); 
 		case CIRCLEFILLBAR: 	return new CircleFillBar(mousePnt, speed, angle, barType, p5); 
-		case SQUAREFILLBAR: 	return new SquareFillBar(mousePnt, speed, angle, barType, p5); 	
+		//case SQUAREFILLBAR: 	return new SquareFillBar(mousePnt, speed, angle, barType, p5); 	
 		case SQUAREBAR: 	return new SquareBar(mousePnt, speed, angle, barType, p5);
 		case SQUAREBAR2: 	return new SquareBar2(mousePnt, speed, angle, barType, p5);
 		case CLOCKBAR:	return new ClockBar(mousePnt, speed, angle, barType, p5);	
