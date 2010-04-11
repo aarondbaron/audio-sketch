@@ -36,7 +36,12 @@ public class SquareBar extends PlayBackBar {
 //		}
 		
 		p5.strokeWeight(P5Constants.STROKE_WEIGHT);
-		p5.stroke(P5Color.MOSS_GREEN[0],P5Color.MOSS_GREEN[1],P5Color.MOSS_GREEN[2], 200);
+		if(!highLight){
+			p5.stroke(P5Color.MOSS_GREEN[0],P5Color.MOSS_GREEN[1],P5Color.MOSS_GREEN[2], 200);
+		}
+		else{
+			p5.stroke(P5Color.ORANGE[0],P5Color.ORANGE[1],P5Color.ORANGE[2], 100);
+		}
 		p5.noFill();
 		p5.rectMode(PApplet.CENTER);
 		p5.rect(playbarPos.getPosX(), playbarPos.getPosY(), playbarSize.getWidth(), playbarSize.getHeight());

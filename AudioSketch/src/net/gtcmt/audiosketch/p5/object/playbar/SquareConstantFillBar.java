@@ -14,12 +14,8 @@ import net.gtcmt.audiosketch.wii.util.WiiMoteConstant;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
-public class SquareFillBar extends PlayBackBar{
-	
-	long time1 = System.currentTimeMillis();;
-	long time2=0;
-	long timeOutMS=1000;
-	long startTime;
+public class SquareConstantFillBar extends PlayBackBar{
+
 	public boolean bang = false;
 	int vx=0;
 	int vy=0;
@@ -40,13 +36,11 @@ public class SquareFillBar extends PlayBackBar{
 	}
 	
 
-	public SquareFillBar(P5Points2D objPos, float speed, float angle,
+	public SquareConstantFillBar(P5Points2D objPos, float speed, float angle,
 			PlayBackType pbType, PApplet p, ShakeWii shakeWii) {
 		super(objPos, speed, angle, pbType, p);
-		startTime = System.currentTimeMillis();
 		this.shakeWii = shakeWii;
 		this.isFillBarMovesItself = false;
-		
 		
 		int w=150;
 		int h=150;
@@ -62,7 +56,7 @@ public class SquareFillBar extends PlayBackBar{
 			//Check for collision
 			for(SoundObject so : soundObject){
 				if(so.getCollideState().size() > index){
-					Collision.collideSquareFillBar(so, this, index);
+					Collision.collideSquareConstantFillBar(so, this, index);
 				}
 			}
 			
@@ -87,27 +81,33 @@ public class SquareFillBar extends PlayBackBar{
 		
 		updatePos();
 		p5.strokeWeight(P5Constants.STROKE_WEIGHT);
-		p5.stroke(P5Color.ELECTRIC_GREEN[0],P5Color.ELECTRIC_GREEN[1],P5Color.ELECTRIC_GREEN[2], 100);
+		if(!highLight){
+			p5.stroke(P5Color.ELECTRIC_GREEN[0],P5Color.ELECTRIC_GREEN[1],P5Color.ELECTRIC_GREEN[2], 100);
+		}
+		else{
+			p5.stroke(P5Color.ORANGE[0],P5Color.ORANGE[1],P5Color.ORANGE[2], 100);
+		}
 		//p5.noStroke();
 		//p5.stroke(255, 255, 255, 100);
 		
 		//time2 = System.currentTimeMillis() - time1;
 		
 		//Draws fill until the time out. set bang to true on first time entered.
-		if((System.currentTimeMillis()-startTime) % timeOutMS > (timeOutMS >> 1)){
-			p5.noFill();
-			if(this.bang){
-				this.bang = false;
-			}
-		}
-		else {
-			p5.fill(P5Color.ELECTRIC_GREEN[0],P5Color.ELECTRIC_GREEN[1],P5Color.ELECTRIC_GREEN[2], 100);
-			//image.setVisible(true);
-			if(!bang){
-				this.bang=true;
-			}	
-		}
+//		if((System.currentTimeMillis()-startTime) % timeOutMS > (timeOutMS >> 1)){
+//			p5.noFill();
+//			if(this.bang){
+//				this.bang = false;
+//			}
+//		}
+//		else {
+//			p5.fill(P5Color.ELECTRIC_GREEN[0],P5Color.ELECTRIC_GREEN[1],P5Color.ELECTRIC_GREEN[2], 100);
+//			//image.setVisible(true);
+//			if(!bang){
+//				this.bang=true;
+//			}	
+//		}
 		
+		p5.fill(P5Color.ELECTRIC_GREEN[0],P5Color.ELECTRIC_GREEN[1],P5Color.ELECTRIC_GREEN[2], 100);
 
 //		if(time2>1000)
 //		{
@@ -140,18 +140,18 @@ public class SquareFillBar extends PlayBackBar{
 			{
 				vy=-vy;
 			}
-			if(playbarPos.getPosX()>p5.width-75)
+			if(playbarPos.getPosX()>GUIConstants.WINDOW_WIDTH-75)
 			{
 				vx=-vx;
 			}
 
-			if(playbarPos.getPosY()>p5.height-75)
+			if(playbarPos.getPosY()>GUIConstants.WINDOW_HEIGHT-75)
 			{
 				vy=-vy;
 			}
 		}
-		else{ //Fill bar is controled by ir position of wii mote
-			if(shakeWii.getListener().isFillBarMovesItself() && !isFillBarMovesItself){
+		else{ //Fill bar is controlled by ir position of wii mote
+			if(shakeWii.getListener().isFillBarMovesItself() && !isFillBarMovesItself) {
 				isFillBarMovesItself = true;
 				vx = (int) ((shakeWii.getIrArrX()[0] - shakeWii.getIrArrX()[9])*0.1f);
 				vy = (int) ((shakeWii.getIrArrY()[0] - shakeWii.getIrArrY()[9])*0.1f);

@@ -323,6 +323,12 @@ public class MusicalWindow extends PApplet {
 		}
 	}
 	
+	public LinkedList<PlayBackBar> getPlayBackBar() {
+		synchronized (playBackBar) {
+			return playBackBar;
+		}
+	}
+
 	public LinkedList<SoundObject> getSoundObject() {
 		synchronized (soundObject) {
 			return soundObject;

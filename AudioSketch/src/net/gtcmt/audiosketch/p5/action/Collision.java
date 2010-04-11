@@ -1,13 +1,14 @@
 package net.gtcmt.audiosketch.p5.action;
 
-import processing.core.PConstants;
 import net.gtcmt.audiosketch.event.AudioInfo;
 import net.gtcmt.audiosketch.event.AudioTrigger;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
+import net.gtcmt.audiosketch.p5.object.playbar.CircleConstantFillBar;
 import net.gtcmt.audiosketch.p5.object.playbar.CircleFillBar;
 import net.gtcmt.audiosketch.p5.object.playbar.ClockBar;
 import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
-import net.gtcmt.audiosketch.p5.util.P5Constants;
+import net.gtcmt.audiosketch.p5.object.playbar.SquareConstantFillBar;
+import net.gtcmt.audiosketch.p5.object.playbar.SquareFillBar;
 
 public class Collision {
 
@@ -266,6 +267,93 @@ public class Collision {
 	}
 
 
+	public static void collideSquareFillBar(SoundObject soundObject, PlayBackBar playBackBar, int index) {
+		// TODO need to make this correct..it functions like colide circle now
+		//
+		SquareFillBar playBar=(SquareFillBar)playBackBar;
+		if(playBar.bang){
 
+			if(!soundObject.getCollideState(index)) {
+				float objectX = (soundObject.getPosX()) - playBar.getPosX();
+				float objectY = (soundObject.getPosY()) - playBar.getPosY();
+				
+				//System.out.println(objectX);
+				//System.out.println(objectY);
 
+				float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.getWidth()/3, 2)
+						+Math.pow(soundObject.getHeight()/3, 2)))+(playBar.getWidth()/2));
+				//System.out.println(minDistance);
+
+				if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
+					//TODO pass in appropriate midi number
+					AudioTrigger.getAudioTrigger().addNewAudioInfo(new AudioInfo(AudioTrigger.getAudioTrigger().getNextTrigTime(), 
+							soundObject.getSndType().toString(),  soundObject.calcPlaySpeedMultiply()));
+					soundObject.setCollideState(index, true);
+					soundObject.setCollide(true);
+					soundObject.setGetFrame(true);
+					soundObject.setStartTime(System.currentTimeMillis());		
+				}
+			}
+		}
+		else{
+			if(soundObject.getCollideState().get(index)){
+				soundObject.setCollideState(index,false);
+			}
+		}
+		
+	}
+
+	public static void collideSquareConstantFillBar(SoundObject soundObject, PlayBackBar playBackBar, int index) {
+		// TODO need to make this correct..it functions like colide circle now
+		//
+		SquareConstantFillBar playBar=(SquareConstantFillBar)playBackBar;
+
+		if(!soundObject.getCollideState(index)) {
+			float objectX = (soundObject.getPosX()) - playBar.getPosX();
+			float objectY = (soundObject.getPosY()) - playBar.getPosY();
+
+			float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.getWidth()/3, 2)
+					+Math.pow(soundObject.getHeight()/3, 2)))+(playBar.getWidth()/2));
+
+			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
+				//TODO pass in appropriate midi number
+				AudioTrigger.getAudioTrigger().addNewAudioInfo(new AudioInfo(AudioTrigger.getAudioTrigger().getNextTrigTime(), 
+						soundObject.getSndType().toString(),  soundObject.calcPlaySpeedMultiply()));
+				soundObject.setCollideState(index, true);
+				soundObject.setCollide(true);
+				soundObject.setGetFrame(true);
+				soundObject.setStartTime(System.currentTimeMillis());	
+			}
+		}
+		else{
+			soundObject.setCollideState(index,false);
+		}
+	}
+	
+	public static void collideCircleConstantFillBar(SoundObject soundObject, PlayBackBar playBackBar, int index) {
+		// TODO need to make this correct..it functions like colide circle now
+		//
+		CircleConstantFillBar playBar=(CircleConstantFillBar)playBackBar;
+
+		if(!soundObject.getCollideState(index)) {
+			float objectX = (soundObject.getPosX()) - playBar.getPosX();
+			float objectY = (soundObject.getPosY()) - playBar.getPosY();
+
+			float minDistance = (float) ((Math.sqrt(Math.pow(soundObject.getWidth()/3, 2)
+					+Math.pow(soundObject.getHeight()/3, 2)))+(playBar.getWidth()/2));
+
+			if(Math.sqrt(objectX*objectX+objectY*objectY) < minDistance) {
+				//TODO pass in appropriate midi number
+				AudioTrigger.getAudioTrigger().addNewAudioInfo(new AudioInfo(AudioTrigger.getAudioTrigger().getNextTrigTime(), 
+						soundObject.getSndType().toString(),  soundObject.calcPlaySpeedMultiply()));
+				soundObject.setCollideState(index, true);
+				soundObject.setCollide(true);
+				soundObject.setGetFrame(true);
+				soundObject.setStartTime(System.currentTimeMillis());	
+			}
+		}
+		else{
+			soundObject.setCollideState(index,false);
+		}
+	}
 }

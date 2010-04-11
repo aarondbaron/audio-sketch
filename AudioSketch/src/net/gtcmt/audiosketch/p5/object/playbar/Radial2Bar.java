@@ -22,7 +22,12 @@ public class Radial2Bar extends PlayBackBar{
 	public void draw() {
 		// TODO Auto-generated method stub	
 		p5.strokeWeight(P5Constants.STROKE_WEIGHT);
-		p5.stroke(P5Color.BABY_BLUE[0],P5Color.BABY_BLUE[1],P5Color.BABY_BLUE[2], 200);
+		if(!highLight){
+			p5.stroke(P5Color.BABY_BLUE[0],P5Color.BABY_BLUE[1],P5Color.BABY_BLUE[2], 200);
+		}
+		else{
+			p5.stroke(P5Color.ORANGE[0],P5Color.ORANGE[1],P5Color.ORANGE[2], 100);
+		}
 		p5.noFill();
 		p5.ellipse(playbarPos.getPosX(), playbarPos.getPosY(), playbarSize.getWidth(), playbarSize.getHeight());
 		playbarSize.setSize(((int) (playbarSize.getWidth()+speed)), ((int) (playbarSize.getHeight()+speed)));

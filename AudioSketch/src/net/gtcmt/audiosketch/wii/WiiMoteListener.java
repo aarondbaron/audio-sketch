@@ -8,6 +8,7 @@ import motej.event.CoreButtonEvent;
 import motej.event.CoreButtonListener;
 import motej.event.IrCameraEvent;
 import motej.event.IrCameraListener;
+import net.gtcmt.audiosketch.p5.object.playbar.PlayBackBar;
 import net.gtcmt.audiosketch.p5.util.P5Color;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
 import net.gtcmt.audiosketch.p5.window.MusicalWindow;
@@ -25,6 +26,7 @@ public class WiiMoteListener {
 	private boolean lock;
 	private PlayBackType barType;
 	private int countBar;
+	private int countRemoveBar;
 	private int red;
 	private int green;
 	private int blue;
@@ -44,7 +46,8 @@ public class WiiMoteListener {
 		blue = 255;
 		alpha = 125;
 		countBar = 0;
-		barType = PlayBackType.BAR;
+		countRemoveBar = 0;
+		barType = PlayBackType.RADIAL;
 		lockPressed = false;
 		padDownPressed = false;
 		removePressed = false;
@@ -62,11 +65,31 @@ public class WiiMoteListener {
 						fillBarMovesItself = true;
 					}
 				}
-				else if(evt.isButtonMinusPressed()){
+				else if(evt.isButtonPlusPressed()){
 					if(mwp5.getPlayBarSize() > 0){
+						mwp5.getPlayBackBar().clear();
+					}
+				}
+				else if(evt.isDPadUpPressed()){
+					if(mwp5.getPlayBarSize()>0){
+						countRemoveBar = (++countRemoveBar) % mwp5.getPlayBarSize();
+					}
+					else
+					{
+						countRemoveBar=0;
+					}
+					mwp5.getPlayBackBar().get(countRemoveBar).highLight();
+					for(PlayBackBar pb : mwp5.getPlayBackBar()){
+						pb.deHighLight();
+					}
+					//System.out.println("Remove selected: "+countRemoveBar);
+				}
+				else if(evt.isButtonMinusPressed()){
+					if(mwp5.getPlayBarSize() > 0 && mwp5.getPlayBarSize() > countRemoveBar){
 						if(!removePressed){
 							removePressed = true;
-							mwp5.removeLastPlayBar();
+							mwp5.getPlayBackBar().remove(countRemoveBar);
+							countRemoveBar = 0;
 						}
 					}
 				}
@@ -85,11 +108,11 @@ public class WiiMoteListener {
 						switch(barType){
 						case RADIAL:		setRGBA(P5Color.ALICE_BLUE,125);		break;
 						case RADIAL2:		setRGBA(P5Color.BABY_BLUE,125);			break;
-						case CIRCLEFILLBAR:	setRGBA(P5Color.ELECTRIC_BLUE,125);		break;
-						case SQUAREBAR:		setRGBA(P5Color.MOSS_GREEN,125);		break;
-						case SQUAREBAR2:	setRGBA(P5Color.LIME, 125);				break;
-						case SQUAREFILLBAR:	setRGBA(P5Color.ELECTRIC_GREEN,125);	break;
-						case BAR:			setRGBA(124,252,0,125);					break;
+						case CIRCLECONSTANTFILLBAR:	setRGBA(P5Color.ELECTRIC_BLUE,125);		break;
+						case SQUAREBAR:		 setRGBA(P5Color.LIME, 125);				break;
+						case SQUAREBAR2:	setRGBA(P5Color.MOSS_GREEN,125);		break;   
+						case SQUARECONSTANTFILLBAR:	setRGBA(P5Color.ELECTRIC_GREEN,125);	break;
+//						case BAR:			setRGBA(124,252,0,125);					break;
 						}
 					}
 				}

@@ -27,6 +27,7 @@ public abstract class PlayBackBar {
 	protected PlayBackType playbackType;
 	protected PApplet p5;
 	protected float collisionArea;
+	protected boolean highLight;
 
 	/**
 	 * Constructor for PlayBackBar
@@ -42,7 +43,8 @@ public abstract class PlayBackBar {
 	public PlayBackBar(P5Points2D objPos, float speed, float angle, PlayBackType pbType, PApplet p){
 		this.initPlaybarPos = this.playbarPos = objPos;
 		this.p5 = p;
-		
+
+		this.highLight = false;
 		if(speed > P5Constants.MAX_SPEED){
 			this.speed = P5Constants.MAX_SPEED;
 		}
@@ -100,15 +102,23 @@ public abstract class PlayBackBar {
 		{
 		case RADIAL:		return new RadialBar(mousePnt, speed, angle, barType, p5);
 		case RADIAL2: 	return new Radial2Bar(mousePnt, speed, angle, barType, p5); 
-		case CIRCLEFILLBAR: 	return new CircleFillBar(mousePnt, speed, angle, barType, p5); 
-		case SQUAREFILLBAR: 	return new SquareFillBar(mousePnt, speed, angle, barType, p5, shakeWii); 	
+		case CIRCLECONSTANTFILLBAR: 	return new CircleConstantFillBar(mousePnt, speed, angle, barType, p5, shakeWii); 
+		case SQUARECONSTANTFILLBAR: 	return new SquareConstantFillBar(mousePnt, speed, angle, barType, p5, shakeWii); 	
 		case SQUAREBAR: 	return new SquareBar(mousePnt, speed, angle, barType, p5);
 		case SQUAREBAR2: 	return new SquareBar2(mousePnt, speed, angle, barType, p5);
 //		case CLOCKBAR:	return new ClockBar(mousePnt, speed, angle, barType, p5);	
-		case BAR:		return new Bar(mousePnt, speed, angle, barType, p5);	
+//		case BAR:		return new Bar(mousePnt, speed, angle, barType, p5);	
 //		case BAR2:		return new Bar2(mousePnt, speed, angle, barType, p5);
 		default: 		return new RadialBar(mousePnt, speed, angle, barType, p5);
 		}
+	}
+	
+	public void highLight() {
+		highLight = true;
+	}
+	
+	public void deHighLight() {
+		highLight = false;
 	}
 	
 	/*------------------- Getter/Setter ------------------*/
@@ -183,4 +193,6 @@ public abstract class PlayBackBar {
 	public void setCollisionArea(float collisionArea) {
 		this.collisionArea = collisionArea;
 	}
+
+
 }

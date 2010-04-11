@@ -9,7 +9,7 @@ public class P5Constants {
 
 	//Playback bar 
 	public enum PlayBackType{
-		BAR, RADIAL, RADIAL2, SQUAREBAR, SQUAREBAR2, CIRCLEFILLBAR, SQUAREFILLBAR
+		RADIAL, RADIAL2, SQUAREBAR, SQUAREBAR2, CIRCLECONSTANTFILLBAR, SQUARECONSTANTFILLBAR
 	}
 	
 	public static final String[] BAR_TYPE = {"Bar", "Radial", "Radial2" ,"Bar2", "ClockBar","SquareBar","SquareBar2","CircleFillBar","SquareFillBar"};
