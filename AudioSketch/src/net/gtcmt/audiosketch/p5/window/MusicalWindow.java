@@ -23,6 +23,7 @@ import net.gtcmt.audiosketch.sound.util.SndConstants.EffectType;
 import net.gtcmt.audiosketch.sound.util.SndConstants.SndType;
 import net.gtcmt.audiosketch.wii.IRDisplay;
 import net.gtcmt.audiosketch.wii.MoteConnector;
+import net.gtcmt.audiosketch.wii.ShakeWii;
 import processing.core.PApplet;
 
 /**
@@ -171,9 +172,9 @@ public class MusicalWindow extends PApplet {
 	 * Adds play back bar upon receiving message from server
 	 * @param data data sent from server
 	 */
-	public void addPlayBackBar(PlayBackType playType, P5Points2D mousePnt,  float speed, float angle) {
+	public void addPlayBackBar(PlayBackType playType, P5Points2D mousePnt,  float speed, float angle, ShakeWii shakeWii) {
 		synchronized (playBackBar) {
-			playBackBar.add(PlayBackBar.createPlayBar(playType, mousePnt, speed, angle, this));
+			playBackBar.add(PlayBackBar.createPlayBar(playType, mousePnt, speed, angle, this, shakeWii));
 		}
 		synchronized (soundObject) {
 			for(SoundObject so : soundObject){

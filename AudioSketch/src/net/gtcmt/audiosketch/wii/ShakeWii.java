@@ -89,59 +89,64 @@ public class ShakeWii {
 				irArrX[0]-irArrX[IR_ARR_SIZE-1]+0.000001f);
 	}
 	
+	public double[] getIrArrX() {
+		return irArrX;
+	}
+
+	public void setIrArrX(double[] irArrX) {
+		this.irArrX = irArrX;
+	}
+
+	public double[] getIrArrY() {
+		return irArrY;
+	}
+
+	public void setIrArrY(double[] irArrY) {
+		this.irArrY = irArrY;
+	}
+
 	//TODO figure out how to get angle
 	public void trigEvent(){
 		int irX = (int) ((listener.getIrX()/WiiMoteConstant.MAX_MOTE_IR_WIDTH)*GUIConstants.WINDOW_WIDTH);
 		int irY = (int) ((listener.getIrY()/WiiMoteConstant.MAX_MOTE_IR_HEIGHT)*(GUIConstants.WINDOW_HEIGHT));
-		//System.out.println("speed: "+shakeVelocity+" angle: "+angle);
-		//System.out.println("Quantized to: "+quantizedSpeed());
 		
 		switch(listener.getBarType()){
 		case RADIAL:
 			mwp5.addPlayBackBar(PlayBackType.RADIAL, 
-					new P5Points2D(irX,irY), quantizedSpeed(), angle);
+					new P5Points2D(irX,irY), quantizedSpeed(), angle,this);
 			listener.setRGBA(255, 255, 255, 125);
 			break;
 		case RADIAL2:
 			mwp5.addPlayBackBar(PlayBackType.RADIAL2, 
-					new P5Points2D(irX,irY), quantizedSpeed(), angle);
+					new P5Points2D(irX,irY), quantizedSpeed(), angle,this);
 			listener.setRGBA(100,149,237,125);
-			break;
-		case BAR:
-			mwp5.addPlayBackBar(PlayBackType.BAR, 
-					new P5Points2D(irX,irY), quantizedSpeed(), angle);
-			listener.setRGBA(124,252,0,125);
 			break;
 		case SQUAREBAR:
 			mwp5.addPlayBackBar(PlayBackType.SQUAREBAR, 
-					new P5Points2D(irX,irY),quantizedSpeed(), angle);
+					new P5Points2D(irX,irY),quantizedSpeed(), angle,this);
 			listener.setRGBA(255,255,0,125);
 			break;
 		case SQUAREBAR2:
 			mwp5.addPlayBackBar(PlayBackType.SQUAREBAR2, 
-					new P5Points2D(irX,irY),quantizedSpeed(), angle);
+					new P5Points2D(irX,irY),quantizedSpeed(), angle,this);
 			listener.setRGBA(255,255,255,125);
-			break;
-		case BAR2:
-			mwp5.addPlayBackBar(PlayBackType.BAR2, 
-					new P5Points2D(irX,irY), quantizedSpeed(), angle);
-			listener.setRGBA(178,34,34,125);
 			break;
 		case CIRCLEFILLBAR:
 			mwp5.addPlayBackBar(PlayBackType.CIRCLEFILLBAR, 
-					new P5Points2D(irX,irY), quantizedSpeed(), angle);
+					new P5Points2D(irX,irY), quantizedSpeed(), angle,this);
 			listener.setRGBA(255,192,203,125);
 			break;
-		/*case SQUAREFILLBAR:
+		case SQUAREFILLBAR:
 			mwp5.addPlayBackBar(PlayBackType.SQUAREFILLBAR, 
-					new P5Points2D(irX,irY), quantizedSpeed(), angle);
+					new P5Points2D(irX,irY), quantizedSpeed(), angle,this);
 			listener.setRGBA(255,192,203,125);
-			break;*/
-		case CLOCKBAR:
-			mwp5.addPlayBackBar(PlayBackType.CLOCKBAR, 
-					new P5Points2D(irX,irY), quantizedSpeed(), angle);
-			listener.setRGBA(255,165,0,125);
+			listener.setFillBarMovesItself(false);
 			break;
+		case BAR:
+			mwp5.addPlayBackBar(PlayBackType.BAR, 
+					new P5Points2D(irX,irY), quantizedSpeed(), angle,this);
+			listener.setRGBA(124,252,0,125);
+			break; 
 		}
 		trig = true;
 	}
@@ -168,6 +173,10 @@ public class ShakeWii {
 		return trig;
 	}
 
+	public WiiMoteListener getListener(){
+		return listener;
+	}
+	
 	public void setTrigger(boolean trig) {
 		this.trig = trig;
 	}
