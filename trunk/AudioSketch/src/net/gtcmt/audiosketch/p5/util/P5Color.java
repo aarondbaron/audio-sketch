@@ -11,5 +11,6 @@ public class P5Color {
 	public static final int[] ALICE_BLUE = {240,248,255};
 	public static final int[] ELECTRIC_BLUE = {125,249,255};
 	public static final int[] BABY_BLUE = {137,207,240};
-	
+
+	public static final int[] ORANGE = {250, 200, 25};
 }

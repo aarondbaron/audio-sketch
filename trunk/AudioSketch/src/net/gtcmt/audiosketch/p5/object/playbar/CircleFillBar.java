@@ -2,11 +2,15 @@ package net.gtcmt.audiosketch.p5.object.playbar;
 
 import java.util.LinkedList;
 
+import net.gtcmt.audiosketch.gui.util.GUIConstants;
 import net.gtcmt.audiosketch.p5.action.Collision;
 import net.gtcmt.audiosketch.p5.object.SoundObject;
 import net.gtcmt.audiosketch.p5.util.P5Color;
+import net.gtcmt.audiosketch.p5.util.P5Constants;
 import net.gtcmt.audiosketch.p5.util.P5Points2D;
 import net.gtcmt.audiosketch.p5.util.P5Constants.PlayBackType;
+import net.gtcmt.audiosketch.wii.ShakeWii;
+import net.gtcmt.audiosketch.wii.util.WiiMoteConstant;
 import processing.core.PApplet;
 
 public class CircleFillBar extends PlayBackBar{
@@ -18,6 +22,8 @@ public class CircleFillBar extends PlayBackBar{
 	public boolean bang = false;
 	int vx=0;
 	int vy=0;
+	private boolean isFillBarMovesItself;
+	private ShakeWii shakeWii;
 	
 	public int getVx() {
 		return vx;
@@ -33,9 +39,16 @@ public class CircleFillBar extends PlayBackBar{
 	}
 
 	public CircleFillBar(P5Points2D objPos, float speed, float angle,
-			PlayBackType pbType, PApplet p) {
+			PlayBackType pbType, PApplet p, ShakeWii shakeWii) {
 		super(objPos, speed, angle, pbType, p);
 		startTime = System.currentTimeMillis();
+		isFillBarMovesItself = false;
+		this.shakeWii = shakeWii;
+		
+		int w=150;
+		int h=150;
+		this.setWidth(w);
+		this.setWidth(h);	
 	}
 	
 
@@ -69,9 +82,9 @@ public class CircleFillBar extends PlayBackBar{
 	public void draw() {
 		
 		updatePos();
-		//p5.strokeWeight(P5Constants.STROKE_WEIGHT-3);
-		//p5.stroke(255);
-		p5.noStroke();
+		p5.strokeWeight(P5Constants.STROKE_WEIGHT);
+		p5.stroke(P5Color.ELECTRIC_BLUE[0],P5Color.ELECTRIC_BLUE[1],P5Color.ELECTRIC_BLUE[2], 100);
+		//p5.noStroke();
 		//p5.stroke(255, 255, 255, 100);
 		
 		//time2 = System.currentTimeMillis() - time1;
@@ -103,31 +116,46 @@ public class CircleFillBar extends PlayBackBar{
 //			time2=System.currentTimeMillis()-time1;
 //		}
 		
-		int w=150;
-		int h=150;
+
 		//float speed = (float) Math.sqrt(Math.pow(p5.mouseX-xPos, 2)+Math.pow(mouseY-yPos, 2))/P5Constants.MAX_TRIG_DISTANCE;
-		p5.ellipse(playbarPos.getPosX(), playbarPos.getPosY(), w, h);
-		this.setWidth(w);
-		this.setWidth(h);		
+		p5.ellipse(playbarPos.getPosX(), playbarPos.getPosY(), this.getWidth(), this.getWidth());
 	}
 
 
 	private void updatePos() {
-		// TODO Auto-generated method stub
-		playbarPos.setPosX(playbarPos.getPosX()+vx);
-		playbarPos.setPosY(playbarPos.getPosY()+vy);
-		
-		if(playbarPos.getPosX()<0+150)
-		{
-			vx=-vx;
-			
+		if(isFillBarMovesItself){
+			playbarPos.setPosX(playbarPos.getPosX()+vx);
+			playbarPos.setPosY(playbarPos.getPosY()+vy);
+
+			if(playbarPos.getPosX()<0+75)
+			{
+				vx=-vx;
+			}
+
+			if(playbarPos.getPosY()<0+75)
+			{
+				vy=-vy;
+			}
+			if(playbarPos.getPosX()>p5.width-75)
+			{
+				vx=-vx;
+			}
+
+			if(playbarPos.getPosY()>p5.height-75)
+			{
+				vy=-vy;
+			}
 		}
-		
-		if(playbarPos.getPosY()<0+150)
-		{
-			
-			vy=-vy;
+		else{ //Fill bar is controled by ir position of wii mote
+			if(shakeWii.getListener().isFillBarMovesItself() && !isFillBarMovesItself){
+				isFillBarMovesItself = true;
+				vx = (int) ((shakeWii.getIrArrX()[0] - shakeWii.getIrArrX()[9])*0.1f);
+				vy = (int) ((shakeWii.getIrArrY()[0] - shakeWii.getIrArrY()[9])*0.1f);
+				
+				//System.out.println("VX "+vx+" VY "+vy);
+			}
+			playbarPos.setPosX((int) (GUIConstants.WINDOW_WIDTH*(shakeWii.getListener().getIrX()/WiiMoteConstant.MAX_MOTE_IR_WIDTH)));
+			playbarPos.setPosY((int) (GUIConstants.WINDOW_HEIGHT*(shakeWii.getListener().getIrY()/WiiMoteConstant.MAX_MOTE_IR_HEIGHT)));
 		}
-		
 	}
 }

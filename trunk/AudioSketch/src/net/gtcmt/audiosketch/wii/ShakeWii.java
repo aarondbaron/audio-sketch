@@ -131,22 +131,18 @@ public class ShakeWii {
 					new P5Points2D(irX,irY),quantizedSpeed(), angle,this);
 			listener.setRGBA(255,255,255,125);
 			break;
-		case CIRCLEFILLBAR:
-			mwp5.addPlayBackBar(PlayBackType.CIRCLEFILLBAR, 
-					new P5Points2D(irX,irY), quantizedSpeed(), angle,this);
-			listener.setRGBA(255,192,203,125);
-			break;
-		case SQUAREFILLBAR:
-			mwp5.addPlayBackBar(PlayBackType.SQUAREFILLBAR, 
+		case CIRCLECONSTANTFILLBAR:
+			mwp5.addPlayBackBar(PlayBackType.CIRCLECONSTANTFILLBAR, 
 					new P5Points2D(irX,irY), quantizedSpeed(), angle,this);
 			listener.setRGBA(255,192,203,125);
 			listener.setFillBarMovesItself(false);
 			break;
-		case BAR:
-			mwp5.addPlayBackBar(PlayBackType.BAR, 
+		case SQUARECONSTANTFILLBAR:
+			mwp5.addPlayBackBar(PlayBackType.SQUARECONSTANTFILLBAR, 
 					new P5Points2D(irX,irY), quantizedSpeed(), angle,this);
-			listener.setRGBA(124,252,0,125);
-			break; 
+			listener.setRGBA(255,192,203,125);
+			listener.setFillBarMovesItself(false);
+			break;
 		}
 		trig = true;
 	}
