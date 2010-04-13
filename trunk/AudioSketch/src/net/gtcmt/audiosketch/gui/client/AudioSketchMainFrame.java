@@ -84,7 +84,7 @@ public class AudioSketchMainFrame extends JFrame {
 //		dev.setFullScreenWindow(this);
 //		if(dev.isDisplayChangeSupported()) dev.setDisplayMode(mode);
 		
-		fullScreen();
+		//fullScreen();
 		
 		//reacTVision related stuff
 		new TableMessageRouter(musicalWindow);
