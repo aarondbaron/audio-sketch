@@ -87,7 +87,12 @@ public class SquareFillBar extends PlayBackBar{
 		
 		updatePos();
 		p5.strokeWeight(P5Constants.STROKE_WEIGHT);
-		p5.stroke(P5Color.ELECTRIC_GREEN[0],P5Color.ELECTRIC_GREEN[1],P5Color.ELECTRIC_GREEN[2], 100);
+		if(!highLight){
+			p5.stroke(P5Color.PERSIAN_GREEN[0],P5Color.PERSIAN_GREEN[1],P5Color.PERSIAN_GREEN[2], 100);
+		}
+		else{
+			p5.stroke(P5Color.ORANGE[0],P5Color.ORANGE[1],P5Color.ORANGE[2], 200);
+		}
 		//p5.noStroke();
 		//p5.stroke(255, 255, 255, 100);
 		
@@ -101,7 +106,7 @@ public class SquareFillBar extends PlayBackBar{
 			}
 		}
 		else {
-			p5.fill(P5Color.ELECTRIC_GREEN[0],P5Color.ELECTRIC_GREEN[1],P5Color.ELECTRIC_GREEN[2], 100);
+			p5.fill(P5Color.PERSIAN_GREEN[0],P5Color.PERSIAN_GREEN[1],P5Color.PERSIAN_GREEN[2], 100);
 			//image.setVisible(true);
 			if(!bang){
 				this.bang=true;

@@ -114,33 +114,33 @@ public class ShakeWii {
 		case RADIAL:
 			mwp5.addPlayBackBar(PlayBackType.RADIAL, 
 					new P5Points2D(irX,irY), quantizedSpeed(), angle,this);
-			listener.setRGBA(255, 255, 255, 125);
+			//listener.setRGBA(255, 255, 255, 125);
 			break;
 		case RADIAL2:
 			mwp5.addPlayBackBar(PlayBackType.RADIAL2, 
 					new P5Points2D(irX,irY), quantizedSpeed(), angle,this);
-			listener.setRGBA(100,149,237,125);
+			//listener.setRGBA(100,149,237,125);
 			break;
 		case SQUAREBAR:
 			mwp5.addPlayBackBar(PlayBackType.SQUAREBAR, 
 					new P5Points2D(irX,irY),quantizedSpeed(), angle,this);
-			listener.setRGBA(255,255,0,125);
+			//listener.setRGBA(255,255,0,125);
 			break;
 		case SQUAREBAR2:
 			mwp5.addPlayBackBar(PlayBackType.SQUAREBAR2, 
 					new P5Points2D(irX,irY),quantizedSpeed(), angle,this);
-			listener.setRGBA(255,255,255,125);
+			//listener.setRGBA(255,255,255,125);
 			break;
 		case CIRCLECONSTANTFILLBAR:
 			mwp5.addPlayBackBar(PlayBackType.CIRCLECONSTANTFILLBAR, 
 					new P5Points2D(irX,irY), quantizedSpeed(), angle,this);
-			listener.setRGBA(255,192,203,125);
+			//listener.setRGBA(255,192,203,125);
 			listener.setFillBarMovesItself(false);
 			break;
 		case SQUARECONSTANTFILLBAR:
 			mwp5.addPlayBackBar(PlayBackType.SQUARECONSTANTFILLBAR, 
 					new P5Points2D(irX,irY), quantizedSpeed(), angle,this);
-			listener.setRGBA(255,192,203,125);
+			//listener.setRGBA(255,192,203,125);
 			listener.setFillBarMovesItself(false);
 			break;
 		}

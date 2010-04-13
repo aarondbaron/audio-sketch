@@ -23,7 +23,7 @@ public class RadialBar extends PlayBackBar {
 	public void draw() {
 		p5.strokeWeight(P5Constants.STROKE_WEIGHT);
 		if(!highLight){
-			p5.stroke(P5Color.ALICE_BLUE[0],P5Color.ALICE_BLUE[1],P5Color.ALICE_BLUE[2], 200);
+			p5.stroke(P5Color.AQUA_BLUE[0],P5Color.AQUA_BLUE[1],P5Color.AQUA_BLUE[2], 100);
 		}
 		else{
 			p5.stroke(P5Color.ORANGE[0],P5Color.ORANGE[1],P5Color.ORANGE[2], 100);

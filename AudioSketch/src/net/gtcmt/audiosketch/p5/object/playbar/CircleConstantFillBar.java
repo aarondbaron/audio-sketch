@@ -150,8 +150,8 @@ public class CircleConstantFillBar extends PlayBackBar{
 		else{ //Fill bar is controlled by ir position of wii mote
 			if(shakeWii.getListener().isFillBarMovesItself() && !isFillBarMovesItself) {
 				isFillBarMovesItself = true;
-				vx = (int) ((shakeWii.getIrArrX()[0] - shakeWii.getIrArrX()[9])*0.1f);
-				vy = (int) ((shakeWii.getIrArrY()[0] - shakeWii.getIrArrY()[9])*0.1f);
+				//vx = (int) ((shakeWii.getIrArrX()[0] - shakeWii.getIrArrX()[9])*0.1f);
+				//vy = (int) ((shakeWii.getIrArrY()[0] - shakeWii.getIrArrY()[9])*0.1f);
 				
 				//System.out.println("VX "+vx+" VY "+vy);
 			}

@@ -19,11 +19,10 @@ public class Radial2Bar extends PlayBackBar{
 	}
 
 	@Override
-	public void draw() {
-		// TODO Auto-generated method stub	
+	public void draw() {	
 		p5.strokeWeight(P5Constants.STROKE_WEIGHT);
 		if(!highLight){
-			p5.stroke(P5Color.BABY_BLUE[0],P5Color.BABY_BLUE[1],P5Color.BABY_BLUE[2], 200);
+			p5.stroke(P5Color.BABY_BLUE[0],P5Color.BABY_BLUE[1],P5Color.BABY_BLUE[2], 100);
 		}
 		else{
 			p5.stroke(P5Color.ORANGE[0],P5Color.ORANGE[1],P5Color.ORANGE[2], 100);

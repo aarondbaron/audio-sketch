@@ -23,7 +23,7 @@ public class SquareBar2 extends PlayBackBar {
 	public void draw() {
 		p5.strokeWeight(P5Constants.STROKE_WEIGHT);
 		if(!highLight){
-			p5.stroke(P5Color.LIME[0],P5Color.LIME[1],P5Color.LIME[2], 200);
+			p5.stroke(P5Color.CAMOUFLAGE_GREEN[0],P5Color.CAMOUFLAGE_GREEN[1],P5Color.CAMOUFLAGE_GREEN[2], 100);
 		}
 		else{
 			p5.stroke(P5Color.ORANGE[0],P5Color.ORANGE[1],P5Color.ORANGE[2], 100);

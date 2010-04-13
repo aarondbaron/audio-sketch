@@ -38,6 +38,7 @@ public class WiiMoteListener {
 	private double realIrX;
 	private double realIrY;
 	private boolean fillBarMovesItself;
+	private boolean countRemovePressed;
 	
 	public WiiMoteListener(final MusicalWindow mwp5, String address){
 		lock = false;
@@ -52,12 +53,15 @@ public class WiiMoteListener {
 		padDownPressed = false;
 		removePressed = false;
 		fillBarMovesItself = false;
+		countRemovePressed = false;
 		
 		int[] calData = WiiMoteConstant.wiiMoteCalData.get(address);
 		//This is a cal data for accelerometer
 		report = new CalibrationDataReport(calData[0],calData[1],calData[2],calData[3],calData[4],calData[5]);
 		
 		buttonListener = new CoreButtonListener() {
+
+			
 
 			public void buttonPressed(CoreButtonEvent evt) {
 				if(evt.isButtonBPressed()){
@@ -71,18 +75,16 @@ public class WiiMoteListener {
 					}
 				}
 				else if(evt.isDPadUpPressed()){
-					if(mwp5.getPlayBarSize()>0){
-						countRemoveBar = (++countRemoveBar) % mwp5.getPlayBarSize();
-					}
-					else
-					{
-						countRemoveBar=0;
-					}
-					mwp5.getPlayBackBar().get(countRemoveBar).highLight();
-					for(PlayBackBar pb : mwp5.getPlayBackBar()){
-						pb.deHighLight();
-					}
-					//System.out.println("Remove selected: "+countRemoveBar);
+					if(!countRemovePressed){
+						countRemovePressed = true;
+						if(mwp5.getPlayBarSize()>0){
+							countRemoveBar = (countRemoveBar+1)%mwp5.getPlayBarSize();
+							for(PlayBackBar pb : mwp5.getPlayBackBar()){
+								pb.deHighLight();
+							}
+							mwp5.getPlayBackBar().get(countRemoveBar).highLight();
+						}
+					}			
 				}
 				else if(evt.isButtonMinusPressed()){
 					if(mwp5.getPlayBarSize() > 0 && mwp5.getPlayBarSize() > countRemoveBar){
@@ -104,14 +106,14 @@ public class WiiMoteListener {
 						padDownPressed = true;
 						countBar = (countBar+1)%PlayBackType.values().length;
 						barType = PlayBackType.values()[countBar];
-						System.out.println("BARTYPE: "+barType);
+						//System.out.println("BARTYPE: "+barType);
 						switch(barType){
-						case RADIAL:		setRGBA(P5Color.ALICE_BLUE,125);		break;
-						case RADIAL2:		setRGBA(P5Color.BABY_BLUE,125);			break;
-						case CIRCLECONSTANTFILLBAR:	setRGBA(P5Color.ELECTRIC_BLUE,125);		break;
-						case SQUAREBAR:		 setRGBA(P5Color.LIME, 125);				break;
-						case SQUAREBAR2:	setRGBA(P5Color.MOSS_GREEN,125);		break;   
-						case SQUARECONSTANTFILLBAR:	setRGBA(P5Color.ELECTRIC_GREEN,125);	break;
+						case RADIAL:		setRGBA(P5Color.AQUA_BLUE,100);		break;
+						case RADIAL2:		setRGBA(P5Color.BABY_BLUE,100);			break;
+						case CIRCLECONSTANTFILLBAR:	setRGBA(P5Color.ELECTRIC_BLUE,100);		break;
+						case SQUAREBAR:		 setRGBA(P5Color.MOSS_GREEN, 100);				break;
+						case SQUAREBAR2:	setRGBA(P5Color.CAMOUFLAGE_GREEN,100);		break;   
+						case SQUARECONSTANTFILLBAR:	setRGBA(P5Color.PERSIAN_GREEN,100);	break;
 //						case BAR:			setRGBA(124,252,0,125);					break;
 						}
 					}
@@ -125,6 +127,9 @@ public class WiiMoteListener {
 					}
 					if(removePressed){
 						removePressed = false;
+					}
+					if(countRemovePressed){
+						countRemovePressed = false;
 					}
 				}
 			}		

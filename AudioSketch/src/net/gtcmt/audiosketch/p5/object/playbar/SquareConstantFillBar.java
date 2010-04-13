@@ -82,7 +82,7 @@ public class SquareConstantFillBar extends PlayBackBar{
 		updatePos();
 		p5.strokeWeight(P5Constants.STROKE_WEIGHT);
 		if(!highLight){
-			p5.stroke(P5Color.ELECTRIC_GREEN[0],P5Color.ELECTRIC_GREEN[1],P5Color.ELECTRIC_GREEN[2], 100);
+			p5.stroke(P5Color.PERSIAN_GREEN[0],P5Color.PERSIAN_GREEN[1],P5Color.PERSIAN_GREEN[2], 100);
 		}
 		else{
 			p5.stroke(P5Color.ORANGE[0],P5Color.ORANGE[1],P5Color.ORANGE[2], 100);
@@ -107,7 +107,7 @@ public class SquareConstantFillBar extends PlayBackBar{
 //			}	
 //		}
 		
-		p5.fill(P5Color.ELECTRIC_GREEN[0],P5Color.ELECTRIC_GREEN[1],P5Color.ELECTRIC_GREEN[2], 100);
+		p5.fill(P5Color.PERSIAN_GREEN[0],P5Color.PERSIAN_GREEN[1],P5Color.PERSIAN_GREEN[2], 100);
 
 //		if(time2>1000)
 //		{
@@ -153,8 +153,8 @@ public class SquareConstantFillBar extends PlayBackBar{
 		else{ //Fill bar is controlled by ir position of wii mote
 			if(shakeWii.getListener().isFillBarMovesItself() && !isFillBarMovesItself) {
 				isFillBarMovesItself = true;
-				vx = (int) ((shakeWii.getIrArrX()[0] - shakeWii.getIrArrX()[9])*0.1f);
-				vy = (int) ((shakeWii.getIrArrY()[0] - shakeWii.getIrArrY()[9])*0.1f);
+				//vx = (int) ((shakeWii.getIrArrX()[0] - shakeWii.getIrArrX()[9])*0.1f);
+				//vy = (int) ((shakeWii.getIrArrY()[0] - shakeWii.getIrArrY()[9])*0.1f);
 				
 				//System.out.println("VX "+vx+" VY "+vy);
 			}

@@ -37,7 +37,7 @@ public class SquareBar extends PlayBackBar {
 		
 		p5.strokeWeight(P5Constants.STROKE_WEIGHT);
 		if(!highLight){
-			p5.stroke(P5Color.MOSS_GREEN[0],P5Color.MOSS_GREEN[1],P5Color.MOSS_GREEN[2], 200);
+			p5.stroke(P5Color.MOSS_GREEN[0],P5Color.MOSS_GREEN[1],P5Color.MOSS_GREEN[2], 100);
 		}
 		else{
 			p5.stroke(P5Color.ORANGE[0],P5Color.ORANGE[1],P5Color.ORANGE[2], 100);
